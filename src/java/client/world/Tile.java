@@ -12,9 +12,38 @@ public class Tile {
 		
 	}
 	
-	/* Things that need to be coded */
-	// Swap tile states
-	// Draw tiles on the board
+	/* Things that need to be coded */	
+	
+	/**
+	 * Change the state of a tile by returning a given state
+	 * Exits if state could not be changed
+	 * @param newState
+	 * @return
+	 */
+	public State changeTileState(State newState) {
+		switch(tile) {
+			case EMPTY:
+				// ** Apply 'EMPTY' texture ** //
+				return State.EMPTY;
+				
+			case WALL:
+				// ** Apply 'WALL' texture ** //
+				return State.WALL;
+				
+			case PLAYER:
+				// ** Apply 'PLAYER' texture ** //
+				return State.PLAYER;
+				
+			case ROBOT:
+				// ** Apply 'ROBOT' texture ** //
+				return State.ROBOT;
+				
+			default:
+				System.out.println("Could not change tile state. Exiting.");
+				System.exit(0);
+		}
+		return null;
+	}
 	
 	/**
 	 * Is the tile accessible to the player/robot
@@ -22,11 +51,7 @@ public class Tile {
 	 * @return
 	 */
 	public boolean isAccessible(State tile) {
-		if(tile != State.EMPTY)
-			return true;
-	
-		else
-			return false;
+		return tile != State.EMPTY;
 	}
 	
 	
