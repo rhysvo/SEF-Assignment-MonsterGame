@@ -1,0 +1,1 @@
+This directory (res) is for the source material such as images and sounds.
