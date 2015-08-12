@@ -13,7 +13,7 @@ public class World {
 	// Create possible states of a tile
 	public enum Tile { EMPTY, WALL, BLOCKED };
 	
-	Tile[][] tiles = new Tile[2][2];
+	// Tile[][] tiles = new Tile[2][2];
 
 	public World(int a) {
 
@@ -69,15 +69,35 @@ public class World {
 		return tile != Tile.EMPTY;
 	}
 
+	public void loadTilesFromServer(String sentInformation) {
+		/*
+		 *  Receive information from the server
+		 *		- Map size
+		 *		- Wall location
+		 *	
+		 *	Split information up
+		 */
+	}
+	
 	public void updatePosition(Player player, int[] oldPosition, int[] newPosition) {
 
-		// Get player number
-		// Select player
-		// Get newPosition
-		// Check new position isn't occupied by PLAYER/WALL/ROBOT
-		// Set newPosition to PLAYER if passes checks
-
-		// Get oldPosition, set oldPosition to EMPTY
+		/* 
+		 * Get player information
+		 * 		- Number
+		 * 		- Old Location
+		 * 		- New Location
+		 * 
+		 * Get world information
+		 * 		- Available tiles 
+		 * 
+		 * Compare information
+		 * 		- Is New Location available
+		 * 
+		 * Modify information
+		 * 		- Prevent player moving if spot unavailable
+		 * 		- Set newPosition to BLOCKED if pass
+		 * 		- Set oldPosition to EMPTY if pass
+		 */
 	}
 
 }
