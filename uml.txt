@@ -1,0 +1,111 @@
+UML
+
+This info needs to be copied to the UML diagram at lucidchart
+And also needs to be more in depth (variable/method names)
+
+! Important
+* Notes
+^ Advanced
+? Suggestion
+
+java.client
+    .
+        MonsterGame.java
+            * Driver class
+            * Init OpenGL
+            * Begin UIHandler
+        
+    .gui
+        UIHandler.java
+            * Initially provides CLI access to the game and lobby
+            ^ Will handle full GUIs eventually
+            ^ Handles GUI, moves between Menu -> Highscores -> Game
+            * Passes input to other GUIs and to game
+            
+        Menu.java
+            * Display main menu, handle input and button navigation
+            
+        Lobby.java
+            * GUI for the process of joining or creating a game
+            * Need to be able to start game with 2 - 4 players
+            * Show identifiable info about other players (IP/host)
+            ^ Needs to have a nickname input and list other
+            ^ player's nicks.
+            
+        HighScores.java
+            ^ Display highscores
+            
+        GameOverlay.java
+            ^ Provide score overlay/players connected etc.
+        
+    .util
+        TextureLoader.java
+            * Provides functions that load textures
+            * Either from spritesheet or separate files
+            ? Load into a HashMap of texture string:location 
+            ? for global access
+        
+    .game
+        Game.java
+            * Main game loop
+            * ArrayList of entities as monster/players
+            * Calls draw on all entities and world
+            * Applies inputs to player object
+            * Updates screen, checks incoming packets for
+            * other player updates (threading?)
+            ^ Draws GameOverlay after game frame
+        
+    .world
+        World.java
+            ! Doesn't keep track of player positions
+            * Map/world 
+            * Uses a 2D array of enum tiles to display the world.
+            * Loads textures for walls/floor
+            ^ The world is sent by the server before a game starts,
+            ^ need to be able to load it from serializable data here.
+            
+        Entity.java
+            * Local player + monster + network players
+            * Handles movement of entities, checks whether they can move, etc
+            * Loads textures of player*/monster
+            * Draws entity to screen when called
+            * Keeps track of all entity positions
+            
+        Player.java
+            ! Does not necessarily need to be a subclass 
+            ! of Entity (will only handle movement)
+            * Local player
+            * Takes input from Game class, applies to entity
+            * and sends through NetworkClient
+        
+    .net
+        NetworkClient.java
+            * Initializes connections
+            * Sends player movements
+            * Receives monster/network player movements (may separate)
+        
+java.server
+    .
+        MonsterServer.java
+            * Driver class
+            * Begin NetworkServer
+            
+    .world
+        MonsterAI.java
+            * Determines where to move based on player info
+            * Sends movement data to NetworkServer
+            
+        PlayerHandler.java
+            * Handles players connecting
+            
+        NetworkPlayer.java
+            * Player object
+            * Coordinates/other info about each player
+        
+        
+    .net
+        NetworkServer.java
+            * Initializes all connections with clients
+            ^ Sends game world to clients before load
+            * Receives player movements and broadcasts them
+            * Broadcasts monster movement
