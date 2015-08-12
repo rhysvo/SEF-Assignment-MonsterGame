@@ -7,6 +7,6 @@ package java.client.gui;
  * @author Alex Matheson
  *
  */
-public class GUIHandler {
+public class UIHandler {
 
 }

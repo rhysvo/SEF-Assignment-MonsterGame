@@ -1,6 +1,6 @@
 package java.client;
 
-import java.client.world.LocalPlayer;
+import java.client.world.Player;
 
 import javax.swing.JFrame;
 
@@ -22,6 +22,7 @@ public class MonsterGame {
 
 	/* GAME SETTINGS */
 	public static int tileSize = 32;
+	// Worldsize will be sent by server in future
 	public static int worldSize = 16;
 
 	/* GL VARIABLES */
@@ -32,8 +33,8 @@ public class MonsterGame {
 	
 	/* GAME VARIABLES */
 	
-	// Current player
-	private LocalPlayer player;
+	// Local player
+	private Player player;
 
 	private void run() {
 		
@@ -54,8 +55,6 @@ public class MonsterGame {
 			// in respect to time
 			int delta = getDelta();
 			
-			// Update user input on every frame
-			player.pollInput(delta);
 			// Will probably also need to send input to
 			// GUI handler
 			
