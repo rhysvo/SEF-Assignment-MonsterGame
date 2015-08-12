@@ -11,7 +11,7 @@ package java.client.world;
 public class World {
 
 	// Create possible states of a tile
-	public enum Tile { EMPTY, WALL, BLOCKED };
+	private enum Tile { EMPTY, WALL, BLOCKED };
 	
 	// Tile[][] tiles = new Tile[2][2];
 
@@ -20,8 +20,8 @@ public class World {
 	}
 
 	/**
-	 * Change the state of a tile by returning a given state Exits if state
-	 * could not be changed
+	 * (DEPRECATED) Change the state of a tile by returning a given state Exits 
+	 * if state could not be changed.
 	 * 
 	 * @param newState
 	 * @return
@@ -49,10 +49,9 @@ public class World {
 		default:
 			// Output invalid state
 			System.out.println("Invalid tile state: " + newState);
-			System.out.println("Exiting.");
 
 			// Exit the system
-			System.exit(0);
+		
 		}
 
 		// This is for eclipse
@@ -66,7 +65,7 @@ public class World {
 	 * @return
 	 */
 	public boolean isAccessible(Tile tile) {
-		return tile != Tile.EMPTY;
+		return tile == Tile.EMPTY;
 	}
 
 	public void loadTilesFromServer(String sentInformation) {
