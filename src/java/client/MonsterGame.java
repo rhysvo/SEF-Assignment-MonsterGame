@@ -56,11 +56,24 @@ public class MonsterGame {
 			
 			// Update user input on every frame
 			player.pollInput(delta);
+			// Will probably also need to send input to
+			// GUI handler
 			
+			// Need to use a GUI handler to determine
+			// whether to show menu, highscores, or game
+			
+			// Render GL here (using the world class)
+			
+			// Refresh display and sync to 30 fps
 			Display.update();
 			Display.sync(30);
 			
 		}
+		
+		// Close everything after program terminates
+		// (display is closed)
+		Display.destroy();
+		frame.dispose();
 		
 	}
 
