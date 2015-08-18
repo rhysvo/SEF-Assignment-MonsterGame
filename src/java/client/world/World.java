@@ -13,12 +13,20 @@ public class World {
 	// Create possible states of a tile
 	private enum Tile { EMPTY, WALL, BLOCKED };
 	
-	// Tile[][] tiles = new Tile[2][2];
+	// Create Tile array for the world
+	private Tile[][] world;
 
-	public World(int a) {
-
+	public World() {
+		this.world = new Tile[10][10];
 	}
 
+	/**
+	 * 
+	 */
+	public void draw() {
+		
+	}
+	
 	/**
 	 * (DEPRECATED) Change the state of a tile by returning a given state Exits 
 	 * if state could not be changed.
