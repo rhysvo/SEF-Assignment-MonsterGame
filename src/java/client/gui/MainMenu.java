@@ -1,13 +1,8 @@
 package java.client.gui;
-/**
- * Retrieves information about High Score listing
- * from the Server. Sends request and displays it
- * @author Rhys
- *
- */
-public class HighScores extends Menu {
 
-	protected HighScores(UIHandler uiHandler) {
+public class MainMenu extends Menu {
+
+	public MainMenu(UIHandler uiHandler) {
 		super(uiHandler);
 	}
 
