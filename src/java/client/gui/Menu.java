@@ -17,7 +17,7 @@ public abstract class Menu {
 	
 	private List<Button> buttons = new ArrayList<Button>();
 	private int selected = 0;
-	private UIHandler uiHandler;
+	protected UIHandler uiHandler;
 	
 	// private Texture background = TextureLoader.get('../res/menu_bg.png');
 	
