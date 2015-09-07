@@ -1,6 +1,6 @@
-package java.client.gui;
+package monster.java.client.gui;
 
-import java.util.Scanner;
+import monster.java.client.MonsterGame;
 
 public class MainMenu extends Menu {
 
@@ -32,20 +32,18 @@ public class MainMenu extends Menu {
 		int option = 0;
 		String action = "";
 		
-		Scanner input = new Scanner(System.in);
-		
 		do {
 		
 			System.out.println(
 					" == Main Menu == \n"
-					+ "================="
+					+ "=================\n"
 					+ "1. Join a game\n"
 					+ "2. View highscores\n"
 					+ "0. Exit"
 			);
 			
 			try {
-				option = Integer.parseInt(input.nextLine());
+				option = Integer.parseInt(MonsterGame.sc.nextLine());
 				if (option < 0 || option > 2) 
 					throw new NumberFormatException();
 				exit = true;
@@ -54,8 +52,6 @@ public class MainMenu extends Menu {
 			}
 				
 		} while (!exit);
-		
-		input.close();
 		
 		switch(option) {
 		

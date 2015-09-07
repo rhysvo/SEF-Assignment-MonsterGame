@@ -1,4 +1,4 @@
-package java.client.util;
+package monster.java.client.util;
 
 /**
  * Loads textures into a HashMap from

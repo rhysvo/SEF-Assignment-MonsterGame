@@ -1,4 +1,4 @@
-package java.client.world;
+package monster.java.client.world;
 
 /**
  * Object class for all entities (players + monster)

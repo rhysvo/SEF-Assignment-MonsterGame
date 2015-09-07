@@ -1,9 +1,11 @@
-package java.client;
+package monster.java.client;
 
-import java.client.gui.UIHandler;
-import java.client.world.Player;
+import java.util.Scanner;
 
 import javax.swing.JFrame;
+
+import monster.java.client.gui.UIHandler;
+import monster.java.client.world.Player;
 
 import org.lwjgl.LWJGLException;
 import org.lwjgl.opengl.Display;
@@ -19,6 +21,7 @@ public class MonsterGame {
 
 	// Instance for backwards references
 	public static MonsterGame instance;
+	public static Scanner sc;
 	
 	public UIHandler uiHandler;
 	
@@ -45,13 +48,21 @@ public class MonsterGame {
 
 	private void run() {
 		
+		sc = new Scanner(System.in);
+		
+		/*
+		
 		getDelta();
 
-		frame = new JFrame();
 
 		initGL();
+		*/
+
+		frame = new JFrame();		
 		this.uiHandler = new UIHandler(frame);
 		this.uiHandler.showMain();
+		
+		MonsterGame.sc.close();
 
 	}
 	
