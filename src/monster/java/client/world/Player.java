@@ -1,4 +1,4 @@
-package java.client.world;
+package monster.java.client.world;
 /**
  * Allows controlling of an Entity, 
  * extends GridEntity class

@@ -1,4 +1,4 @@
-package java.client.game;
+package monster.java.client.game;
 
 /**
  * Main game loop and renderer

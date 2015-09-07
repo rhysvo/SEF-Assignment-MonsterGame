@@ -1,4 +1,4 @@
-package java.client.gui;
+package monster.java.client.gui;
 /**
  * Retrieves information about High Score listing
  * from the Server. Sends request and displays it

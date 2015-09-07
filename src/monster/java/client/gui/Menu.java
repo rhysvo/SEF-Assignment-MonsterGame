@@ -1,4 +1,4 @@
-package java.client.gui;
+package monster.java.client.gui;
 
 import java.util.ArrayList;
 import java.util.List;

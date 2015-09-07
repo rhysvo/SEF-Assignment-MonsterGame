@@ -1,4 +1,4 @@
-package java.client.world;
+package monster.java.client.world;
 
 /**
  * 'World' provides and manages information about all the tiles in the game that
