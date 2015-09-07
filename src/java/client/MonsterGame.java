@@ -1,5 +1,6 @@
 package java.client;
 
+import java.client.gui.UIHandler;
 import java.client.world.Player;
 
 import javax.swing.JFrame;
@@ -11,19 +12,25 @@ import org.lwjgl.opengl.GL11;
 
 /**
  * Driver class for MonsterGame
- * Contains global settings and main game loop
- * TODO: Split (?) for networking, i.e. move game loop
+ * Initializes OpenGL and beings the UIHandler
  * @author Alex Matheson
  */
 public class MonsterGame {
 
 	// Instance for backwards references
 	public static MonsterGame instance;
-
+	
+	public UIHandler uiHandler;
+	
 	/* GAME SETTINGS */
+	
+	// Size of each tile (pixels)
 	public static int tileSize = 32;
-	// Worldsize will be sent by server in future
+	// Size of world (tiles)
 	public static int worldSize = 16;
+	// Max speed of player/monster movement (seconds)
+	// Does not affect network movement speeds
+	public static float tickSpeed = 1;
 
 	/* GL VARIABLES */
 	
@@ -43,7 +50,8 @@ public class MonsterGame {
 		frame = new JFrame();
 
 		initGL();
-		loop();
+		this.uiHandler = new UIHandler(frame);
+		this.uiHandler.showMain();
 
 	}
 	

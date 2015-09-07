@@ -5,6 +5,22 @@ package java.client.gui;
  * @author Rhys
  *
  */
-public class HighScores {
+public class HighScores extends Menu {
+
+	protected HighScores(UIHandler uiHandler) {
+		super(uiHandler);
+	}
+
+	@Override
+	protected void processButtonValue(String value) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	protected void startCommandLine() {
+		// TODO Auto-generated method stub
+		
+	}
 
 }
