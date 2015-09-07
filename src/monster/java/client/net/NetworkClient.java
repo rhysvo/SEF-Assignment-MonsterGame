@@ -37,6 +37,7 @@ public class NetworkClient {
 				
 			}
 			
+			input.close();
 			clientSocket.close();
 			
 		} catch (Exception e) {
