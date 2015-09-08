@@ -5,7 +5,7 @@ import java.util.Scanner;
 import javax.swing.JFrame;
 
 import monster.java.client.gui.UIHandler;
-import monster.java.client.world.Player;
+import monster.java.client.world.PlayerController;
 
 import org.lwjgl.LWJGLException;
 import org.lwjgl.opengl.Display;
@@ -44,7 +44,7 @@ public class MonsterGame {
 	/* GAME VARIABLES */
 	
 	// Local player
-	private Player player;
+	private PlayerController player;
 
 	private void run() {
 		

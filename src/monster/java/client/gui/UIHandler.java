@@ -2,6 +2,9 @@ package monster.java.client.gui;
 
 import javax.swing.JFrame;
 
+import monster.java.client.game.Game;
+
+
 /**
  * Handles whether to display menu, highscores
  * or game. Also passes inputs through to certain
@@ -34,6 +37,10 @@ public class UIHandler {
 	
 	public void runGame() {
 		// TODO
+	}
+	
+	public void localTest() {
+		Game game = new Game();
 	}
 	
 }

@@ -20,6 +20,10 @@ public class MainMenu extends Menu {
 			this.uiHandler.showHighScores();
 			break;
 			
+		case "local_test":
+			this.uiHandler.localTest();
+			break;
+			
 		default:
 			break;
 		}
@@ -39,16 +43,17 @@ public class MainMenu extends Menu {
 					+ "=================\n"
 					+ "1. Join a game\n"
 					+ "2. View highscores\n"
+					+ "3. Local Test\n"
 					+ "0. Exit"
 			);
 			
 			try {
 				option = Integer.parseInt(MonsterGame.sc.nextLine());
-				if (option < 0 || option > 2) 
+				if (option < 0 || option > 3) 
 					throw new NumberFormatException();
 				exit = true;
 			} catch (NumberFormatException e) {
-				System.out.println("Please enter a number from 0-2.");
+				System.out.println("Please enter a number from 0-3.");
 			}
 				
 		} while (!exit);
@@ -61,6 +66,10 @@ public class MainMenu extends Menu {
 		
 		case 2:
 			action = "view_hs";
+			break;
+			
+		case 3:
+			action = "local_test";
 			break;
 		
 		default:
