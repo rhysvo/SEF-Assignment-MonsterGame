@@ -14,11 +14,14 @@ public class NetworkPlayer extends Thread {
 	private Socket socket;
 	private PrintWriter out;
 	private BufferedReader in;
-	private boolean isReady = false;
 	private Entity player;
+	private int id;
+	
+	private boolean isReady = false;
 
-	public NetworkPlayer(Socket socket) {
+	public NetworkPlayer(Socket socket, int id) {
 		this.socket = socket;
+		this.id = id + 1;
 
 		System.out.println("New player connected to " + socket.getInetAddress()
 				+ " " + socket.getPort());
@@ -79,8 +82,22 @@ public class NetworkPlayer extends Thread {
 		}
 	}
 
+	/**
+	 * Get the player's entity
+	 * 
+	 * @return player
+	 */
 	public Entity getPlayer() {
 		return this.player;
+	}
+	
+	/**
+	 * Get the player's ID
+	 * 
+	 * @return ID
+	 */
+	public int getID() {
+		return this.id;
 	}
 	
 }

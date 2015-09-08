@@ -17,6 +17,17 @@ public class NetworkServer {
 	}
 
 	/**
+	 * Broadcast a message to all connected players
+	 * 
+	 * @param msg
+	 */
+	public void broadcast(String msg) {
+		for (NetworkPlayer client : players) {
+			client.send(msg);
+		}
+	}
+
+	/**
 	 * Increment the ready counter to break from the initialization loop.
 	 */
 	public void addReady() {
@@ -43,7 +54,7 @@ public class NetworkServer {
 					&& (i = this.players.size()) < 4) {
 
 				// add new NetworkPlayer object to list
-				this.players.add(new NetworkPlayer(this.serverSocket.accept()));
+				this.players.add(new NetworkPlayer(this.serverSocket.accept(), i));
 				// send an initial message to the client
 				this.players.get(i).send("player:" + i);
 
