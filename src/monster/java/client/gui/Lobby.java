@@ -38,7 +38,7 @@ public class Lobby extends Menu {
 			System.out.println("Enter IP/host of server, or 0 to go back.");
 			String in = MonsterGame.sc.nextLine();
 			
-			if (in == "0")
+			if (in.startsWith("0"))
 				return;
 			
 			try {
