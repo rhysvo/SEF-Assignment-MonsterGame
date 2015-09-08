@@ -14,14 +14,18 @@ import monster.java.client.MonsterGame;
  *
  */
 public class NetworkClient {
+	
+	private PrintWriter out;
 
 	public NetworkClient(String host, int port) {
 
 		try {
 			Socket clientSocket = new Socket(host, port);
+			
 			System.out.println("Connected to server.");
-			PrintWriter out = new PrintWriter(clientSocket.getOutputStream(),
-					true);
+			
+			out = new PrintWriter(clientSocket.getOutputStream(), true);
+			
 			BufferedReader in = new BufferedReader(new InputStreamReader(
 					clientSocket.getInputStream()));
 
@@ -45,5 +49,12 @@ public class NetworkClient {
 		}
 
 	}
-
+	
+	public PrintWriter getPrintWriterOut() {
+		return out;
+	}
+	
+	public void setPrintWriterOut(PrintWriter out) {
+		this.out = out;
+	}
 }

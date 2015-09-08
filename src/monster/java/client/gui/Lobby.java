@@ -42,7 +42,7 @@ public class Lobby extends Menu {
 				return;
 			
 			try {
-				NetworkClient client = new NetworkClient(in, 3286);
+				MonsterGame.client = new NetworkClient(in, 3286);
 			} catch (Exception e) {
 				System.out.println("There was an error connecting to the server.");
 			}

@@ -5,6 +5,7 @@ import java.util.Scanner;
 import javax.swing.JFrame;
 
 import monster.java.client.gui.UIHandler;
+import monster.java.client.net.NetworkClient;
 import monster.java.client.world.Player;
 
 import org.lwjgl.LWJGLException;
@@ -22,6 +23,7 @@ public class MonsterGame {
 	// Instance for backwards references
 	public static MonsterGame instance;
 	public static Scanner sc;
+	public static NetworkClient client;
 	
 	public UIHandler uiHandler;
 	
