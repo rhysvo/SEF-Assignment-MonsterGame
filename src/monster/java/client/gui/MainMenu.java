@@ -42,6 +42,8 @@ public class MainMenu extends Menu {
 					+ "0. Exit"
 			);
 			
+			System.out.print("Please enter your choice (0-2): ");
+			
 			try {
 				option = Integer.parseInt(MonsterGame.sc.nextLine());
 				if (option < 0 || option > 2) 
