@@ -1,6 +1,7 @@
 package monster.java.client.net;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
@@ -13,36 +14,23 @@ import monster.java.client.MonsterGame;
  * @author Alex
  *
  */
-public class NetworkClient {
+public class NetworkClient extends Thread {
 	
 	private PrintWriter out;
+	private BufferedReader in;
+	private Socket clientSocket;
 
 	public NetworkClient(String host, int port) {
 
 		try {
-			Socket clientSocket = new Socket(host, port);
+			this.clientSocket = new Socket(host, port);
 			
 			System.out.println("Connected to server.");
 			
-			out = new PrintWriter(clientSocket.getOutputStream(), true);
+			this.out = new PrintWriter(clientSocket.getOutputStream(), true);
 			
-			BufferedReader in = new BufferedReader(new InputStreamReader(
+			this.in = new BufferedReader(new InputStreamReader(
 					clientSocket.getInputStream()));
-
-			String fromServer, fromClient;
-
-			while ((fromServer = in.readLine()) != null) {
-
-				System.out.println("Server: " + fromServer);
-				fromClient = MonsterGame.sc.nextLine();
-				if (fromClient != null) {
-					System.out.println("Client: " + fromClient);
-					out.println(fromClient);
-				}
-
-			}
-			
-			clientSocket.close();
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -50,11 +38,24 @@ public class NetworkClient {
 
 	}
 	
-	public PrintWriter getPrintWriterOut() {
-		return out;
+	public void run() {
+		String fromServer;
+		try {
+			while ((fromServer = in.readLine()) != null) {
+
+				MessageProtocol.processLine(fromServer);
+
+			}
+			
+			this.clientSocket.close();
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
 	}
 	
-	public void setPrintWriterOut(PrintWriter out) {
-		this.out = out;
+	public PrintWriter getPrintWriterOut() {
+		return out;
 	}
 }

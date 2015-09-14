@@ -42,6 +42,7 @@ public class UIHandler {
 	
 	public void localTest() {
 		MonsterGame.game = new Game();
+		MonsterGame.game.run();
 	}
 	
 }

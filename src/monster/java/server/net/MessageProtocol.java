@@ -64,6 +64,10 @@ public class MessageProtocol {
 		
 	}
 	
+	public static void sendBegin() {
+		MonsterServer.server.broadcast("begin");
+	}
+	
 	// INCOMING MESSAGES //
 	
 	/**

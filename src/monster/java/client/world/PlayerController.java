@@ -7,20 +7,29 @@ package monster.java.client.world;
  */
 public class PlayerController {
 	
+	private Entity player;	
 	
-	boolean moveUp(){
-		return false;
+	public PlayerController(Entity player) {
+		this.player = player;
 	}
 	
-	boolean moveDown(){
-		return false;
+	public boolean moveUp(){
+		player.update(0, -1);
+		return true;
 	}
 	
-	boolean moveLeft(){
-		return false;
+	public boolean moveDown(){
+		player.update(0, 1);
+		return true;
 	}
 	
-	boolean moveRight(){
-		return false;
+	public boolean moveLeft(){
+		player.update(-1, 0);
+		return true;
+	}
+	
+	public boolean moveRight(){
+		player.update(1, 0);
+		return true;
 	}
 }

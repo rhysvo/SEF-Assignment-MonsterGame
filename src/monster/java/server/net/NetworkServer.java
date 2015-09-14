@@ -62,6 +62,8 @@ public class NetworkServer {
 			}
 			
 			System.out.println(i + " players ready, starting game.");
+			
+			MessageProtocol.sendBegin();
 
 		} catch (IOException e) {
 
