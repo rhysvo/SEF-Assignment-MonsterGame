@@ -32,6 +32,7 @@ public class NetworkServer {
 	 */
 	public void addReady() {
 		this.readyPlayers++;
+		System.out.println(this.readyPlayers + " players ready.");
 	}
 
 	/**
@@ -52,16 +53,19 @@ public class NetworkServer {
 			// loop while less than 4 players and not all players are ready
 			while (this.readyPlayers == 0
 					|| (this.readyPlayers < this.players.size() 
-					&& (i = this.players.size()) < 1)) {
+					&& i < 2)) {
 				// add new NetworkPlayer object to list
 				this.players.add(new NetworkPlayer(this.serverSocket.accept(),
 						i));
 				// send an initial message to the client
 				this.players.get(i).send("player:" + i);
+				i++;
 
 			}
 			
 			System.out.println(i + " players ready, starting game.");
+			
+			Thread.sleep(1000);
 			
 			MessageProtocol.sendBegin();
 
@@ -70,6 +74,8 @@ public class NetworkServer {
 			System.out.println("Error connecting to players.");
 			e.printStackTrace();
 
+		} catch (InterruptedException e) {
+			e.printStackTrace();
 		}
 	}
 
@@ -77,15 +83,6 @@ public class NetworkServer {
 	 * Server-side game loop
 	 */
 	public void run() {
-		while (true) {
-			broadcast("hello!");
-			try {
-				Thread.sleep(1000);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
 	}
 
 }

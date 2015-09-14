@@ -82,7 +82,7 @@ public class Game extends Thread {
 		for (Entity p : players)
 			if (p.getID() == id)
 				return p;
-		return null;
+		return addPlayer(id);
 	}
 	
 	public void run() {

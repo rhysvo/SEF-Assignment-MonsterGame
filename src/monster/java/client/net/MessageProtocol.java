@@ -6,6 +6,7 @@ import java.util.regex.Pattern;
 
 import monster.java.client.MonsterGame;
 import monster.java.client.game.Game;
+import monster.java.client.world.Entity;
 
 public class MessageProtocol {
 	
@@ -17,7 +18,7 @@ public class MessageProtocol {
 	}
 	
 	public static void sendMove(int x, int y) {
-		String msg = "mv:" + x + y;
+		String msg = "mv:" + x + "," + y;
 		MonsterGame.client.getPrintWriterOut().println(msg);
 	}
 	
@@ -28,6 +29,8 @@ public class MessageProtocol {
 	 */
 	public static void processLine(String line) throws IOException {
 		
+		System.out.println(line);
+		
 		for (String msg : line.split(";")) {
 			if (msg.startsWith("mv:"))
 				processMove(msg);
@@ -36,11 +39,11 @@ public class MessageProtocol {
 				processDeath(msg);
 			
 			else if (msg.startsWith("player:")) {
-				System.out.println(msg);
 				int id = Integer.parseInt(msg.split(":")[1]);
-				MonsterGame.game.addLocalPlayer(id + 1);
-			} else if (msg.equals("begin")) {
 				MonsterGame.game = new Game();
+				MonsterGame.game.addLocalPlayer(id + 1);
+				
+			} else if (msg.equals("begin")) {
 				MonsterGame.game.start();
 			}
 		}
@@ -76,6 +79,7 @@ public class MessageProtocol {
 		int x = Integer.parseInt(matcher.group(3));
 		int y = Integer.parseInt(matcher.group(4));
 		
-		MonsterGame.game.getEntity(player).setPos(x, y);
+		Entity p = MonsterGame.game.getEntity(player);
+		p.setPos(x, y);
 	}
 }
