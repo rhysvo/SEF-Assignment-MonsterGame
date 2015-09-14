@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.net.SocketException;
 
 import monster.java.server.MonsterServer;
 import monster.java.server.world.Entity;
@@ -75,10 +76,17 @@ public class NetworkPlayer extends Thread {
 
 				}
 			}
+		} catch (SocketException e) {
+			
+			System.out.println("Connection lost to " + this.socket.getInetAddress());
+			MessageProtocol.sendDisconnect(this);
+			
 		} catch (IOException e) {
+			
 			System.out.println("Bad message from client "
 					+ this.socket.getInetAddress());
 			e.printStackTrace();
+		
 		}
 	}
 

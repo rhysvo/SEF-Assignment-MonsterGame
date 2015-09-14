@@ -86,7 +86,7 @@ public class World {
 		 */
 	}
 	
-	public void updatePosition(Player player, int[] oldPosition, int[] newPosition) {
+	public void updatePosition(PlayerController player, int[] oldPosition, int[] newPosition) {
 
 		/* 
 		 * Get player information

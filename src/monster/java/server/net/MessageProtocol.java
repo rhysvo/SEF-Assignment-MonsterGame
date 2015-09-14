@@ -28,6 +28,30 @@ public class MessageProtocol {
 	}
 	
 	/**
+	 * Broadcast after a player disconnects
+	 * 
+	 * @param client
+	 */
+	public static void sendDisconnect(NetworkPlayer client) {
+		
+		String msg = "dc:" + client.getID() + ";";
+		MonsterServer.server.broadcast(msg);
+		
+	}
+	
+	/**
+	 * Broadcast a player's death
+	 * 
+	 * @param client
+	 */
+	public static void sendKill(NetworkPlayer client) {
+		
+		String msg = "kill:" + client.getID();
+		MonsterServer.server.broadcast(msg);
+		
+	}
+	
+	/**
 	 * Broadcast monster movement to all clients
 	 * 
 	 * @param x
@@ -56,24 +80,8 @@ public class MessageProtocol {
 
 			if (msg.startsWith("mv:"))
 				processMove(client, msg);
-			else if (msg.startsWith("dead:")) {
-				processDeath(client, msg);
-			}
 
 		}
-
-	}
-
-	/**
-	 * Process a player death
-	 * May not be necessary
-	 * 
-	 * @param client
-	 * @param deathMsg
-	 * @throws IOException
-	 */
-	private static void processDeath(NetworkPlayer client, String deathMsg)
-			throws IOException {
 
 	}
 

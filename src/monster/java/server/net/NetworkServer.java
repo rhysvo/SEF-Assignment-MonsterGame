@@ -50,15 +50,18 @@ public class NetworkServer {
 			int i = 0;
 
 			// loop while less than 4 players and not all players are ready
-			while (this.readyPlayers < this.players.size()
-					&& (i = this.players.size()) < 4) {
-
+			while (this.readyPlayers == 0
+					|| (this.readyPlayers < this.players.size() 
+					&& (i = this.players.size()) < 1)) {
 				// add new NetworkPlayer object to list
-				this.players.add(new NetworkPlayer(this.serverSocket.accept(), i));
+				this.players.add(new NetworkPlayer(this.serverSocket.accept(),
+						i));
 				// send an initial message to the client
 				this.players.get(i).send("player:" + i);
 
 			}
+			
+			System.out.println(i + " players ready, starting game.");
 
 		} catch (IOException e) {
 
@@ -68,8 +71,19 @@ public class NetworkServer {
 		}
 	}
 
+	/**
+	 * Server-side game loop
+	 */
 	public void run() {
-		// TODO
+		while (true) {
+			broadcast("hello!");
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 	}
 
 }
