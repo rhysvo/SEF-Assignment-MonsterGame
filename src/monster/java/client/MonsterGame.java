@@ -29,8 +29,10 @@ public class MonsterGame {
 	
 	// Size of each tile (pixels)
 	public static int tileSize = 32;
+	
 	// Size of world (tiles)
 	public static int worldSize = 16;
+	
 	// Max speed of player/monster movement (seconds)
 	// Does not affect network movement speeds
 	public static float tickSpeed = 1;
