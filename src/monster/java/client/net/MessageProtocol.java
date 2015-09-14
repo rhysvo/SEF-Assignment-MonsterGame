@@ -14,12 +14,12 @@ public class MessageProtocol {
 			.compile("([a-z]*):(\\d*),(\\d*),(\\d*)");
 
 	public static void sendReady() {
-		MonsterGame.client.getPrintWriterOut().println("ready");
+		MonsterGame.instance.client.send("ready");
 	}
 	
 	public static void sendMove(int x, int y) {
 		String msg = "mv:" + x + "," + y;
-		MonsterGame.client.getPrintWriterOut().println(msg);
+		MonsterGame.instance.client.send(msg);
 	}
 	
 	/**
@@ -40,11 +40,11 @@ public class MessageProtocol {
 			
 			else if (msg.startsWith("player:")) {
 				int id = Integer.parseInt(msg.split(":")[1]);
-				MonsterGame.game = new Game();
-				MonsterGame.game.addLocalPlayer(id + 1);
+				MonsterGame.instance.game = new Game();
+				MonsterGame.instance.game.addLocalPlayer(id + 1);
 				
 			} else if (msg.equals("begin")) {
-				MonsterGame.game.start();
+				MonsterGame.instance.game.start();
 			}
 		}
 	}
@@ -79,7 +79,7 @@ public class MessageProtocol {
 		int x = Integer.parseInt(matcher.group(3));
 		int y = Integer.parseInt(matcher.group(4));
 		
-		Entity p = MonsterGame.game.getEntity(player);
+		Entity p = MonsterGame.instance.game.getEntity(player);
 		p.setPos(x, y);
 	}
 }

@@ -50,7 +50,7 @@ public class MainMenu extends Menu {
 			System.out.print("Please enter your choice (0-2): ");
 			
 			try {
-				option = Integer.parseInt(MonsterGame.sc.nextLine());
+				option = Integer.parseInt(MonsterGame.instance.sc.nextLine());
 				if (option < 0 || option > 3) 
 					throw new NumberFormatException();
 				exit = true;

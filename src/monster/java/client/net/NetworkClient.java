@@ -55,7 +55,7 @@ public class NetworkClient extends Thread {
 		
 	}
 	
-	public PrintWriter getPrintWriterOut() {
-		return out;
+	public void send(String msg) {
+		this.out.println(msg);
 	}
 }
