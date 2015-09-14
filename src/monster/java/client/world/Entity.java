@@ -27,6 +27,9 @@ public class Entity {
 	}
 
 	public void update(int newx, int newy) {
+		if (!MonsterGame.instance.game.canMove(x + newx, y + newy))
+			return;
+		
 		if (x + newx >= 0 && x + newx < MonsterGame.WORLD_SIZE && y + newy >= 0
 				&& y + newy < MonsterGame.WORLD_SIZE) {
 			this.x += newx;
@@ -45,7 +48,6 @@ public class Entity {
 	}
 
 	public void draw() {
-
 		float tileSize = (float) MonsterGame.TILE_SIZE;
 
 		glPushMatrix();
@@ -59,5 +61,9 @@ public class Entity {
 		}
 		glEnd();
 		glPopMatrix();
+	}
+
+	public boolean atPos(int x, int y) {
+		return this.x == x && this.y == y;
 	}
 }

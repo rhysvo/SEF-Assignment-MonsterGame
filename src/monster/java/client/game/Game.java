@@ -59,10 +59,10 @@ public class Game extends Thread {
 			entity = new Entity(MonsterGame.WORLD_SIZE, 0);
 			break;
 		case 3:
-			entity = new Entity(0, MonsterGame.WORLD_SIZE);
+			entity = new Entity(0, MonsterGame.WORLD_SIZE - 1);
 			break;
 		case 4:
-			entity = new Entity(MonsterGame.WORLD_SIZE, MonsterGame.WORLD_SIZE);
+			entity = new Entity(MonsterGame.WORLD_SIZE - 1, MonsterGame.WORLD_SIZE - 1);
 			break;
 		default:
 			System.out.println("Invalid player id when adding player.");
@@ -83,21 +83,31 @@ public class Game extends Thread {
 				return p;
 		return addPlayer(id);
 	}
+	
+	public boolean canMove(int x, int y) {
+		for (Entity p : this.players) {
+			if (p.atPos(x, y))
+				return false;
+		}
+		return true;
+	}
 
 	public void run() {
 
 		try {
+			
 			Display.setDisplayMode(new DisplayMode(MonsterGame.GAME_SIZE,
 					MonsterGame.GAME_SIZE));
 			Display.setTitle("MonsterGame");
 			Display.create();
+			
 		} catch (LWJGLException e) {
 			e.printStackTrace();
 		}
 
 		glMatrixMode(GL_PROJECTION);
 		glLoadIdentity();
-		glOrtho(0.0, 640.0, 640.0, 0.0, 1, -1);
+		glOrtho(0.0, MonsterGame.GAME_SIZE, MonsterGame.GAME_SIZE, 0.0, 1, -1);
 		glMatrixMode(GL_MODELVIEW);
 		glClearColor(1F, 1F, 1F, 1F);
 		glColor3f(0F, 0F, 0F);

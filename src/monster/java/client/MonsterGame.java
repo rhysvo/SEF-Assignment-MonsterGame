@@ -59,10 +59,7 @@ public class MonsterGame {
 		this.sc = new Scanner(System.in);
 		
 		/*
-		
 		getDelta();
-
-
 		initGL();
 		*/
 

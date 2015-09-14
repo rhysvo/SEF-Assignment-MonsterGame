@@ -36,16 +36,13 @@ public class World {
 		}
 	}
 
-	/**
-	 * 
-	 */
 	public void draw() {
 		glPushMatrix();
 		for (int i = 0; i < MonsterGame.WORLD_SIZE; i++) {
 			for (int j = 0; j < MonsterGame.WORLD_SIZE; j++) {
 				glLoadIdentity();
-				glTranslatef(i * MonsterGame.TILE_SIZE, MonsterGame.TILE_SIZE,
-						0.0f);
+				glTranslatef(i * MonsterGame.TILE_SIZE, j
+						* MonsterGame.TILE_SIZE, 0.0f);
 				drawTile(this.world[j][i]);
 			}
 		}
@@ -56,9 +53,6 @@ public class World {
 
 		switch (tile) {
 		case EMPTY:
-			break;
-
-		case WALL:
 			glBegin(GL_LINE_LOOP);
 			{
 				glVertex3f(0.0F, 0.0f, 0.0f);
@@ -68,6 +62,9 @@ public class World {
 				glVertex3f((float) MonsterGame.TILE_SIZE, 0.0F, 0.0f);
 			}
 			glEnd();
+			break;
+
+		case WALL:
 			break;
 
 		case BLOCKED:
