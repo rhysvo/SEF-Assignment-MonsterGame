@@ -1,7 +1,5 @@
 package monster.java.client.gui;
 
-import java.util.Scanner;
-
 import monster.java.client.MonsterGame;
 import monster.java.client.net.NetworkClient;
 

@@ -57,16 +57,6 @@ public class MessageProtocol {
 		int x = Integer.parseInt(matcher.group(3));
 		int y = Integer.parseInt(matcher.group(4));
 		
-		// Print the message to be sent.
-		System.out.println("mv:" 
-				+ player + ","
-				+ x + ","
-				+ y);
-		
-		// Send info
-		MonsterGame.client.getPrintWriterOut().println("mv:" 
-				+ player + ","
-				+ x + ","
-				+ y + ";");
+		MonsterGame.game.getPlayer(player).setPos(x, y);
 	}
 }
