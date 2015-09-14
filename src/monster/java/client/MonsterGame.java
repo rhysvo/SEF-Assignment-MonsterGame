@@ -4,6 +4,7 @@ import java.util.Scanner;
 
 import javax.swing.JFrame;
 
+import monster.java.client.game.Game;
 import monster.java.client.gui.UIHandler;
 import monster.java.client.world.PlayerController;
 
@@ -24,6 +25,8 @@ public class MonsterGame {
 	public static Scanner sc;
 	
 	public UIHandler uiHandler;
+	
+	public static Game game;
 	
 	/* GAME SETTINGS */
 	

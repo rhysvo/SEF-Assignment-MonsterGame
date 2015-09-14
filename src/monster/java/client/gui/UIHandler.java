@@ -2,6 +2,7 @@ package monster.java.client.gui;
 
 import javax.swing.JFrame;
 
+import monster.java.client.MonsterGame;
 import monster.java.client.game.Game;
 
 
@@ -40,7 +41,7 @@ public class UIHandler {
 	}
 	
 	public void localTest() {
-		Game game = new Game();
+		MonsterGame.game = new Game();
 	}
 	
 }
