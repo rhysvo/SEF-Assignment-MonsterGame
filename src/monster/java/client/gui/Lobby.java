@@ -1,7 +1,5 @@
 package monster.java.client.gui;
 
-import java.util.Scanner;
-
 import monster.java.client.MonsterGame;
 import monster.java.client.net.NetworkClient;
 
@@ -36,16 +34,21 @@ public class Lobby extends Menu {
 		
 		while (!connected) {
 			System.out.println("Enter IP/host of server, or 0 to go back.");
-			String in = MonsterGame.sc.nextLine();
+			String in = MonsterGame.instance.sc.nextLine();
 			
-			if (in.startsWith("0"))
+			if (in.equals("0"))
 				return;
 			
 			try {
-				NetworkClient client = new NetworkClient(in, 3286);
+				
+				MonsterGame.instance.client = new NetworkClient(in, 3286);
+				MonsterGame.instance.client.start();
+				System.out.println("Waiting for at least 2 players...");
+				
 			} catch (Exception e) {
 				System.out.println("There was an error connecting to the server.");
 			}
+			
 			connected = true;
 		}
 	}

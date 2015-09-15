@@ -63,7 +63,7 @@ public class NetworkPlayer extends Thread {
 			while ((inputLine = this.in.readLine()) != null) {
 				System.out.println(inputLine);
 
-				if (inputLine == "ready" && !this.isReady) {
+				if (inputLine.equals("ready") && !this.isReady) {
 					
 					this.isReady = true;
 					MonsterServer.server.addReady();

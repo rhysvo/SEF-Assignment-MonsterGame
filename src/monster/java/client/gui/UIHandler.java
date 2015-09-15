@@ -41,7 +41,11 @@ public class UIHandler {
 	}
 	
 	public void localTest() {
-		MonsterGame.game = new Game();
+		MonsterGame.instance.game = new Game();
+		Game game = MonsterGame.instance.game;
+		game.setOffline();
+		game.addLocalPlayer(1);
+		game.run();
 	}
 	
 }
