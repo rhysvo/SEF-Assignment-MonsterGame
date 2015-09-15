@@ -15,6 +15,7 @@ import monster.java.client.game.Game;
  */
 public class UIHandler {
 
+	@SuppressWarnings("unused")
 	private JFrame frame;
 	
 	public UIHandler(JFrame frame) {

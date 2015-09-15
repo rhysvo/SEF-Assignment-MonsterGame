@@ -5,6 +5,7 @@ public class Button {
 	private int x, y;
 	private int w, h;
 	private String value;
+	@SuppressWarnings("unused")
 	private String text;
 
 	// private Texture tx = TextureLoader.get('../res/button.png');

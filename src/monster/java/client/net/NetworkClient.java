@@ -6,8 +6,6 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 
-import monster.java.client.MonsterGame;
-
 /**
  * Initializes and handles IO between game and server.
  * 

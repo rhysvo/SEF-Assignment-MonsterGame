@@ -7,12 +7,6 @@ import javax.swing.JFrame;
 import monster.java.client.game.Game;
 import monster.java.client.gui.UIHandler;
 import monster.java.client.net.NetworkClient;
-import monster.java.client.world.PlayerController;
-
-import org.lwjgl.LWJGLException;
-import org.lwjgl.opengl.Display;
-import org.lwjgl.opengl.DisplayMode;
-import org.lwjgl.opengl.GL11;
 
 /**
  * Driver class for MonsterGame
@@ -38,22 +32,12 @@ public class MonsterGame {
 	public static final int WORLD_SIZE = 16;
 	
 	public static final int GAME_SIZE = TILE_SIZE * WORLD_SIZE;
-	
-	// Max speed of player/monster movement (seconds)
-	// Does not affect network movement speeds
-	public static float tickSpeed = 1;
 
 	/* GL VARIABLES */
 	
 	// Game window
 	private JFrame frame;
-	private long lastFrame;
 	
-	/* GAME VARIABLES */
-	
-	// Local player
-	private PlayerController player;
-
 	private void run() {
 		
 		this.sc = new Scanner(System.in);
