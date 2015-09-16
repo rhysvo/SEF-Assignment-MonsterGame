@@ -104,7 +104,7 @@ public class NetworkServer {
 			monster.moveRight(4);
 			
 			// Select a target
-			players.get(monster.selectTarget(players)).getPlayer();
+			//players.get(monster.selectTarget(players)).getPlayer();
 			
 			// Wait for 5 seconds before proceeding
 			try {

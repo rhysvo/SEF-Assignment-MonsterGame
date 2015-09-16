@@ -24,32 +24,21 @@ public class Monster extends Entity {
 	}
 
 	public int selectTarget(ArrayList<NetworkPlayer> player) {
+		
 		for (int i = 0; i < player.size(); i++) {
 			tx = findTargetX(player.get(i).getPlayer());
 			ty = findTargetY(player.get(i).getPlayer());
 		}
-
+		
 		return 0;
 	}
 
 	public int findTargetX(Entity player) {
-		int px = player.X(), mx = this.X();
-
-		if (px > mx)
-			return (px - mx);
-
-		else
-			return (mx - px);
+		return Math.abs(player.X() - this.X());
 	}
 
 	public int findTargetY(Entity player) {
-		int py = player.Y(), my = this.Y();
-
-		if (py > my)
-			return (py - my);
-
-		else
-			return (my - py);
+		return Math.abs(player.Y() - this.Y());
 	}
 
 	/**
@@ -105,7 +94,7 @@ public class Monster extends Entity {
 		// Movement loop
 		for (int i = 0; i < num; i++) {
 			// Check monster doesn't exceed boundary
-			if (this.y >= 16)
+			if (this.y >= 15)
 				break;
 
 			// Move the monster down
@@ -145,7 +134,7 @@ public class Monster extends Entity {
 		// Movement loop
 		for (int i = 0; i < num; i++) {
 			// Check monster doesn't exceed boundary
-			if (this.x >= 16)
+			if (this.x >= 15)
 				break;
 
 			// Move the monster right
