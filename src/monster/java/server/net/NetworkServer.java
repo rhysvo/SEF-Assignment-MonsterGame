@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.util.ArrayList;
 
+import monster.java.server.world.Entity;
 import monster.java.server.world.Monster;
 
 public class NetworkServer {
@@ -93,22 +94,42 @@ public class NetworkServer {
 	public void run() {
 		boolean exit = false;
 		
-		while(!exit) {
+		while(!exit) {			
+			// Select a target
+			int p1 = monster.selectTarget(players);
+			Entity player = players.get(p1).getPlayer();
+
 			// Output current location of Monster and Target
-			//monster.outputDetails();
+			monster.outputDetails();
+			
+			// Follow the player
+			if(player.X() == monster.X())
+				if(player.Y() == monster.Y())
+					continue;
+			
+			if(player.X() < monster.X())
+				monster.moveLeft(monster.findTargetDistX(player));
+			
+			else
+				monster.moveRight(monster.findTargetDistX(player));
+			
+			if(player.Y() < monster.Y())
+				monster.moveUp(monster.findTargetDistY(player));
+			
+			else
+				monster.moveDown(monster.findTargetDistY(player));
 			
 			// Test moving around the board
-			monster.moveLeft(4);
-			monster.moveUp(4);
-			monster.moveDown(4);
+			/*monster.moveLeft(4);			
+			monster.moveUp(4);			
 			monster.moveRight(4);
+			monster.moveDown(4);*/
 			
-			// Select a target
-			//players.get(monster.selectTarget(players)).getPlayer();
+			
 			
 			// Wait for 5 seconds before proceeding
 			try {
-				Thread.sleep(5000);
+				Thread.sleep(0);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

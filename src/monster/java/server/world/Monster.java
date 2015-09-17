@@ -8,6 +8,7 @@ import monster.java.server.net.NetworkPlayer;
 
 public class Monster extends Entity {
 	private int tx, ty;
+	private Entity target;
 
 	public Monster() {
 		MessageProtocol.sendMonsterMove(this.x, this.y);
@@ -18,26 +19,33 @@ public class Monster extends Entity {
 		MessageProtocol.sendMonsterMove(x, y);
 	}
 
-	public void outputDetails() {
-		System.out.printf("Monster, x: %d y: %d\n", this.x, this.y);
-		System.out.printf("Target, x: %d y: %d\n\n", tx, ty);
-	}
-
 	public int selectTarget(ArrayList<NetworkPlayer> player) {
+		// Select a target
+		target = player.get(0).getPlayer();
 		
-		for (int i = 0; i < player.size(); i++) {
-			tx = findTargetX(player.get(i).getPlayer());
-			ty = findTargetY(player.get(i).getPlayer());
-		}
+		// Assign target x, y;
+		tx = target.X();
+		ty = target.Y();
 		
+		// Return default value (0 = player: 1)
 		return 0;
 	}
 
-	public int findTargetX(Entity player) {
+	/**
+	 * Returns the X distance that Monster must travel
+	 * @param player
+	 * @return
+	 */
+	public int findTargetDistX(Entity player) {
 		return Math.abs(player.X() - this.X());
 	}
 
-	public int findTargetY(Entity player) {
+	/**
+	 * Returns Y distance that Monster must travel
+	 * @param player
+	 * @return
+	 */
+	public int findTargetDistY(Entity player) {
 		return Math.abs(player.Y() - this.Y());
 	}
 
@@ -54,7 +62,7 @@ public class Monster extends Entity {
 		// Transmit Monster location to clients
 		MessageProtocol.sendMonsterMove(this.x, this.y);
 
-		// Make the Monster wait till ending move sequence
+		// Make the Monster wait till ending move sequence for debugging
 		try {
 			Thread.sleep(MonsterServer.MON_TICK);
 		} catch (InterruptedException e) {
@@ -68,11 +76,18 @@ public class Monster extends Entity {
 	 * @param num
 	 */
 	public void moveUp(int num) {
+		// Assign target current position 'y'
+		int cy = ty;
+		
 		// Output direction and number
 		System.out.println("mUP: " + num);
 		
 		// Movement loop
 		for (int i = 0; i < num; i++) {
+			// Check if current target moved
+			if (cy != target.Y())
+				break;
+				
 			// Check monster doesn't exceed boundary
 			if (this.y <= 0)
 				break;
@@ -88,11 +103,18 @@ public class Monster extends Entity {
 	 * @param num
 	 */
 	public void moveDown(int num) {
+		// Assign target current position 'y'
+		int cy = ty;
+		
 		// Output direction and number
 		System.out.println("mDN: " + num);
 		
 		// Movement loop
 		for (int i = 0; i < num; i++) {
+			// Check if current target moved
+			if (cy != target.Y())
+				break;
+			
 			// Check monster doesn't exceed boundary
 			if (this.y >= 15)
 				break;
@@ -108,11 +130,18 @@ public class Monster extends Entity {
 	 * @param num
 	 */
 	public void moveLeft(int num) {
+		// Assign target current position 'x'
+		int cx = tx;
+		
 		// Output direction and number
 		System.out.println("mLE: " + num);
 		
 		// Movement loop
 		for (int i = 0; i < num; i++) {
+			// Check if current target moved
+			if (cx != target.X())
+				break;
+			
 			// Check monster doesn't exceed boundary
 			if (this.x <= 0)
 				break;
@@ -128,11 +157,18 @@ public class Monster extends Entity {
 	 * @param num
 	 */
 	public void moveRight(int num) {
+		// Assign target current position 'x'
+		int cx = tx;
+		
 		// Output direction and number
 		System.out.println("mRI: " + num);
 		
 		// Movement loop
 		for (int i = 0; i < num; i++) {
+			// Check if current target moved
+			if (cx != target.X())
+				break;
+			
 			// Check monster doesn't exceed boundary
 			if (this.x >= 15)
 				break;
@@ -140,5 +176,15 @@ public class Monster extends Entity {
 			// Move the monster right
 			monsterMove(1, 0);
 		}
+	}
+	
+	/* * * DEBUGGING CODE BELOW * * */
+	
+	/**
+	 * Outputs the monster & target coords
+	 */
+	public void outputDetails() {
+		System.out.printf("Monster, x: %d y: %d\n", this.x, this.y);
+		System.out.printf("Target, x: %d y: %d\n\n", tx, ty);
 	}
 }
