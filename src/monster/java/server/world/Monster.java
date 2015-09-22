@@ -19,9 +19,28 @@ public class Monster extends Entity {
 		MessageProtocol.sendMonsterMove(x, y);
 	}
 
-	public int selectTarget(ArrayList<NetworkPlayer> player) {
+	public Entity selectTarget(ArrayList<NetworkPlayer> players) {
+		byte temp = 32;
+		
+		for(int i = 0; i < players.size(); i++) {
+			// Create player Entity
+			Entity player = players.get(i).getPlayer();
+			
+			// Create & init check integers for x & y
+			int cx = player.X(), cy = player.Y();
+			
+			// Check the distance to current target
+			int dist = (int) Math.floor(Math.sqrt(cx * cx + cy * cy));
+			
+			if(dist < temp)
+				target = player;
+		}
+		
+		return target;
+		
+		/*
 		// Select a target
-		target = player.get(0).getPlayer();
+		target = players.get(0).getPlayer();
 		
 		// Assign target x, y;
 		tx = target.X();
@@ -29,6 +48,21 @@ public class Monster extends Entity {
 		
 		// Return default value (0 = player: 1)
 		return 0;
+		*/
+	}
+	
+	public void moveToTarget(Entity target) {
+		if(target.X() < this.X())
+			moveLeft(findTargetDistX(target));
+		
+		else
+			moveRight(findTargetDistX(target));
+		
+		if(target.Y() < this.Y())
+			moveUp(findTargetDistY(target));
+		
+		else
+			moveDown(findTargetDistY(target));
 	}
 
 	/**
@@ -77,7 +111,7 @@ public class Monster extends Entity {
 	 */
 	public void moveUp(int num) {
 		// Assign target current position 'y'
-		int cy = ty;
+		int cy = target.Y();
 		
 		// Output direction and number
 		System.out.println("mUP: " + num);
@@ -104,7 +138,7 @@ public class Monster extends Entity {
 	 */
 	public void moveDown(int num) {
 		// Assign target current position 'y'
-		int cy = ty;
+		int cy = target.Y();
 		
 		// Output direction and number
 		System.out.println("mDN: " + num);
@@ -131,7 +165,7 @@ public class Monster extends Entity {
 	 */
 	public void moveLeft(int num) {
 		// Assign target current position 'x'
-		int cx = tx;
+		int cx = target.X();
 		
 		// Output direction and number
 		System.out.println("mLE: " + num);
@@ -158,7 +192,7 @@ public class Monster extends Entity {
 	 */
 	public void moveRight(int num) {
 		// Assign target current position 'x'
-		int cx = tx;
+		int cx = target.X();
 		
 		// Output direction and number
 		System.out.println("mRI: " + num);
@@ -185,6 +219,6 @@ public class Monster extends Entity {
 	 */
 	public void outputDetails() {
 		System.out.printf("Monster, x: %d y: %d\n", this.x, this.y);
-		System.out.printf("Target, x: %d y: %d\n\n", tx, ty);
+		System.out.printf("Target, x: %d y: %d\n\n", target.X(), target.Y());
 	}
 }

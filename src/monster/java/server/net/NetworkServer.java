@@ -64,8 +64,9 @@ public class NetworkServer {
 				// send an initial message to the client
 				this.players.get(i).send("player:" + i);
 				i++;
-				break;
-
+				
+				// Uncomment this for single play
+				//break;
 			}
 			
 			System.out.println(i + " players ready, starting game.");
@@ -96,18 +97,18 @@ public class NetworkServer {
 		
 		while(!exit) {			
 			// Select a target
-			int p1 = monster.selectTarget(players);
-			Entity player = players.get(p1).getPlayer();
+			Entity player = monster.selectTarget(players);
+			//int p1 = monster.selectTarget(players);
+			//player = players.get(p1).getPlayer();
 
+
+			
 			// Output current location of Monster and Target
 			monster.outputDetails();
 			
 			// Follow the player
-			if(player.X() == monster.X())
-				if(player.Y() == monster.Y())
-					continue;
-			
-			if(player.X() < monster.X())
+			monster.moveToTarget(player);
+			/*if(player.X() < monster.X())
 				monster.moveLeft(monster.findTargetDistX(player));
 			
 			else
@@ -117,7 +118,7 @@ public class NetworkServer {
 				monster.moveUp(monster.findTargetDistY(player));
 			
 			else
-				monster.moveDown(monster.findTargetDistY(player));
+				monster.moveDown(monster.findTargetDistY(player));*/
 			
 			// Test moving around the board
 			/*monster.moveLeft(4);			
@@ -127,9 +128,10 @@ public class NetworkServer {
 			
 			
 			
-			// Wait for 5 seconds before proceeding
+			// Wait for n seconds before proceeding
+			int n = 0;
 			try {
-				Thread.sleep(0);
+				Thread.sleep(n*1000);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
