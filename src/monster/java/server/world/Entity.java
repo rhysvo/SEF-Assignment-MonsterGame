@@ -2,7 +2,7 @@ package monster.java.server.world;
 
 public class Entity {
 	
-	private int x, y;
+	protected int x, y;
 	private String name;
 	
 	public Entity() {
@@ -12,6 +12,11 @@ public class Entity {
 	public void setPos(int x, int y) {
 		this.x = x;
 		this.y = y;
+	}
+	
+	public void addPos(int x, int y) {
+		this.x += x;
+		this.y += y;
 	}
 	
 	public void setName(String name) {

@@ -4,12 +4,16 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.util.ArrayList;
 
+import monster.java.server.world.Entity;
+import monster.java.server.world.Monster;
+
 public class NetworkServer {
 
 	private int port;
 	private ServerSocket serverSocket;
 	private ArrayList<NetworkPlayer> players;
 	private int readyPlayers = 0;
+	private Monster monster;
 
 	public NetworkServer(int port) {
 		this.port = port;
@@ -60,7 +64,9 @@ public class NetworkServer {
 				// send an initial message to the client
 				this.players.get(i).send("player:" + i);
 				i++;
-
+				
+				// Uncomment this for single play
+				break;
 			}
 			
 			System.out.println(i + " players ready, starting game.");
@@ -68,6 +74,10 @@ public class NetworkServer {
 			Thread.sleep(1000);
 			
 			MessageProtocol.sendBegin();
+			
+			// Create the Monster
+			monster = new Monster();
+			monster.setPos(8, 8);
 
 		} catch (IOException e) {
 
@@ -83,6 +93,18 @@ public class NetworkServer {
 	 * Server-side game loop
 	 */
 	public void run() {
+		boolean exit = false;
+		
+		while(!exit) {			
+			// Select a target
+			Entity player = monster.selectTarget(players);
+			
+			// Move towards target player
+			monster.moveToTarget(player);
+			
+			// Wait for n seconds before proceeding
+			monster.sleep(0);
+		}
 	}
 
 }
