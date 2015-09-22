@@ -57,7 +57,7 @@ public class NetworkServer {
 			// loop while less than 4 players and not all players are ready
 			while (this.readyPlayers == 0
 					|| (this.readyPlayers < this.players.size() 
-					&& i < 2)) {
+					&& i < 3)) {
 				// add new NetworkPlayer object to list
 				this.players.add(new NetworkPlayer(this.serverSocket.accept(),
 						i));
@@ -98,27 +98,12 @@ public class NetworkServer {
 		while(!exit) {			
 			// Select a target
 			Entity player = monster.selectTarget(players);
-			//int p1 = monster.selectTarget(players);
-			//player = players.get(p1).getPlayer();
-
-
 			
 			// Output current location of Monster and Target
 			monster.outputDetails();
 			
 			// Follow the player
 			monster.moveToTarget(player);
-			/*if(player.X() < monster.X())
-				monster.moveLeft(monster.findTargetDistX(player));
-			
-			else
-				monster.moveRight(monster.findTargetDistX(player));
-			
-			if(player.Y() < monster.Y())
-				monster.moveUp(monster.findTargetDistY(player));
-			
-			else
-				monster.moveDown(monster.findTargetDistY(player));*/
 			
 			// Test moving around the board
 			/*monster.moveLeft(4);			
@@ -126,16 +111,8 @@ public class NetworkServer {
 			monster.moveRight(4);
 			monster.moveDown(4);*/
 			
-			
-			
 			// Wait for n seconds before proceeding
-			int n = 0;
-			try {
-				Thread.sleep(n*1000);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			monster.checkCode(0);
 		}
 	}
 

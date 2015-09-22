@@ -20,20 +20,25 @@ public class Monster extends Entity {
 	}
 
 	public Entity selectTarget(ArrayList<NetworkPlayer> players) {
-		byte temp = 32;
+		int temp = 32;
 		
 		for(int i = 0; i < players.size(); i++) {
 			// Create player Entity
 			Entity player = players.get(i).getPlayer();
 			
 			// Create & init check integers for x & y
-			int cx = player.X(), cy = player.Y();
+			int cx = findTargetDistX(player), cy = findTargetDistY(player);
 			
 			// Check the distance to current target
 			int dist = (int) Math.floor(Math.sqrt(cx * cx + cy * cy));
 			
-			if(dist < temp)
+			//checkCode(5);
+			System.out.println("Distance is: " + dist);
+			
+			if(dist < temp) {
 				target = player;
+				temp = dist;
+			}
 		}
 		
 		return target;
@@ -220,5 +225,14 @@ public class Monster extends Entity {
 	public void outputDetails() {
 		System.out.printf("Monster, x: %d y: %d\n", this.x, this.y);
 		System.out.printf("Target, x: %d y: %d\n\n", target.X(), target.Y());
+	}
+	
+	public void checkCode(int n) {
+		try {
+			Thread.sleep(n*1000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }
