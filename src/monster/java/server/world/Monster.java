@@ -236,7 +236,7 @@ public class Monster extends Entity {
 		System.out.printf("Target, x: %d y: %d\n\n", target.X(), target.Y());
 	}
 	
-	public void checkCode(int n) {
+	public void sleep(int n) {
 		try {
 			Thread.sleep(n*1000);
 		} catch (InterruptedException e) {

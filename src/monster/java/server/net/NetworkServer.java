@@ -57,7 +57,7 @@ public class NetworkServer {
 			// loop while less than 4 players and not all players are ready
 			while (this.readyPlayers == 0
 					|| (this.readyPlayers < this.players.size() 
-					&& i < 3)) {
+					&& i < 2)) {
 				// add new NetworkPlayer object to list
 				this.players.add(new NetworkPlayer(this.serverSocket.accept(),
 						i));
@@ -66,7 +66,7 @@ public class NetworkServer {
 				i++;
 				
 				// Uncomment this for single play
-				//break;
+				break;
 			}
 			
 			System.out.println(i + " players ready, starting game.");
@@ -99,14 +99,11 @@ public class NetworkServer {
 			// Select a target
 			Entity player = monster.selectTarget(players);
 			
-			// Output current location of Monster and Target
-			monster.outputDetails();
-			
 			// Move towards target player
 			monster.moveToTarget(player);
 			
 			// Wait for n seconds before proceeding
-			monster.checkCode(0);
+			monster.sleep(0);
 		}
 	}
 
