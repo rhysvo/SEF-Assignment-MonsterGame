@@ -13,6 +13,13 @@ public class MessageProtocol {
 
 	// OUTGOING MESSAGES //
 	
+	public static void sendWorld(NetworkPlayer client, String worldString) {
+		
+		client.send("world:" + worldString);
+		System.out.println(worldString);
+		
+	}
+	
 	/**
 	 * Broadcast a player's movement to all clients
 	 * 

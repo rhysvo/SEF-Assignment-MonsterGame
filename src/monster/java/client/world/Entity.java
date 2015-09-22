@@ -27,18 +27,13 @@ public class Entity {
 	}
 
 	public void update(int newx, int newy) {
-		if (!MonsterGame.instance.game.canMove(x + newx, y + newy))
-			return;
-		
-		if (x + newx >= 0 && x + newx < MonsterGame.WORLD_SIZE && y + newy >= 0
-				&& y + newy < MonsterGame.WORLD_SIZE) {
+		if (MonsterGame.instance.game.canMove(x + newx, y + newy)) {
 			this.x += newx;
 			this.y += newy;
-		} else
-			System.out.println("Invalid Move");
-		
-		if (MonsterGame.instance.game.isOnline()) {
-			MessageProtocol.sendMove(this.x, this.y);
+			
+			if (MonsterGame.instance.game.isOnline()) {
+				MessageProtocol.sendMove(this.x, this.y);
+			}
 		}
 	}
 

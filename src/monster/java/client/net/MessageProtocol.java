@@ -5,7 +5,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import monster.java.client.MonsterGame;
-import monster.java.client.game.Game;
 import monster.java.client.world.Entity;
 
 public class MessageProtocol {
@@ -32,19 +31,20 @@ public class MessageProtocol {
 		System.out.println(line);
 		
 		for (String msg : line.split(";")) {
-			if (msg.startsWith("mv:"))
+			if (msg.startsWith("mv:")) {
 				processMove(msg);
 			
-			else if (msg.startsWith("dead:"))
+			} else if (msg.startsWith("dead:")) {
 				processDeath(msg);
 			
-			else if (msg.startsWith("player:")) {
+			} else if (msg.startsWith("player:")) {
 				int id = Integer.parseInt(msg.split(":")[1]);
-				MonsterGame.instance.game = new Game();
 				MonsterGame.instance.game.addLocalPlayer(id + 1);
 				
 			} else if (msg.equals("begin")) {
 				MonsterGame.instance.game.start();
+			} else if (msg.startsWith("world:")) {
+				processWorld(msg);
 			}
 		}
 	}
@@ -54,6 +54,13 @@ public class MessageProtocol {
 	 * @param deathMsg
 	 */
 	public static void processDeath(String deathMsg) {
+		
+	}
+	
+	public static void processWorld(String worldMsg) {
+		
+		String[] worldStrings = worldMsg.replace("world:", "").split(",");
+		MonsterGame.instance.game.loadWorld(worldStrings);
 		
 	}
 	

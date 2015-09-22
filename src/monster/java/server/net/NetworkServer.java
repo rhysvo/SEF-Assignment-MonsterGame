@@ -1,8 +1,11 @@
 package monster.java.server.net;
 
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class NetworkServer {
 
@@ -10,6 +13,7 @@ public class NetworkServer {
 	private ServerSocket serverSocket;
 	private ArrayList<NetworkPlayer> players;
 	private int readyPlayers = 0;
+	private int worldSize = 0;
 
 	public NetworkServer(int port) {
 		this.port = port;
@@ -26,6 +30,10 @@ public class NetworkServer {
 			client.send(msg);
 		}
 	}
+	
+	public int worldSize() {
+		return this.worldSize;
+	}
 
 	/**
 	 * Increment the ready counter to break from the initialization loop.
@@ -33,6 +41,19 @@ public class NetworkServer {
 	public void addReady() {
 		this.readyPlayers++;
 		System.out.println(this.readyPlayers + " players ready.");
+	}
+	
+	private String loadWorld() throws FileNotFoundException {
+		Scanner in = new Scanner(new FileReader("world.txt"));
+		StringBuilder sb = new StringBuilder();
+		
+		while (in.hasNextLine()) {
+			worldSize++;
+			sb.append(in.nextLine() + ",");
+		}
+		
+		in.close();
+		return sb.toString();
 	}
 
 	/**
@@ -42,7 +63,9 @@ public class NetworkServer {
 	public void init() {
 
 		try {
-
+			System.out.println("Working Directory = " +
+		              System.getProperty("user.dir"));
+			
 			// create the server socket
 			this.serverSocket = new ServerSocket(this.port);
 
@@ -58,6 +81,7 @@ public class NetworkServer {
 				this.players.add(new NetworkPlayer(this.serverSocket.accept(),
 						i));
 				// send an initial message to the client
+				MessageProtocol.sendWorld(this.players.get(i), loadWorld());
 				this.players.get(i).send("player:" + i);
 				i++;
 
