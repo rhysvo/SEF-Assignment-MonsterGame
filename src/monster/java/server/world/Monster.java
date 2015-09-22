@@ -14,58 +14,65 @@ public class Monster extends Entity {
 		MessageProtocol.sendMonsterMove(this.x, this.y);
 	}
 
+	/**
+	 * 
+	 */
 	public void setPos(int x, int y) {
+		// Set monster position to given coords
 		super.setPos(x, y);
+		
+		// Broadcast monster coords to players
 		MessageProtocol.sendMonsterMove(x, y);
 	}
 
+	/**
+	 * Selects the closest target using trigonometry
+	 * @param players
+	 * @return
+	 */
 	public Entity selectTarget(ArrayList<NetworkPlayer> players) {
+		// Create temporary int for comparisons
 		int temp = 32;
 		
 		for(int i = 0; i < players.size(); i++) {
 			// Create player Entity
 			Entity player = players.get(i).getPlayer();
 			
-			// Create & init check integers for x & y
+			// Create & initialise check integers for x & y
 			int cx = findTargetDistX(player), cy = findTargetDistY(player);
 			
 			// Check the distance to current target
 			int dist = (int) Math.floor(Math.sqrt(cx * cx + cy * cy));
 			
-			//checkCode(5);
-			System.out.println("Distance is: " + dist);
-			
+			// Check if player distance less than current target
 			if(dist < temp) {
 				target = player;
 				temp = dist;
 			}
 		}
 		
+		// Return the selected target Entity
 		return target;
-		
-		/*
-		// Select a target
-		target = players.get(0).getPlayer();
-		
-		// Assign target x, y;
-		tx = target.X();
-		ty = target.Y();
-		
-		// Return default value (0 = player: 1)
-		return 0;
-		*/
 	}
 	
+	/**
+	 * Moves to the given target
+	 * @param target
+	 */
 	public void moveToTarget(Entity target) {
+		// Move monster left
 		if(target.X() < this.X())
 			moveLeft(findTargetDistX(target));
 		
+		// Move monster right
 		else
 			moveRight(findTargetDistX(target));
 		
+		// Move monster up
 		if(target.Y() < this.Y())
 			moveUp(findTargetDistY(target));
 		
+		// Move monster down
 		else
 			moveDown(findTargetDistY(target));
 	}
@@ -76,6 +83,7 @@ public class Monster extends Entity {
 	 * @return
 	 */
 	public int findTargetDistX(Entity player) {
+		// Returns positive value of X distance to target
 		return Math.abs(player.X() - this.X());
 	}
 
@@ -85,6 +93,7 @@ public class Monster extends Entity {
 	 * @return
 	 */
 	public int findTargetDistY(Entity player) {
+		// Returns positive value of Y distance to target
 		return Math.abs(player.Y() - this.Y());
 	}
 
@@ -114,7 +123,7 @@ public class Monster extends Entity {
 	 * 
 	 * @param num
 	 */
-	public void moveUp(int num) {
+	private void moveUp(int num) {
 		// Assign target current position 'y'
 		int cy = target.Y();
 		
@@ -141,7 +150,7 @@ public class Monster extends Entity {
 	 * 
 	 * @param num
 	 */
-	public void moveDown(int num) {
+	private void moveDown(int num) {
 		// Assign target current position 'y'
 		int cy = target.Y();
 		
@@ -168,7 +177,7 @@ public class Monster extends Entity {
 	 * 
 	 * @param num
 	 */
-	public void moveLeft(int num) {
+	private void moveLeft(int num) {
 		// Assign target current position 'x'
 		int cx = target.X();
 		
@@ -195,7 +204,7 @@ public class Monster extends Entity {
 	 * 
 	 * @param num
 	 */
-	public void moveRight(int num) {
+	private void moveRight(int num) {
 		// Assign target current position 'x'
 		int cx = target.X();
 		

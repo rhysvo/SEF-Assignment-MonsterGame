@@ -102,14 +102,8 @@ public class NetworkServer {
 			// Output current location of Monster and Target
 			monster.outputDetails();
 			
-			// Follow the player
+			// Move towards target player
 			monster.moveToTarget(player);
-			
-			// Test moving around the board
-			/*monster.moveLeft(4);			
-			monster.moveUp(4);			
-			monster.moveRight(4);
-			monster.moveDown(4);*/
 			
 			// Wait for n seconds before proceeding
 			monster.checkCode(0);
