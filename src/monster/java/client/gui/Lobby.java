@@ -1,6 +1,7 @@
 package monster.java.client.gui;
 
 import monster.java.client.MonsterGame;
+import monster.java.client.game.Game;
 import monster.java.client.net.NetworkClient;
 
 /**
@@ -40,7 +41,8 @@ public class Lobby extends Menu {
 				return;
 			
 			try {
-				
+
+				MonsterGame.instance.game = new Game();
 				MonsterGame.instance.client = new NetworkClient(in, 3286);
 				MonsterGame.instance.client.start();
 				System.out.println("Waiting for at least 2 players...");

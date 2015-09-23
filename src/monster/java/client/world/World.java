@@ -1,6 +1,8 @@
 package monster.java.client.world;
 
 import static org.lwjgl.opengl.GL11.GL_LINE_LOOP;
+import static org.lwjgl.opengl.GL11.GL_QUADS;
+import static org.lwjgl.opengl.GL11.glColor3f;
 import static org.lwjgl.opengl.GL11.glBegin;
 import static org.lwjgl.opengl.GL11.glEnd;
 import static org.lwjgl.opengl.GL11.glLoadIdentity;
@@ -35,11 +37,15 @@ public class World {
 			}
 		}
 	}
+	
+	public int size() {
+		return this.world.length;
+	}
 
 	public void draw() {
 		glPushMatrix();
-		for (int i = 0; i < MonsterGame.WORLD_SIZE; i++) {
-			for (int j = 0; j < MonsterGame.WORLD_SIZE; j++) {
+		for (int i = 0; i < this.world.length; i++) {
+			for (int j = 0; j < this.world[0].length; j++) {
 				glLoadIdentity();
 				glTranslatef(i * MonsterGame.TILE_SIZE, j
 						* MonsterGame.TILE_SIZE, 0.0f);
@@ -47,13 +53,25 @@ public class World {
 			}
 		}
 		glPopMatrix();
+		glColor3f(0, 0, 0);
+	}
+	
+	public void loadWorld(String[] worldStrings) {
+		this.world = new Tile[worldStrings.length][worldStrings.length];
+		for (int i = 0; i < worldStrings.length; i++) {
+			char[] worldLine = worldStrings[i].toCharArray();
+			for (int j = 0; j < worldLine.length; j++) {
+				this.world[i][j] = worldLine[j] == '#' ? Tile.WALL : Tile.EMPTY;
+			}
+		}
 	}
 
 	private void drawTile(Tile tile) {
 
 		switch (tile) {
-		case EMPTY:
-			glBegin(GL_LINE_LOOP);
+		case WALL:
+			glColor3f(0.5f, 0.5f, 0.5f);
+			glBegin(GL_QUADS);
 			{
 				glVertex3f(0.0F, 0.0f, 0.0f);
 				glVertex3f(0.0F, (float) MonsterGame.TILE_SIZE, 0.0f);
@@ -64,14 +82,13 @@ public class World {
 			glEnd();
 			break;
 
-		case WALL:
-			break;
-
 		case BLOCKED:
 			// leave empty
 			break;
 
+		case EMPTY:
 		default:
+			glColor3f(0, 0, 0);
 			glBegin(GL_LINE_LOOP);
 			{
 				glVertex3f(0.0F, 0.0f, 0.0f);
@@ -90,16 +107,8 @@ public class World {
 	 * @param tile
 	 * @return
 	 */
-	public boolean isAccessible(Tile tile) {
-		return tile == Tile.EMPTY;
-	}
-
-	public void loadTilesFromServer(String sentInformation) {
-		/*
-		 * Receive information from the server - Map size - Wall location
-		 * 
-		 * Split information up
-		 */
+	public boolean isAccessible(int x, int y) {
+		return this.world[x][y] == Tile.EMPTY;
 	}
 
 }
