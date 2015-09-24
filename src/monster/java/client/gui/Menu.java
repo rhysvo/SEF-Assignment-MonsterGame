@@ -99,6 +99,6 @@ public abstract class Menu {
 	 * Run this menu from the command line, taking input numbers.
 	 * Will be deprecated once GUI is finished.
 	 */
-	protected abstract void startCommandLine();
+	protected abstract boolean startCommandLine();
 	
 }

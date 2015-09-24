@@ -18,6 +18,7 @@ public class NetworkServer {
 	private int readyPlayers = 0;
 	private Monster monster;
 	private int worldSize = 0;
+	private int numPlayers = 5;
 
 	public NetworkServer(int port) {
 		this.port = port;
@@ -44,7 +45,11 @@ public class NetworkServer {
 	 */
 	public void addReady() {
 		this.readyPlayers++;
-		System.out.println(this.readyPlayers + " players ready.");
+		System.out.println(this.readyPlayers + " player(s) ready.");
+	}
+	
+	public void setNumPlayers(int numPlayers) {
+		this.numPlayers = numPlayers;
 	}
 	
 	private String loadWorld() throws FileNotFoundException {
@@ -74,23 +79,27 @@ public class NetworkServer {
 			this.serverSocket = new ServerSocket(this.port);
 
 			System.out.println("Waiting for players on port " + this.port);
-
+			
 			int i = 0;
-
 			// loop while less than 4 players and not all players are ready
 			while (this.readyPlayers == 0
 					|| (this.readyPlayers < this.players.size() 
-					&& i < 2)) {
+					&& i < this.numPlayers)) {
 				// add new NetworkPlayer object to list
 				this.players.add(new NetworkPlayer(this.serverSocket.accept(),
 						i));
 				// send an initial message to the client
 				MessageProtocol.sendWorld(this.players.get(i), loadWorld());
 				this.players.get(i).send("player:" + i);
-				i++;
 				
-				// Uncomment this for single play
-				break;
+				// sleep until the num players is set by p1
+				if (i == 0) {
+					System.out.println("Waiting for player count...");
+					while (this.numPlayers == 5) {
+						Thread.sleep(1000);
+					}
+				}
+				i++;
 			}
 			
 			System.out.println(i + " players ready, starting game.");
