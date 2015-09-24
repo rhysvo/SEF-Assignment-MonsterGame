@@ -123,9 +123,17 @@ public class NetworkServer {
 	 * Server-side game loop
 	 */
 	public void run() {
-		boolean exit = false;
+		boolean exit = false,
+				prep = true;
 		
-		while(!exit) {			
+		while(!exit) {	
+			// Allows players to move around for 10s
+			if(prep) {
+				sleep(2);
+				prep = false;
+			}
+			
+			
 			// Select a target
 			Entity player = monster.selectTarget(players);
 			
@@ -133,15 +141,15 @@ public class NetworkServer {
 			monster.moveToTarget(player);
 			
 			// Wait for n seconds before proceeding
-			sleep(0);
+			sleep(0.5F);
 		}
 	}
 	
 	/* * * DEBUGGING CODE BELOW * * */
 	
-	private void sleep(int n) {
+	private void sleep(float n) {
 		try {
-			Thread.sleep(n*1000);
+			Thread.sleep((int) (n*1000));
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

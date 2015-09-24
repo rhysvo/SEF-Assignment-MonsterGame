@@ -1,7 +1,6 @@
 package monster.java.server.world;
 
 import java.util.ArrayList;
-
 import monster.java.server.MonsterServer;
 import monster.java.server.net.MessageProtocol;
 import monster.java.server.net.NetworkPlayer;
@@ -17,9 +16,13 @@ public class Monster extends Entity {
 		
 		MessageProtocol.sendMonsterMove(this.x, this.y);
 	}
+	
+	
 
 	/**
-	 * 
+	 * Sets the position of monster
+	 * @param x
+	 * @param y
 	 */
 	public void setPos(int x, int y) {
 		// Set monster position to given coords
@@ -64,8 +67,11 @@ public class Monster extends Entity {
 	 * @param target
 	 */
 	public void moveToTarget(Entity target) {
+		int mx = this.X(), my = this.Y();
+		int tx = target.X(), ty = target.Y();
+		
 		// Move monster left
-		if(target.X() < this.X())
+		if(tx < mx)
 			moveLeft(findTargetDistX(target));
 		
 		// Move monster right
@@ -73,7 +79,7 @@ public class Monster extends Entity {
 			moveRight(findTargetDistX(target));
 		
 		// Move monster up
-		if(target.Y() < this.Y())
+		if(ty < my)
 			moveUp(findTargetDistY(target));
 		
 		// Move monster down
@@ -129,7 +135,7 @@ public class Monster extends Entity {
 	 * @return
 	 */
 	private boolean isAvailable(int x, int y) {
-		return (world[y].charAt(x) == '_');
+		return (world[y].charAt(x) != '#');
 	}
 	
 	/**
@@ -140,9 +146,6 @@ public class Monster extends Entity {
 	private void moveUp(int num) {
 		// Assign target current position 'y'
 		int cy = target.Y();
-		
-		// Output direction and number
-		System.out.println("mUP: " + num);
 		
 		// Movement loop
 		for (int i = 0; i < num; i++) {
@@ -157,6 +160,10 @@ public class Monster extends Entity {
 			// Move the monster up
 			monsterMove(0, -1);
 		}
+		
+		// Output direction and number
+		if(num != 0)
+			System.out.println("mUP: " + num);
 	}
 
 	/**
@@ -167,9 +174,6 @@ public class Monster extends Entity {
 	private void moveDown(int num) {
 		// Assign target current position 'y'
 		int cy = target.Y();
-		
-		// Output direction and number
-		System.out.println("mDN: " + num);
 		
 		// Movement loop
 		for (int i = 0; i < num; i++) {
@@ -184,6 +188,10 @@ public class Monster extends Entity {
 			// Move the monster down
 			monsterMove(0, 1);
 		}
+		
+		// Output direction and number
+		if(num != 0)
+			System.out.println("mDN: " + num);
 	}
 
 	/**
@@ -194,9 +202,6 @@ public class Monster extends Entity {
 	private void moveLeft(int num) {
 		// Assign target current position 'x'
 		int cx = target.X();
-		
-		// Output direction and number
-		System.out.println("mLE: " + num);
 		
 		// Movement loop
 		for (int i = 0; i < num; i++) {
@@ -211,6 +216,10 @@ public class Monster extends Entity {
 			// Move the monster left
 			monsterMove(-1, 0);
 		}
+		
+		// Output direction and number
+		if(num != 0)
+			System.out.println("mLE: " + num);
 	}
 
 	/**
@@ -221,9 +230,6 @@ public class Monster extends Entity {
 	private void moveRight(int num) {
 		// Assign target current position 'x'
 		int cx = target.X();
-		
-		// Output direction and number
-		System.out.println("mRI: " + num);
 		
 		// Movement loop
 		for (int i = 0; i < num; i++) {
@@ -238,13 +244,14 @@ public class Monster extends Entity {
 			// Move the monster right
 			monsterMove(1, 0);
 		}
+		
+		// Output direction and number
+		if(num != 0)
+			System.out.println("mRI: " + num);
 	}
 	
 	/* * * DEBUGGING CODE BELOW * * */
 	
-	/**
-	 * Outputs the monster & target coords
-	 */
 	public void outputDetails() {
 		System.out.printf("Monster, x: %d y: %d\n", this.x, this.y);
 		System.out.printf("Target, x: %d y: %d\n\n", target.X(), target.Y());
