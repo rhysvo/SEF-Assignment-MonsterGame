@@ -80,7 +80,7 @@ public class NetworkServer {
 			// loop while less than 4 players and not all players are ready
 			while (this.readyPlayers == 0
 					|| (this.readyPlayers < this.players.size() 
-					&& i < 2)) {
+					&& i < 1)) {
 				// add new NetworkPlayer object to list
 				this.players.add(new NetworkPlayer(this.serverSocket.accept(),
 						i));

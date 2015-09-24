@@ -8,11 +8,18 @@ import static org.lwjgl.opengl.GL11.glPopMatrix;
 import static org.lwjgl.opengl.GL11.glPushMatrix;
 import static org.lwjgl.opengl.GL11.glTranslatef;
 import static org.lwjgl.opengl.GL11.glVertex2f;
+import static org.lwjgl.opengl.GL11.glTexCoord2f;
+
+import org.newdawn.slick.opengl.Texture;
+
 import monster.java.client.MonsterGame;
+import monster.java.client.game.Game;
 import monster.java.client.net.MessageProtocol;
+import monster.java.client.util.TextureLoading;
 
 public class Entity {
 	private int x, y, id;
+
 
 	public Entity(int x, int y) {
 		this.x = x;
@@ -45,28 +52,39 @@ public class Entity {
 	
 	public void colourEntity(int player) {
 		switch(player) {
+		
+			case 0:
+				// Monster = BLACK
+				Game.monster.bind();
+				glColor3f(0F, 0F, 0F);
+				break;
+				
 			case 1:
 				// Player 1 = RED
+				Game.p1.bind();
 				glColor3f(1F, 0F, 0F);
 				break;
 				
 			case 2:
 				// Player 2 = GREEN
+				Game.p2.bind();
 				glColor3f(0F, 1F, 0F);
 				break;
 				
 			case 3:
 				// Player 3 = BLUE
+				Game.p3.bind();
 				glColor3f(0F, 0F, 1F);
 				break;
 				
 			case 4:
 				// Player 4 = YELLOW
+				Game.p4.bind();
 				glColor3f(1F, 1F, 0F);
 				break;
 				
 			default:
-				// Monster = BLACK
+				//BLACK
 				glColor3f(0F, 0F, 0F);
 		}
 	}
@@ -74,14 +92,22 @@ public class Entity {
 	public void draw() {
 		float tileSize = (float) MonsterGame.TILE_SIZE;
 		
+		
+		
+		
+		
 		glPushMatrix();
 		glTranslatef(x * tileSize, y * tileSize, 0.0F);
 		glBegin(GL_QUADS);
 		{
 			colourEntity(id);
+			glTexCoord2f(0, 0);
 			glVertex2f(0, 0);
+			glTexCoord2f(1, 0);
 			glVertex2f(tileSize, 0);
+			glTexCoord2f(1, 1);
 			glVertex2f(tileSize, tileSize);
+			glTexCoord2f(0, 1);
 			glVertex2f(0, tileSize);
 		}
 		glEnd();
