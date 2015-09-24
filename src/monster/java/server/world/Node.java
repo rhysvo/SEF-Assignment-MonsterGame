@@ -11,6 +11,9 @@ public class Node {
 	// Denotes if Node is a wall
 	private boolean wall;
 	
+	// Number of valid adjacent nodes (that aren't walls)
+	private int numAdj = 0;
+	
 	// Adjacent node array
 	private Node[] adj = new Node[4];
 	
@@ -75,11 +78,10 @@ public class Node {
 	 * @param node
 	 */
 	private void add_adj(int n, Node node) {
-		try {
-			adj[n] = node;
-		} catch(Exception e) {
-			e.printStackTrace();
-		}
+		adj[n] = node;
+		// add to numAdj if node is a valid move
+		if (node != null && !node.wall)
+			numAdj++;
 	}
 	
 	/**
@@ -89,28 +91,43 @@ public class Node {
 	 */
 	public int begin_search(ArrayList<NetworkPlayer> players) {
 		int[] searches = {999, 999, 999, 999};
-		int min = 0;
+		int min = 999;
 		
 		for (int i = 0; i < searches.length; i++) {
-			try {
-				searches[i] = adj[i].search((i-2) % 4, 1, players);
-			} catch(NullPointerException a) {
-				continue;
-			} catch(ArrayIndexOutOfBoundsException b) {
-				b.printStackTrace();
-			}
+			if(adj[i] != null)
+				searches[i] = adj[i].search(new ArrayList<int[]>(), (i-2) % 4, 1, players);
 			
 			min = Math.min(min, searches[i]);
 		}
 		
-		for(int i = 0; i < searches.length; i++)
-			System.out.println(searches[i]);
+		// TODO TODO TODO
+		// TODO TODO TODO
 		
-		for(int i : searches)
-			if(min == i)
+		// where the problem was, Kyle
+		// in the for (int i : searches) loop
+		// you were checking if min == i, then returning i
+		// effectively returning min
+		
+		// TODO TODO TODO
+		// TODO TODO TODO
+		for(int i = 0; i < searches.length; i++)
+			if(min == searches[i])
 				return i;
 		
+		try {
+			Thread.sleep(10000);
+		} catch (Exception e) {
+			
+		}
+		
 		return -1;
+	}
+	
+	private boolean inArray(ArrayList<int[]> searched) {
+		for (int[] set : searched)
+			if (set[0] == x && set[1] == y)
+				return true;
+		return false;
 	}
 	
 	/**
@@ -120,8 +137,18 @@ public class Node {
 	 * @param players
 	 * @return
 	 */
-	private int search(int from, int dist, ArrayList<NetworkPlayer> players) {
-		if(wall || dist > 50)
+	private int search(ArrayList<int[]> searched, int from, int dist, ArrayList<NetworkPlayer> players) {
+		// if node is a fork (more than 2 adj, i.e. 2 directions)
+		// add it to the list, to make sure that when we
+		// loop, we don't check this one again
+		if (this.numAdj > 2) {
+			if (inArray(searched)) {
+				return 999;
+			}
+			searched.add(new int[]{x, y});
+		}
+		
+		if (wall || dist > 20)
 			return 999;
 		
 		for(NetworkPlayer player : players) {
@@ -132,19 +159,13 @@ public class Node {
 		}
 		
 		int[] searches = {999, 999, 999, 999};
-		int min = 0;
+		int min = 999;
 		
 		for(int i = 0; i < 4; i++) {
-			if(i != from) {
-				if(adj[i] != null)
-					searches[i] = adj[i].search((i - 2) % 4, dist + 1, players);
-				
-				try {
-					Thread.sleep(0);
-				} catch(Exception e) {
-					e.printStackTrace();
-				}
-			}
+			if(i != from && adj[i] != null)
+				// new ArrayList<int[]>(searched) -> copies the arraylist.
+				// otherwise the original list would be huge and slow.
+				searches[i] = adj[i].search(new ArrayList<int[]>(searched), (i - 2) % 4, dist + 1, players);
 			
 			min = Math.min(min, searches[i]);
 		}

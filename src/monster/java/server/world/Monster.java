@@ -8,12 +8,9 @@ import monster.java.server.net.NetworkPlayer;
 
 public class Monster extends Entity {
 	private Entity target;
-	private String[] world;
 	private int worldSize;
-	private Node node;
 
 	public Monster(String[] world) {
-		this.world = world;
 		this.worldSize = world.length;
 		
 		Node.init(world);
