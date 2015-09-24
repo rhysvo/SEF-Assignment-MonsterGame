@@ -35,10 +35,6 @@ public class NetworkServer {
 			client.send(msg);
 		}
 	}
-	
-	public int worldSize() {
-		return this.worldSize;
-	}
 
 	/**
 	 * Increment the ready counter to break from the initialization loop.
@@ -133,23 +129,34 @@ public class NetworkServer {
 				prep = false;
 			}
 			
+			monster.moveToPlayer(players);
 			
+			
+			/*
 			// Select a target
 			Entity player = monster.selectTarget(players);
 			
 			// Move towards target player
 			monster.moveToTarget(player);
-			
-			// Wait for n seconds before proceeding
-			sleep(0.5F);
+			*/
 		}
+	}
+	
+	/* * * Getters and Setters * * */
+	
+	public String[] getWorld() {
+		return this.world;
+	}
+	
+	public int getWorldSize() {
+		return this.worldSize;
 	}
 	
 	/* * * DEBUGGING CODE BELOW * * */
 	
 	private void sleep(float n) {
 		try {
-			Thread.sleep((int) (n*1000));
+			Thread.sleep((int) (n * 1000));
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

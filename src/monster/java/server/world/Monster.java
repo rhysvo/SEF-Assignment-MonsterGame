@@ -1,6 +1,7 @@
 package monster.java.server.world;
 
 import java.util.ArrayList;
+
 import monster.java.server.MonsterServer;
 import monster.java.server.net.MessageProtocol;
 import monster.java.server.net.NetworkPlayer;
@@ -9,16 +10,17 @@ public class Monster extends Entity {
 	private Entity target;
 	private String[] world;
 	private int worldSize;
+	private Node node;
 
 	public Monster(String[] world) {
-		this.worldSize = world.length;
 		this.world = world;
+		this.worldSize = world.length;
+		
+		Node.init(world);
 		
 		MessageProtocol.sendMonsterMove(this.x, this.y);
 	}
 	
-	
-
 	/**
 	 * Sets the position of monster
 	 * @param x
@@ -31,7 +33,28 @@ public class Monster extends Entity {
 		// Broadcast monster coords to players
 		MessageProtocol.sendMonsterMove(x, y);
 	}
+	
+	public void moveToPlayer(ArrayList<NetworkPlayer> players) {
+		int d = Node.get_node(Node.nodes, x, y).begin_search(players);
+		System.out.println(d);
+		
+		if(d == 0)
+			monsterMove(0, -1);
+		
+		else if(d == 1)
+			monsterMove(1, 0);
+		
+		else if(d == 2)
+			monsterMove(0, 1);
+		
+		else if(d == 3)
+			monsterMove(-1, 0);
+		
+		else 
+			System.out.println("");
+	}
 
+	
 	/**
 	 * Selects the closest target using trigonometry
 	 * @param players
@@ -63,11 +86,14 @@ public class Monster extends Entity {
 	}
 	
 	/**
-	 * Moves to the given target
+	 * Move monster to the given target
 	 * @param target
 	 */
 	public void moveToTarget(Entity target) {
+		// Set monster coords
 		int mx = this.X(), my = this.Y();
+		
+		// Set target coords
 		int tx = target.X(), ty = target.Y();
 		
 		// Move monster left
@@ -126,16 +152,6 @@ public class Monster extends Entity {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-	}
-	
-	/**
-	 * Checks if given coords are free
-	 * @param x
-	 * @param y
-	 * @return
-	 */
-	private boolean isAvailable(int x, int y) {
-		return (world[y].charAt(x) != '#');
 	}
 	
 	/**
