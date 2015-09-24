@@ -17,7 +17,8 @@ public class NetworkServer {
 	private ArrayList<NetworkPlayer> players;
 	private int readyPlayers = 0;
 	private Monster monster;
-	private int worldSize = 0;
+	private int worldSize;
+	private String[] world;
 
 	public NetworkServer(int port) {
 		this.port = port;
@@ -56,6 +57,8 @@ public class NetworkServer {
 			sb.append(in.nextLine() + ",");
 		}
 		
+		world = sb.toString().split(",");
+		
 		in.close();
 		return sb.toString();
 	}
@@ -70,21 +73,23 @@ public class NetworkServer {
 			System.out.println("Working Directory = " +
 		              System.getProperty("user.dir"));
 			
-			// create the server socket
+			// Create the server socket
 			this.serverSocket = new ServerSocket(this.port);
 
 			System.out.println("Waiting for players on port " + this.port);
 
 			int i = 0;
 
-			// loop while less than 4 players and not all players are ready
+			// Loop while less than 4 players and not all players are ready
 			while (this.readyPlayers == 0
 					|| (this.readyPlayers < this.players.size() 
 					&& i < 2)) {
-				// add new NetworkPlayer object to list
+				
+				// Add new NetworkPlayer object to list
 				this.players.add(new NetworkPlayer(this.serverSocket.accept(),
 						i));
-				// send an initial message to the client
+				
+				// Send an initial message to the client
 				MessageProtocol.sendWorld(this.players.get(i), loadWorld());
 				this.players.get(i).send("player:" + i);
 				i++;
@@ -100,8 +105,9 @@ public class NetworkServer {
 			MessageProtocol.sendBegin();
 			
 			// Create the Monster
-			monster = new Monster();
-			monster.setPos(8, 8);
+			monster = new Monster(world);
+			monster.setPos((int) Math.ceil(worldSize/2), 
+						   (int) Math.ceil(worldSize/2));
 
 		} catch (IOException e) {
 
@@ -127,7 +133,18 @@ public class NetworkServer {
 			monster.moveToTarget(player);
 			
 			// Wait for n seconds before proceeding
-			monster.sleep(0);
+			sleep(0);
+		}
+	}
+	
+	/* * * DEBUGGING CODE BELOW * * */
+	
+	private void sleep(int n) {
+		try {
+			Thread.sleep(n*1000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 

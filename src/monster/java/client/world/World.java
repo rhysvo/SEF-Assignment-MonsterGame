@@ -108,7 +108,7 @@ public class World {
 	 * @return
 	 */
 	public boolean isAccessible(int x, int y) {
-		return this.world[x][y] == Tile.EMPTY;
+		return this.world[y][x] == Tile.EMPTY;
 	}
 
 }

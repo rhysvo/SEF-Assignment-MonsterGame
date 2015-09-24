@@ -7,10 +7,14 @@ import monster.java.server.net.MessageProtocol;
 import monster.java.server.net.NetworkPlayer;
 
 public class Monster extends Entity {
-	private int tx, ty;
 	private Entity target;
+	private String[] world;
+	private int worldSize;
 
-	public Monster() {
+	public Monster(String[] world) {
+		this.worldSize = world.length;
+		this.world = world;
+		
 		MessageProtocol.sendMonsterMove(this.x, this.y);
 	}
 
@@ -117,7 +121,17 @@ public class Monster extends Entity {
 			e.printStackTrace();
 		}
 	}
-
+	
+	/**
+	 * Checks if given coords are free
+	 * @param x
+	 * @param y
+	 * @return
+	 */
+	private boolean isAvailable(int x, int y) {
+		return (world[y].charAt(x) == '_');
+	}
+	
 	/**
 	 * Moves the monster up the board
 	 * 
@@ -164,7 +178,7 @@ public class Monster extends Entity {
 				break;
 			
 			// Check monster doesn't exceed boundary
-			if (this.y >= 15)
+			if (this.y >= worldSize)
 				break;
 
 			// Move the monster down
@@ -218,7 +232,7 @@ public class Monster extends Entity {
 				break;
 			
 			// Check monster doesn't exceed boundary
-			if (this.x >= 15)
+			if (this.x >= worldSize)
 				break;
 
 			// Move the monster right
@@ -236,7 +250,7 @@ public class Monster extends Entity {
 		System.out.printf("Target, x: %d y: %d\n\n", target.X(), target.Y());
 	}
 	
-	public void sleep(int n) {
+	private void sleep(int n) {
 		try {
 			Thread.sleep(n*1000);
 		} catch (InterruptedException e) {
