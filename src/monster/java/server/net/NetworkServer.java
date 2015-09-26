@@ -132,7 +132,7 @@ public class NetworkServer {
 			monster.moveToPlayer(players);
 			
 			
-			/*
+			/* Original AI (basic) *//*
 			// Select a target
 			Entity player = monster.selectTarget(players);
 			

@@ -17,7 +17,7 @@ public class Node {
 	// Adjacent node array
 	private Node[] adj = new Node[4];
 	
-	// 2d Node Array
+	// 2d Node Array for map
 	public static Node[][] nodes;
 	
 	public Node(int x, int y, boolean wall) {
@@ -26,22 +26,23 @@ public class Node {
 		this.wall = wall;
 	}
 	
+	/**
+	 * Initialise Nodes for given world
+	 * @param world
+	 */
 	public static void init(String[] world) {
+		// Set 2d node array to the world size
 		nodes = new Node[world.length][world.length];
 		
 		// Create all nodes
-		for(int i = 0; i < world.length; i++) {
-			for(int j = 0; j < world[i].length(); j++) {
+		for(int i = 0; i < world.length; i++)
+			for(int j = 0; j < world[i].length(); j++)
 				nodes[i][j] = new Node(j, i, world[i].charAt(j) == '#');
-			}
-		}
 		
 		// Add all adjacent nodes
-		for(int i = 0; i < world.length; i++) {
-			for(int j = 0; j < world[i].length(); j++) {
-				nodes[i][j].add_adjs(nodes);
-			}
-		}
+		for(int i = 0; i < world.length; i++)
+			for(int j = 0; j < world[i].length(); j++)
+				nodes[i][j].addAllAdjacent(nodes);
 	}
 	
 	/**
@@ -51,75 +52,68 @@ public class Node {
 	 * @param y
 	 * @return
 	 */
-	public static Node get_node(Node[][] nodes, int x, int y) {
-		for(Node[] na : nodes) {
-			for(Node n : na) {
+	public static Node getNode(Node[][] nodes, int x, int y) {
+		for(Node[] na : nodes)
+			for(Node n : na)
 				if(n.x == x && n.y == y)
 					return n;
-			}
-		}
 		
 		return null;
 	}
 	
-	/**
-	 * 
-	 */
-	private void add_adjs(Node[][] nodes) {
-		add_adj(0, get_node(nodes, x, y - 1));
-		add_adj(1, get_node(nodes, x + 1, y));
-		add_adj(2, get_node(nodes, x, y + 1));
-		add_adj(3, get_node(nodes, x - 1, y));
+	private void addAllAdjacent(Node[][] nodes) {
+		addAdjacent(0, getNode(nodes, x, y - 1));
+		addAdjacent(1, getNode(nodes, x + 1, y));
+		addAdjacent(2, getNode(nodes, x, y + 1));
+		addAdjacent(3, getNode(nodes, x - 1, y));
 	}
 	
 	/**
-	 * 
+	 * Adds adjacent single node to given node
+	 * n = 0:UP 1:RIGHT 2:DOWN 3:LEFT 
 	 * @param n
 	 * @param node
 	 */
-	private void add_adj(int n, Node node) {
+	private void addAdjacent(int n, Node node) {
 		adj[n] = node;
-		// add to numAdj if node is a valid move
+		
+		// Add to numAdj if node is a valid move
 		if (node != null && !node.wall)
 			numAdj++;
 	}
 	
 	/**
-	 * 
+	 * Begin searching for players
 	 * @param players
 	 * @return
 	 */
-	public int begin_search(ArrayList<NetworkPlayer> players) {
+	public int beginSearch(ArrayList<NetworkPlayer> players) {
+		// Initialise search for adj variables and default to wall
 		int[] searches = {999, 999, 999, 999};
+		
+		// Initialise minimum search, default to wall
 		int min = 999;
 		
 		for (int i = 0; i < searches.length; i++) {
+			// Continue expanding through adjacent nodes
 			if(adj[i] != null)
 				searches[i] = adj[i].search(new ArrayList<int[]>(), (i-2) % 4, 1, players);
 			
+			// Assigns min variable for comparison
 			min = Math.min(min, searches[i]);
 		}
 		
-		// TODO TODO TODO
-		// TODO TODO TODO
-		
-		// where the problem was, Kyle
-		// in the for (int i : searches) loop
-		// you were checking if min == i, then returning i
-		// effectively returning min
-		
-		// TODO TODO TODO
-		// TODO TODO TODO
+		// Returns the index of the min number
 		for(int i = 0; i < searches.length; i++)
 			if(min == searches[i])
 				return i;
 		
+		// Stop process for n/1000 seconds
 		try {
 			Thread.sleep(10000);
-		} catch (Exception e) {
-			
-		}
+		} catch (Exception e) { }
 		
+		// Return function failed
 		return -1;
 	}
 	
@@ -138,7 +132,7 @@ public class Node {
 	 * @return
 	 */
 	private int search(ArrayList<int[]> searched, int from, int dist, ArrayList<NetworkPlayer> players) {
-		// if node is a fork (more than 2 adj, i.e. 2 directions)
+		// If node is a fork (more than 2 adj, i.e. 2 directions)
 		// add it to the list, to make sure that when we
 		// loop, we don't check this one again
 		if (this.numAdj > 2) {
@@ -163,7 +157,7 @@ public class Node {
 		
 		for(int i = 0; i < 4; i++) {
 			if(i != from && adj[i] != null)
-				// new ArrayList<int[]>(searched) -> copies the arraylist.
+				// New ArrayList<int[]>(searched) -> copies the arraylist.
 				// otherwise the original list would be huge and slow.
 				searches[i] = adj[i].search(new ArrayList<int[]>(searched), (i - 2) % 4, dist + 1, players);
 			
@@ -172,7 +166,4 @@ public class Node {
 		
 		return min;
 	}
-	
-	
-
 }
