@@ -1,5 +1,6 @@
 package monster.java.client.world;
 
+import static org.lwjgl.opengl.ARBTextureRectangle.GL_TEXTURE_RECTANGLE_ARB;
 import static org.lwjgl.opengl.GL11.GL_QUADS;
 import static org.lwjgl.opengl.GL11.glBegin;
 import static org.lwjgl.opengl.GL11.glColor3f;
@@ -9,16 +10,20 @@ import static org.lwjgl.opengl.GL11.glPushMatrix;
 import static org.lwjgl.opengl.GL11.glTranslatef;
 import static org.lwjgl.opengl.GL11.glVertex2f;
 import static org.lwjgl.opengl.GL11.glTexCoord2f;
+import static org.lwjgl.opengl.GL11.*;
 
 import org.newdawn.slick.opengl.Texture;
 
 import monster.java.client.MonsterGame;
 import monster.java.client.game.Game;
 import monster.java.client.net.MessageProtocol;
+import monster.java.client.util.Sprite;
 import monster.java.client.util.TextureLoading;
 
 public class Entity {
 	private int x, y, id;
+	private static Sprite currentSprite;
+	private int gx, gy, gx2, gy2;
 
 
 	public Entity(int x, int y) {
@@ -55,31 +60,26 @@ public class Entity {
 		
 			case 0:
 				// Monster = BLACK
-				Game.monster.bind();
 				glColor3f(0F, 0F, 0F);
 				break;
 				
 			case 1:
 				// Player 1 = RED
-				Game.p1.bind();
 				glColor3f(1F, 0F, 0F);
 				break;
 				
 			case 2:
 				// Player 2 = GREEN
-				Game.p2.bind();
 				glColor3f(0F, 1F, 0F);
 				break;
 				
 			case 3:
 				// Player 3 = BLUE
-				Game.p3.bind();
 				glColor3f(0F, 0F, 1F);
 				break;
 				
 			case 4:
 				// Player 4 = YELLOW
-				Game.p4.bind();
 				glColor3f(1F, 1F, 0F);
 				break;
 				
@@ -88,29 +88,65 @@ public class Entity {
 				glColor3f(0F, 0F, 0F);
 		}
 	}
+	
+	public Sprite getEntityTexture(int player) {
+		switch(player) {
+		
+			case 0:
+				// Monster = BLACK
+				return Game.spriteMap.get("monster");
+				
+			case 1:
+				// Player 1 = RED
+				return Game.spriteMap.get("p1");
+				
+			case 2:
+				// Player 2 = GREEN
+				return Game.spriteMap.get("p2");
+				
+			case 3:
+				// Player 3 = BLUE
+				return Game.spriteMap.get("p3");
+				
+			case 4:
+				// Player 4 = YELLOW
+				return Game.spriteMap.get("p4");
+				
+			default:
+				//BLACK
+				return Game.spriteMap.get("p1");
+		}
+	}
+	
+	
 
 	public void draw() {
 		float tileSize = (float) MonsterGame.TILE_SIZE;
+		glBindTexture(GL_TEXTURE_RECTANGLE_ARB, Game.spritesheet);
+			
+		currentSprite = getEntityTexture(id);
 		
-		
-		
-		
-		
+		int gx = currentSprite.getX();
+        int gy = currentSprite.getY();
+        int gx2 = currentSprite.getX() + currentSprite.getWidth();
+        int gy2 = currentSprite.getY() + currentSprite.getHeight();
+        
 		glPushMatrix();
 		glTranslatef(x * tileSize, y * tileSize, 0.0F);
 		glBegin(GL_QUADS);
 		{
-			colourEntity(id);
-			glTexCoord2f(0, 0);
+			//colourEntity(id);
+			glTexCoord2f(gx, gx);
 			glVertex2f(0, 0);
-			glTexCoord2f(1, 0);
+			glTexCoord2f(gx, gy2);
 			glVertex2f(tileSize, 0);
-			glTexCoord2f(1, 1);
+			glTexCoord2f(gx2, gy2);
 			glVertex2f(tileSize, tileSize);
-			glTexCoord2f(0, 1);
+			glTexCoord2f(gx2, gy);
 			glVertex2f(0, tileSize);
 		}
 		glEnd();
+		glBindTexture(GL_TEXTURE_RECTANGLE_ARB, 0);
 		glPopMatrix();
 	}
 

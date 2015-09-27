@@ -1,23 +1,15 @@
 package monster.java.client.game;
 
-import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
-import static org.lwjgl.opengl.GL11.GL_MODELVIEW;
-import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
-import static org.lwjgl.opengl.GL11.GL_PROJECTION;
-import static org.lwjgl.opengl.GL11.glClear;
-import static org.lwjgl.opengl.GL11.glClearColor;
-import static org.lwjgl.opengl.GL11.glColor3f;
-import static org.lwjgl.opengl.GL11.glLoadIdentity;
-import static org.lwjgl.opengl.GL11.glMatrixMode;
-import static org.lwjgl.opengl.GL11.glOrtho;
-import static org.lwjgl.opengl.GL11.glEnable;
+import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.ARBTextureRectangle.GL_TEXTURE_RECTANGLE_ARB;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.io.*;
+import java.util.*;
 
 import monster.java.client.MonsterGame;
 import monster.java.client.net.MessageProtocol;
 import monster.java.client.util.TextureLoading;
+import monster.java.client.util.Sprite;
 import monster.java.client.world.Entity;
 import monster.java.client.world.PlayerController;
 import monster.java.client.world.World;
@@ -27,6 +19,8 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.newdawn.slick.opengl.Texture;
+import org.jdom2.input.SAXBuilder;
+import org.jdom2.*;
 
 /**
  * Main game loop and renderer Contains list of entities Draws all entities +
@@ -40,7 +34,10 @@ public class Game extends Thread {
 	private World world;
 	private PlayerController pc;
 	private boolean online = true;
-	public static Texture p1, p2, p3, p4, monster;
+	public static int spritesheet;
+	public static final Map<String, Sprite> spriteMap = new HashMap<String, Sprite>();
+	private static final String SPRITESHEET_IMAGE_LOCATION = "src/res/textures/spritesheet.png";
+	private static final String SPRITESHEET_XML_LOCATION = "src/res/textures/spritesheet.xml";
 	
 	public Game() {
 		this.world = new World();
@@ -120,28 +117,20 @@ public class Game extends Thread {
 			e.printStackTrace();
 		}
 		
-		//Load textures in from file
-		TextureLoading texture = new TextureLoading();
-		p1 = texture.loadTexture("p1");
 		
-		texture = new TextureLoading();
-		p2 = texture.loadTexture("p2");
-		
-		texture = new TextureLoading();
-		p3 = texture.loadTexture("p3");
-		
-		texture = new TextureLoading();
-		p4 = texture.loadTexture("p4");
-		
-		texture = new TextureLoading();
-		monster = texture.loadTexture("monster");
 		
 		// create the monster
 		getEntity(0);
-
+		
+		// read in sprite sheet
+		setUpSpriteSheet();
+		
+		// set up openGL states/select side to display
+		//setUpStates();
+		
 		glMatrixMode(GL_PROJECTION);
 		glLoadIdentity();
-		glOrtho(0.0, MonsterGame.GAME_SIZE, MonsterGame.GAME_SIZE, 0.0, 1, -1);
+		glOrtho(1, MonsterGame.GAME_SIZE, MonsterGame.GAME_SIZE, 0.0, 1, -1);
 		glMatrixMode(GL_MODELVIEW);
 		glEnable(GL_TEXTURE_2D);
 		glClearColor(1F, 1F, 1F, 1F);
@@ -203,5 +192,42 @@ public class Game extends Thread {
 	public boolean isOnline() {
 		return this.online;
 	}
+	
+	private static void setUpSpriteSheet() {
+		spritesheet = TextureLoading.glLoadTextureLinear(SPRITESHEET_IMAGE_LOCATION);
+		SAXBuilder builder = new SAXBuilder();
+		try {
+            Document document = builder.build(new File(SPRITESHEET_XML_LOCATION));
+            Element root = document.getRootElement();
+            for (Object spriteObject : root.getChildren()) {
+                Element spriteElement = (Element) spriteObject;
+                String name = spriteElement.getAttributeValue("n");
+                int x = spriteElement.getAttribute("x").getIntValue();
+                int y = spriteElement.getAttribute("y").getIntValue();
+                int w = spriteElement.getAttribute("w").getIntValue();
+                int h = spriteElement.getAttribute("h").getIntValue();
+                Sprite sprite = new Sprite(name, x, y, w, h);
+                spriteMap.put(sprite.getName(), sprite);
+            }
+        } catch (JDOMException e) {
+            e.printStackTrace();
+            cleanUp(true);
+        } catch (IOException e) {
+            e.printStackTrace();
+            cleanUp(true);
+        }
+	}
+	
+	private static void setUpStates() {
+		glEnable(GL_TEXTURE_RECTANGLE_ARB);
+        glEnable(GL_CULL_FACE);
+        glCullFace(GL_BACK);
+	}
+	
+	private static void cleanUp(boolean asCrash) {
+        glDeleteTextures(spritesheet);
+        Display.destroy();
+        System.exit(asCrash ? 1 : 0);
+    }
 
 }
