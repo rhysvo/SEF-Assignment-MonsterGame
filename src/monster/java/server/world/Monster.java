@@ -149,7 +149,7 @@ public class Monster extends Entity {
 		if(this.x + x > worldSize || this.y + y > worldSize)
 			return;
 		
-		if(this.x - x < 0 || this.y - y < 0)
+		if(this.x + x < 0 || this.y + y < 0)
 			return;
 		
 		// Add x, y values to Monster position
