@@ -22,10 +22,7 @@ import monster.java.client.util.TextureLoading;
 
 public class Entity {
 	private int x, y, id;
-	private static Sprite currentSprite;
-	private int gx, gy, gx2, gy2;
-
-
+	
 	public Entity(int x, int y) {
 		this.x = x;
 		this.y = y;
@@ -94,22 +91,27 @@ public class Entity {
 		
 			case 0:
 				// Monster = BLACK
+				glColor3f(1F, 1F, 1F);
 				return Game.spriteMap.get("monster");
 				
 			case 1:
 				// Player 1 = RED
+				glColor3f(1F, 1F, 1F);
 				return Game.spriteMap.get("p1");
 				
 			case 2:
 				// Player 2 = GREEN
+				glColor3f(1F, 1F, 1F);
 				return Game.spriteMap.get("p2");
 				
 			case 3:
 				// Player 3 = BLUE
+				glColor3f(1F, 1F, 1F);
 				return Game.spriteMap.get("p3");
 				
 			case 4:
 				// Player 4 = YELLOW
+				glColor3f(1F, 1F, 1F);
 				return Game.spriteMap.get("p4");
 				
 			default:
@@ -121,29 +123,29 @@ public class Entity {
 	
 
 	public void draw() {
-		float tileSize = (float) MonsterGame.TILE_SIZE;
+		float tileSize = (float) MonsterGame.TILE_SIZE;	
+		glPushMatrix();
 		glBindTexture(GL_TEXTURE_RECTANGLE_ARB, Game.spritesheet);
-			
-		currentSprite = getEntityTexture(id);
+		Sprite currentSprite = getEntityTexture(id);
 		
 		int gx = currentSprite.getX();
         int gy = currentSprite.getY();
         int gx2 = currentSprite.getX() + currentSprite.getWidth();
         int gy2 = currentSprite.getY() + currentSprite.getHeight();
         
-		glPushMatrix();
+		
 		glTranslatef(x * tileSize, y * tileSize, 0.0F);
 		glBegin(GL_QUADS);
 		{
 			//colourEntity(id);
-			glTexCoord2f(gx, gx);
+			glTexCoord2f(gx, gy);
 			glVertex2f(0, 0);
 			glTexCoord2f(gx, gy2);
-			glVertex2f(tileSize, 0);
+			glVertex2f(0, tileSize);
 			glTexCoord2f(gx2, gy2);
 			glVertex2f(tileSize, tileSize);
 			glTexCoord2f(gx2, gy);
-			glVertex2f(0, tileSize);
+			glVertex2f(tileSize, 0);
 		}
 		glEnd();
 		glBindTexture(GL_TEXTURE_RECTANGLE_ARB, 0);

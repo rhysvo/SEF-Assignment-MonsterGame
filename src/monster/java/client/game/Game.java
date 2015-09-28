@@ -132,8 +132,9 @@ public class Game extends Thread {
 		glLoadIdentity();
 		glOrtho(1, MonsterGame.GAME_SIZE, MonsterGame.GAME_SIZE, 0.0, 1, -1);
 		glMatrixMode(GL_MODELVIEW);
-		glEnable(GL_TEXTURE_2D);
 		glEnable(GL_TEXTURE_RECTANGLE_ARB);
+		glEnable (GL_BLEND);
+		glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		glClearColor(1F, 1F, 1F, 1F);
 		glColor3f(0F, 0F, 0F);
 
