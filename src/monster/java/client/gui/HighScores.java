@@ -18,9 +18,9 @@ public class HighScores extends Menu {
 	}
 
 	@Override
-	protected void startCommandLine() {
+	protected boolean startCommandLine() {
 		// TODO Auto-generated method stub
-		
+		return true;
 	}
 
 }

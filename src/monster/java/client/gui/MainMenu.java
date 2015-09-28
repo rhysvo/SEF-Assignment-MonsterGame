@@ -30,7 +30,7 @@ public class MainMenu extends Menu {
 	}
 
 	@Override
-	protected void startCommandLine() {
+	protected boolean startCommandLine() {
 
 		boolean exit = false;
 		int option = 0;
@@ -79,6 +79,7 @@ public class MainMenu extends Menu {
 		}
 		
 		this.processButtonValue(action);
+		return true;
 	}
 
 }

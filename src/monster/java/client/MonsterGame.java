@@ -51,7 +51,7 @@ public class MonsterGame {
 		this.uiHandler = new UIHandler(frame);
 		this.uiHandler.showMain();
 		
-		this.sc.close();
+		//this.sc.close();
 
 	}
 
