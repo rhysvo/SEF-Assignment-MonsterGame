@@ -38,6 +38,9 @@ public class MonsterGame {
 	// Game window
 	private JFrame frame;
 	
+	/**
+	 * 
+	 */
 	private void run() {
 		
 		this.sc = new Scanner(System.in);

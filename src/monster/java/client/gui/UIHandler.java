@@ -24,11 +24,11 @@ public class UIHandler {
 	
 	public void showMain() {
 		/* Command Line */
-		boolean quit = false;
+		boolean running = true;
 		Menu main = new MainMenu(this);
 		do {
-			quit = main.startCommandLine();
-		} while (!quit);
+			running = main.startCommandLine();
+		} while (running);
 	}
 	
 	public void showLobby() {

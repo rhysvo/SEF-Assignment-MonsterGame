@@ -28,7 +28,7 @@ public class MainMenu extends Menu {
 			break;
 		}
 	}
-
+	
 	@Override
 	protected boolean startCommandLine() {
 
@@ -38,8 +38,10 @@ public class MainMenu extends Menu {
 		
 		do {
 		
+			// print menu
 			System.out.println(
-					" == Main Menu == \n"
+					  "=================\n"
+					+ " == Main Menu == \n"
 					+ "=================\n"
 					+ "1. Join a game\n"
 					+ "2. View highscores\n"
@@ -49,6 +51,7 @@ public class MainMenu extends Menu {
 			
 			System.out.print("Please enter your choice (0-2): ");
 			
+			// sanitize input
 			try {
 				option = Integer.parseInt(MonsterGame.instance.sc.nextLine());
 				if (option < 0 || option > 3) 
@@ -60,6 +63,9 @@ public class MainMenu extends Menu {
 				
 		} while (!exit);
 		
+		// change option into action string
+		// only temporary, will get string from button
+		// once GUI is implemented
 		switch(option) {
 		
 		case 1:
