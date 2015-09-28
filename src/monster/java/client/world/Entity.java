@@ -1,15 +1,6 @@
 package monster.java.client.world;
 
 import static org.lwjgl.opengl.ARBTextureRectangle.GL_TEXTURE_RECTANGLE_ARB;
-import static org.lwjgl.opengl.GL11.GL_QUADS;
-import static org.lwjgl.opengl.GL11.glBegin;
-import static org.lwjgl.opengl.GL11.glColor3f;
-import static org.lwjgl.opengl.GL11.glEnd;
-import static org.lwjgl.opengl.GL11.glPopMatrix;
-import static org.lwjgl.opengl.GL11.glPushMatrix;
-import static org.lwjgl.opengl.GL11.glTranslatef;
-import static org.lwjgl.opengl.GL11.glVertex2f;
-import static org.lwjgl.opengl.GL11.glTexCoord2f;
 import static org.lwjgl.opengl.GL11.*;
 
 import org.newdawn.slick.opengl.Texture;
@@ -90,32 +81,27 @@ public class Entity {
 		switch(player) {
 		
 			case 0:
-				// Monster = BLACK
-				glColor3f(1F, 1F, 1F);
+				// Monster 
 				return Game.spriteMap.get("monster");
 				
 			case 1:
-				// Player 1 = RED
-				glColor3f(1F, 1F, 1F);
+				// Player 1
 				return Game.spriteMap.get("p1");
 				
 			case 2:
-				// Player 2 = GREEN
-				glColor3f(1F, 1F, 1F);
+				// Player 2
 				return Game.spriteMap.get("p2");
 				
 			case 3:
-				// Player 3 = BLUE
-				glColor3f(1F, 1F, 1F);
+				// Player 3
 				return Game.spriteMap.get("p3");
 				
 			case 4:
-				// Player 4 = YELLOW
-				glColor3f(1F, 1F, 1F);
+				// Player 4
 				return Game.spriteMap.get("p4");
 				
 			default:
-				//BLACK
+				// Player 1 Sprite
 				return Game.spriteMap.get("p1");
 		}
 	}
@@ -137,7 +123,7 @@ public class Entity {
 		glTranslatef(x * tileSize, y * tileSize, 0.0F);
 		glBegin(GL_QUADS);
 		{
-			//colourEntity(id);
+			glColor3f(1F, 1F, 1F);
 			glTexCoord2f(gx, gy);
 			glVertex2f(0, 0);
 			glTexCoord2f(gx, gy2);
