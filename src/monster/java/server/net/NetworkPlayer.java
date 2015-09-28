@@ -61,7 +61,8 @@ public class NetworkPlayer extends Thread {
 		String inputLine;
 		try {
 			while ((inputLine = this.in.readLine()) != null) {
-				System.out.println(inputLine);
+				if (MonsterServer.DEBUG) 
+					System.out.println("MSG: " + inputLine);
 
 				if (inputLine.equals("ready") && !this.isReady) {
 					

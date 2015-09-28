@@ -40,6 +40,18 @@ public class MessageProtocol {
 			} else if (msg.startsWith("player:")) {
 				int id = Integer.parseInt(msg.split(":")[1]);
 				MonsterGame.instance.game.addLocalPlayer(id + 1);
+				if (id == 0) {
+					System.out.println("How many players?:");
+					int numPlayers = 0;
+					while (numPlayers == 0) {
+						try {
+							numPlayers = Integer.parseInt(MonsterGame.instance.sc.nextLine());
+						} catch (NumberFormatException e) {
+							numPlayers = 0;
+						}
+					}
+					MonsterGame.instance.client.send("num:" + numPlayers);
+				}
 				
 			} else if (msg.equals("begin")) {
 				MonsterGame.instance.game.start();

@@ -78,9 +78,9 @@ public class Game extends Thread {
 		}
 		entity.setID(id);
 		this.players.add(entity);
-		//if (this.online && this.players.size() > 1) {
+		if (this.online) {
 			MessageProtocol.sendReady();
-		//}
+		}
 		return entity;
 	}
 
@@ -105,22 +105,24 @@ public class Game extends Thread {
 	public void run() {
 
 		try {
-			
-			Display.setDisplayMode(new DisplayMode(MonsterGame.GAME_SIZE,
-					MonsterGame.GAME_SIZE));
+
+			Display.setDisplayMode(new DisplayMode(this.world.size()
+					* MonsterGame.TILE_SIZE, this.world.size()
+					* MonsterGame.TILE_SIZE));
 			Display.setTitle("MonsterGame");
 			Display.create();
-			
+
 		} catch (LWJGLException e) {
 			e.printStackTrace();
 		}
-		
+
 		// create the monster
 		getEntity(0);
 
 		glMatrixMode(GL_PROJECTION);
 		glLoadIdentity();
-		glOrtho(0.0, MonsterGame.GAME_SIZE, MonsterGame.GAME_SIZE, 0.0, 1, -1);
+		glOrtho(0.0, this.world.size() * MonsterGame.TILE_SIZE,
+				this.world.size() * MonsterGame.TILE_SIZE, 0.0, 1, -1);
 		glMatrixMode(GL_MODELVIEW);
 		glClearColor(1F, 1F, 1F, 1F);
 		glColor3f(0F, 0F, 0F);

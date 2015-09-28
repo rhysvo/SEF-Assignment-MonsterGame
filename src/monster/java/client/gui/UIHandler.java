@@ -24,8 +24,11 @@ public class UIHandler {
 	
 	public void showMain() {
 		/* Command Line */
+		boolean quit = false;
 		Menu main = new MainMenu(this);
-		main.startCommandLine();
+		do {
+			quit = main.startCommandLine();
+		} while (!quit);
 	}
 	
 	public void showLobby() {
@@ -34,10 +37,6 @@ public class UIHandler {
 	}
 	
 	public void showHighScores() {
-		// TODO
-	}
-	
-	public void runGame() {
 		// TODO
 	}
 	
