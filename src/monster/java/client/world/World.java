@@ -1,16 +1,19 @@
 package monster.java.client.world;
 
-import static org.lwjgl.opengl.GL11.GL_LINE_LOOP;
 import static org.lwjgl.opengl.GL11.GL_QUADS;
-import static org.lwjgl.opengl.GL11.glColor3f;
 import static org.lwjgl.opengl.GL11.glBegin;
+import static org.lwjgl.opengl.GL11.glColor3f;
 import static org.lwjgl.opengl.GL11.glEnd;
 import static org.lwjgl.opengl.GL11.glLoadIdentity;
-import static org.lwjgl.opengl.GL11.glTranslatef;
-import static org.lwjgl.opengl.GL11.glVertex3f;
-import static org.lwjgl.opengl.GL11.glPushMatrix;
 import static org.lwjgl.opengl.GL11.glPopMatrix;
+import static org.lwjgl.opengl.GL11.glPushMatrix;
+import static org.lwjgl.opengl.GL11.glTexCoord2f;
+import static org.lwjgl.opengl.GL11.glTranslatef;
+import static org.lwjgl.opengl.GL11.glVertex2f;
+
 import monster.java.client.MonsterGame;
+import monster.java.client.util.Sprite;
+import monster.java.client.util.TextureLoading;
 
 /**
  * 'World' provides and manages information about all the tiles in the game that
@@ -37,7 +40,7 @@ public class World {
 			}
 		}
 	}
-	
+
 	public int size() {
 		return this.world.length;
 	}
@@ -47,15 +50,15 @@ public class World {
 		for (int i = 0; i < this.world.length; i++) {
 			for (int j = 0; j < this.world[0].length; j++) {
 				glLoadIdentity();
-				glTranslatef(i * MonsterGame.TILE_SIZE, j
-						* MonsterGame.TILE_SIZE, 0.0f);
+				glTranslatef(i * MonsterGame.TILE_SIZE,
+						j * MonsterGame.TILE_SIZE, 0.0f);
 				drawTile(this.world[j][i]);
 			}
 		}
 		glPopMatrix();
 		glColor3f(0, 0, 0);
 	}
-	
+
 	public void loadWorld(String[] worldStrings) {
 		this.world = new Tile[worldStrings.length][worldStrings.length];
 		for (int i = 0; i < worldStrings.length; i++) {
@@ -66,38 +69,49 @@ public class World {
 		}
 	}
 
+	// method to draw tiles from the sprite sheet
 	private void drawTile(Tile tile) {
+		float tileSize = (float) MonsterGame.TILE_SIZE;
+		Sprite currentSprite = getTileTexture(tile);
+
+		int gx = currentSprite.getX();
+		int gy = currentSprite.getY();
+		int gx2 = currentSprite.getX() + MonsterGame.TILE_SIZE;
+		int gy2 = currentSprite.getY() + MonsterGame.TILE_SIZE;
+
+		glBegin(GL_QUADS);
+		{
+			glColor3f(1F, 1F, 1F);
+			glTexCoord2f(gx, gy);
+			glVertex2f(0, 0);
+			glTexCoord2f(gx, gy2);
+			glVertex2f(0, tileSize);
+			glTexCoord2f(gx2, gy2);
+			glVertex2f(tileSize, tileSize);
+			glTexCoord2f(gx2, gy);
+			glVertex2f(tileSize, 0);
+		}
+		glEnd();
+	}
+
+	// method to retrieve correct texture
+	// based on the enum for Tile type.
+	private Sprite getTileTexture(Tile tile) {
+		TextureLoading entityTexture = MonsterGame.instance.game
+				.getTextureLoading();
 
 		switch (tile) {
 		case WALL:
-			glColor3f(0.5f, 0.5f, 0.5f);
-			glBegin(GL_QUADS);
-			{
-				glVertex3f(0.0F, 0.0f, 0.0f);
-				glVertex3f(0.0F, (float) MonsterGame.TILE_SIZE, 0.0f);
-				glVertex3f((float) MonsterGame.TILE_SIZE,
-						(float) MonsterGame.TILE_SIZE, 0.0f);
-				glVertex3f((float) MonsterGame.TILE_SIZE, 0.0F, 0.0f);
-			}
-			glEnd();
-			break;
+			return entityTexture.getSprite("wall");
 
 		case BLOCKED:
-			// leave empty
-			break;
+			return entityTexture.getSprite("empty");
 
 		case EMPTY:
+			return entityTexture.getSprite("empty");
+
 		default:
-			glColor3f(0, 0, 0);
-			glBegin(GL_LINE_LOOP);
-			{
-				glVertex3f(0.0F, 0.0f, 0.0f);
-				glVertex3f(0.0F, (float) MonsterGame.TILE_SIZE, 0.0f);
-				glVertex3f((float) MonsterGame.TILE_SIZE,
-						(float) MonsterGame.TILE_SIZE, 0.0f);
-				glVertex3f((float) MonsterGame.TILE_SIZE, 0.0F, 0.0f);
-			}
-			glEnd();
+			return entityTexture.getSprite("empty");
 		}
 	}
 

@@ -6,10 +6,14 @@ import static org.lwjgl.opengl.GL11.glColor3f;
 import static org.lwjgl.opengl.GL11.glEnd;
 import static org.lwjgl.opengl.GL11.glPopMatrix;
 import static org.lwjgl.opengl.GL11.glPushMatrix;
+import static org.lwjgl.opengl.GL11.glTexCoord2f;
 import static org.lwjgl.opengl.GL11.glTranslatef;
 import static org.lwjgl.opengl.GL11.glVertex2f;
+
 import monster.java.client.MonsterGame;
 import monster.java.client.net.MessageProtocol;
+import monster.java.client.util.Sprite;
+import monster.java.client.util.TextureLoading;
 
 public class Entity {
 	private int x, y, id;
@@ -31,7 +35,7 @@ public class Entity {
 		if (MonsterGame.instance.game.canMove(x + newx, y + newy)) {
 			this.x += newx;
 			this.y += newy;
-			
+
 			if (MonsterGame.instance.game.isOnline()) {
 				MessageProtocol.sendMove(this.x, this.y);
 			}
@@ -42,47 +46,63 @@ public class Entity {
 		this.x = x;
 		this.y = y;
 	}
-	
-	public void colourEntity(int player) {
-		switch(player) {
-			case 1:
-				// Player 1 = RED
-				glColor3f(1F, 0F, 0F);
-				break;
-				
-			case 2:
-				// Player 2 = GREEN
-				glColor3f(0F, 1F, 0F);
-				break;
-				
-			case 3:
-				// Player 3 = BLUE
-				glColor3f(0F, 0F, 1F);
-				break;
-				
-			case 4:
-				// Player 4 = YELLOW
-				glColor3f(1F, 1F, 0F);
-				break;
-				
-			default:
-				// Monster = BLACK
-				glColor3f(0F, 0F, 0F);
+
+	// Method and switch statement to return relevant texture
+	// from hash map.
+	public Sprite getEntityTexture(int player) {
+		TextureLoading entityTexture = MonsterGame.instance.game
+				.getTextureLoading();
+		switch (player) {
+
+		case 0:
+			// Monster
+			return entityTexture.getSprite("monster");
+
+		case 1:
+			// Player 1
+			return entityTexture.getSprite("p1");
+
+		case 2:
+			// Player 2
+			return entityTexture.getSprite("p2");
+
+		case 3:
+			// Player 3
+			return entityTexture.getSprite("p3");
+
+		case 4:
+			// Player 4
+			return entityTexture.getSprite("p4");
+
+		default:
+			// Player 1 Sprite
+			return entityTexture.getSprite("p1");
 		}
 	}
 
 	public void draw() {
-		float tileSize = (float) MonsterGame.TILE_SIZE;
-		
 		glPushMatrix();
+
+		float tileSize = (float) MonsterGame.TILE_SIZE;
+		Sprite currentSprite = getEntityTexture(id);
+
+		int gx = currentSprite.getX();
+		int gy = currentSprite.getY();
+		int gx2 = currentSprite.getX() + MonsterGame.TILE_SIZE;
+		int gy2 = currentSprite.getY() + MonsterGame.TILE_SIZE;
+
 		glTranslatef(x * tileSize, y * tileSize, 0.0F);
 		glBegin(GL_QUADS);
 		{
-			colourEntity(id);
+			glColor3f(1F, 1F, 1F);
+			glTexCoord2f(gx, gy);
 			glVertex2f(0, 0);
-			glVertex2f(tileSize, 0);
-			glVertex2f(tileSize, tileSize);
+			glTexCoord2f(gx, gy2);
 			glVertex2f(0, tileSize);
+			glTexCoord2f(gx2, gy2);
+			glVertex2f(tileSize, tileSize);
+			glTexCoord2f(gx2, gy);
+			glVertex2f(tileSize, 0);
 		}
 		glEnd();
 		glPopMatrix();

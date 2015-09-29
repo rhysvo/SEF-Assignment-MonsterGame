@@ -29,7 +29,7 @@ public class Lobby extends Menu {
 	}
 
 	@Override
-	protected void startCommandLine() {
+	protected boolean startCommandLine() {
 		// TODO: send a request to server to ask for current games
 		boolean connected = false;
 		
@@ -38,7 +38,7 @@ public class Lobby extends Menu {
 			String in = MonsterGame.instance.sc.nextLine();
 			
 			if (in.equals("0"))
-				return;
+				return true;
 			
 			try {
 
@@ -48,11 +48,14 @@ public class Lobby extends Menu {
 				System.out.println("Waiting for at least 2 players...");
 				
 			} catch (Exception e) {
+				e.printStackTrace();
 				System.out.println("There was an error connecting to the server.");
 			}
 			
 			connected = true;
 		}
+		
+		return true;
 	}
 
 }

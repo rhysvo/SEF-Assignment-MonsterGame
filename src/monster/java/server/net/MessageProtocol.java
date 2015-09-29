@@ -16,7 +16,6 @@ public class MessageProtocol {
 	public static void sendWorld(NetworkPlayer client, String worldString) {
 		
 		client.send("world:" + worldString);
-		System.out.println(worldString);
 		
 	}
 	
@@ -91,9 +90,18 @@ public class MessageProtocol {
 
 			if (msg.startsWith("mv:"))
 				processMove(client, msg);
-
+			else if (msg.startsWith("num:"))
+				processNumPlayers(client, msg);
+			
 		}
 
+	}
+	
+	private static void processNumPlayers(NetworkPlayer client, String npMsg) {
+		
+		int numPlayers = Integer.parseInt(npMsg.split(":")[1]);
+		MonsterServer.server.setNumPlayers(numPlayers);
+		
 	}
 
 	/**
