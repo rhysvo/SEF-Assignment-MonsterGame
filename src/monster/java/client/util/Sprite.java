@@ -4,15 +4,11 @@ public final class Sprite {
 	private final String name;
     private final int x;
     private final int y;
-    private final int w;
-    private final int h;
 
-    public Sprite(String name, int x, int y, int w, int h) {
+    public Sprite(String name, int x, int y) {
         this.name = name;
         this.x = x;
         this.y = y;
-        this.w = w;
-        this.h = h;
     }
 
     @Override
@@ -26,12 +22,6 @@ public final class Sprite {
 
         Sprite sprite = (Sprite) o;
 
-        if (h != sprite.h) {
-            return false;
-        }
-        if (w != sprite.w) {
-            return false;
-        }
         if (x != sprite.x) {
             return false;
         }
@@ -50,8 +40,6 @@ public final class Sprite {
         int result = name != null ? name.hashCode() : 0;
         result = 31 * result + x;
         result = 31 * result + y;
-        result = 31 * result + w;
-        result = 31 * result + h;
         return result;
     }
 
@@ -61,8 +49,6 @@ public final class Sprite {
                 "name='" + name + '\'' +
                 ", x=" + x +
                 ", y=" + y +
-                ", w=" + w +
-                ", h=" + h +
                 '}';
     }
 
@@ -76,13 +62,5 @@ public final class Sprite {
 
     public int getY() {
         return y;
-    }
-
-    public int getWidth() {
-        return w;
-    }
-
-    public int getHeight() {
-        return h;
     }
 }
