@@ -7,7 +7,6 @@ import java.net.ServerSocket;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-import monster.java.server.world.Entity;
 import monster.java.server.world.Monster;
 
 public class NetworkServer {
@@ -17,7 +16,6 @@ public class NetworkServer {
 	private ArrayList<NetworkPlayer> players;
 	private int readyPlayers = 0;
 	private Monster monster;
-	private int worldSize;
 	private String[] world;
 	private int numPlayers = 5;
 
@@ -25,7 +23,7 @@ public class NetworkServer {
 		this.port = port;
 		this.players = new ArrayList<NetworkPlayer>();
 	}
-
+	
 	/**
 	 * Broadcast a message to all connected players
 	 * 
@@ -54,7 +52,6 @@ public class NetworkServer {
 		StringBuilder sb = new StringBuilder();
 		
 		while (in.hasNextLine()) {
-			worldSize++;
 			sb.append(in.nextLine() + ",");
 		}
 		
@@ -82,7 +79,7 @@ public class NetworkServer {
 			int i = 0;
 			// loop while less than 4 players and not all players are ready
 			while (this.readyPlayers == 0
-					|| (this.readyPlayers < this.players.size() 
+					|| (this.readyPlayers < this.numPlayers 
 					&& i < this.numPlayers)) {
 				// add new NetworkPlayer object to list
 				this.players.add(new NetworkPlayer(this.serverSocket.accept(),
@@ -110,8 +107,8 @@ public class NetworkServer {
 			
 			// Create the Monster
 			monster = new Monster(world);
-			monster.setPos((int) Math.ceil(worldSize/2), 
-						   (int) Math.ceil(worldSize/2));
+			monster.setPos((int) Math.ceil(world.length/2), 
+						   (int) Math.ceil(world.length/2));
 
 		} catch (IOException e) {
 
@@ -157,7 +154,7 @@ public class NetworkServer {
 	}
 	
 	public int getWorldSize() {
-		return this.worldSize;
+		return this.world.length;
 	}
 	
 	/* * * DEBUGGING CODE BELOW * * */
