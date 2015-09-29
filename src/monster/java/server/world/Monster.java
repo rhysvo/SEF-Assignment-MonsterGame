@@ -160,7 +160,7 @@ public class Monster extends Entity {
 
 		// Make the Monster wait till ending move sequence for debugging
 		try {
-			Thread.sleep(MonsterServer.MON_TICK);
+			Thread.sleep(Math.max(155, MonsterServer.MON_TICK));
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
