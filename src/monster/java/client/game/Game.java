@@ -152,8 +152,7 @@ public class Game extends Thread {
 			// Exits rendering loop if the escape key
 			// is pressed.
 			if (Keyboard.isKeyDown((Keyboard.KEY_ESCAPE))) {
-				Display.destroy();
-				System.exit(0);
+				break;
 			}
 			
 			// retrieves input from keyboard and feeds
@@ -170,6 +169,7 @@ public class Game extends Thread {
 		// data pool.
 		glBindTexture(GL_TEXTURE_RECTANGLE_ARB, 0);
 		Display.destroy();
+		System.exit(0);
 	}
 
 	private void getKeyInput() {
