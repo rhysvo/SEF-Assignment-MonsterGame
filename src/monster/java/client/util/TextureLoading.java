@@ -1,20 +1,27 @@
 package monster.java.client.util;
 
 import static org.lwjgl.opengl.ARBTextureRectangle.GL_TEXTURE_RECTANGLE_ARB;
-import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL11.GL_NEAREST;
+import static org.lwjgl.opengl.GL11.GL_RGBA;
+import static org.lwjgl.opengl.GL11.GL_TEXTURE_MAG_FILTER;
+import static org.lwjgl.opengl.GL11.GL_TEXTURE_MIN_FILTER;
+import static org.lwjgl.opengl.GL11.GL_UNSIGNED_BYTE;
+import static org.lwjgl.opengl.GL11.glBindTexture;
+import static org.lwjgl.opengl.GL11.glGenTextures;
+import static org.lwjgl.opengl.GL11.glTexImage2D;
+import static org.lwjgl.opengl.GL11.glTexParameteri;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
-
-import de.matthiasmann.twl.utils.PNGDecoder;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.lwjgl.BufferUtils;
-import org.newdawn.slick.opengl.Texture;
-import org.newdawn.slick.opengl.TextureLoader;
+
+import de.matthiasmann.twl.utils.PNGDecoder;
 
 /**
  * Loads textures into a HashMap from
@@ -24,6 +31,10 @@ import org.newdawn.slick.opengl.TextureLoader;
  *
  */
 public class TextureLoading {
+	
+	public int spritesheet;
+	public static final Map<String, Sprite> spriteMap = new HashMap<String, Sprite>();
+	private static final String SPRITESHEET_IMAGE_LOCATION = "src/res/textures/spritesheet.png";
 	
 	public static int glLoadTextureLinear(String location){
 		 int texture = glGenTextures();
@@ -56,17 +67,31 @@ public class TextureLoading {
 	        }
 	        glBindTexture(GL_TEXTURE_RECTANGLE_ARB, 0);
 	        return texture;
+	
+	
 	}
 		
+	public TextureLoading() {
+		spritesheet = TextureLoading.glLoadTextureLinear(SPRITESHEET_IMAGE_LOCATION);
+		
+		Sprite monster = new Sprite("monster", 0, 0, 32, 32);
+        spriteMap.put("monster", monster);
+                
+        Sprite p1 = new Sprite("p1", 0, 32, 32, 32);
+        spriteMap.put("p1", p1);
+        
+        Sprite p2 = new Sprite("p2", 0, 64, 32, 32);
+        spriteMap.put("p2", p2);
+        
+        Sprite p3 = new Sprite("p3", 32, 0, 32, 32);
+        spriteMap.put("p3", p3);
+        
+        Sprite p4 = new Sprite("p4", 64, 0, 32, 32);
+        spriteMap.put("p4", p4);
+        }
 	
-	public Texture loadTexture(String key){
-		try {
-			return TextureLoader.getTexture("PNG", new FileInputStream(new File("src/res/textures/" + key + ".png")));
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return null;
+	public Sprite getSprite (String key){
+		return spriteMap.get(key);
 	}
+	
 }
