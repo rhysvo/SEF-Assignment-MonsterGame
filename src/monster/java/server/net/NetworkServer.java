@@ -127,8 +127,6 @@ public class NetworkServer {
 	public void run() {
 		boolean exit = false;
 		
-		long millis = System.currentTimeMillis();
-		
 		// Allow players to move around before monster
 		sleep(3);
 		
@@ -136,6 +134,7 @@ public class NetworkServer {
 			// Begin the AI movement
 			monster.moveToPlayer(players);
 			
+			// Increase the speed by 1%
 			MonsterServer.MON_TICK = (int) Math.ceil(MonsterServer.MON_TICK*0.99);
 			
 			// Implement this after finding out all players are dead
