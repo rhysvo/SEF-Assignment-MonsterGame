@@ -7,6 +7,7 @@ import java.net.ServerSocket;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import monster.java.server.MonsterServer;
 import monster.java.server.world.Monster;
 
 public class NetworkServer {
@@ -124,26 +125,21 @@ public class NetworkServer {
 	 * Server-side game loop
 	 */
 	public void run() {
-		boolean exit = false,
-				prep = true;
+		boolean exit = false;
 		
-		while(!exit) {	
-			// Allows players to move around for 10s
-			if(prep) {
-				sleep(2);
-				prep = false;
-			}
-			
+		// Allow players to move around before monster
+		sleep(3);
+		
+		while(!exit) {
+			// Begin the AI movement
 			monster.moveToPlayer(players);
 			
+			// Increase the speed by 1%
+			MonsterServer.MON_TICK = (int) Math.ceil(MonsterServer.MON_TICK*0.99);
 			
-			/* Original AI (basic) *//*
-			// Select a target
-			Entity player = monster.selectTarget(players);
-			
-			// Move towards target player
-			monster.moveToTarget(player);
-			*/
+			// Implement this after finding out all players are dead
+			if(exit != false)
+				exit = true;
 		}
 	}
 	
