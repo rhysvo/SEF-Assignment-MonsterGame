@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.lwjgl.input.Keyboard;
 
+
 /**
  * The Interface that the user interacts with, control
  * navigation and will be the first point of contact.
@@ -13,7 +14,7 @@ import org.lwjgl.input.Keyboard;
  * @author Alex Matheson
  *
  */
-public abstract class Menu {
+public abstract class Menu  {
 	
 	private List<Button> buttons = new ArrayList<Button>();
 	private int selected = 0;

@@ -47,6 +47,7 @@ public class MonsterGame {
 		initGL();
 		*/
 
+		
 		frame = new JFrame();		
 		this.uiHandler = new UIHandler(frame);
 		this.uiHandler.showMain();
@@ -62,6 +63,7 @@ public class MonsterGame {
 	 */
 	public static void main(String[] args) {
 
+		
 		instance = new MonsterGame();
 		instance.run();
 

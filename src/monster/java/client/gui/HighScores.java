@@ -1,4 +1,6 @@
 package monster.java.client.gui;
+
+
 /**
  * Retrieves information about High Score listing
  * from the Server. Sends request and displays it
@@ -22,5 +24,7 @@ public class HighScores extends Menu {
 		// TODO Auto-generated method stub
 		return true;
 	}
+
+
 
 }
