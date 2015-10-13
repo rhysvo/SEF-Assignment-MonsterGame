@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 import monster.java.server.MonsterServer;
+import monster.java.server.world.Entity;
 import monster.java.server.world.Monster;
 
 public class NetworkServer {
@@ -89,6 +90,7 @@ public class NetworkServer {
 				// Send an initial message to the client
 				MessageProtocol.sendWorld(this.players.get(i), loadWorld());
 				this.players.get(i).send("player:" + i);
+				this.players.get(i).setName("Player " + (i + 1));
 				
 				// sleep until the num players is set by p1
 				if (i == 0) {
@@ -137,10 +139,49 @@ public class NetworkServer {
 			// Increase the speed by 1%
 			MonsterServer.MON_TICK = (int) Math.ceil(MonsterServer.MON_TICK*0.99);
 			
+			for (NetworkPlayer player : this.players) {
+				Entity playerObj = player.getPlayer();
+				if (playerObj.isAlive()) {
+					if (playerObj.X() == monster.X() && playerObj.Y() == monster.Y()) {
+						// if player at monster's position, broadcast the
+						// kill message and remove the player from the array
+						MessageProtocol.sendKill(player);
+						playerObj.kill();
+						playerObj.setRank(numAlivePlayers());
+					}
+				}
+			}
+			
 			// Implement this after finding out all players are dead
-			if(exit != false)
+			if(numAlivePlayers() == 0)
 				exit = true;
 		}
+		
+		// create and send win message
+		String winMsg = "end:";
+		for (int i = 0; i < this.players.size(); i++) {
+			winMsg = winMsg + getRankedPlayer(i).getName() + ",";
+		}
+		// replace last comma with semi
+		winMsg = winMsg.substring(0, winMsg.length() - 1) + ";";
+		this.broadcast(winMsg);
+		
+	}
+	
+	public NetworkPlayer getRankedPlayer(int i) {
+		for (NetworkPlayer player : this.players) {
+			if (player.getPlayer().getRank() == i)
+				return player;
+		}
+		return null;
+	}
+	
+	public int numAlivePlayers() {
+		int i = 0;
+		for (NetworkPlayer player : this.players)
+			if (player.getPlayer().isAlive())
+				i++;
+		return i;
 	}
 	
 	/* * * Getters and Setters * * */

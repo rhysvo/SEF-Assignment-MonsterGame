@@ -3,10 +3,12 @@ package monster.java.server.world;
 public class Entity {
 	
 	protected int x, y;
+	private int rank;
 	private String name;
+	private boolean alive;
 	
 	public Entity() {
-		// TODO
+		this.alive = true;
 	}
 	
 	public void setPos(int x, int y) {
@@ -33,6 +35,22 @@ public class Entity {
 	
 	public int Y() {
 		return this.y;
+	}
+
+	public void kill() {
+		this.alive = false;
+	}
+	
+	public boolean isAlive() {
+		return this.alive;
+	}
+	
+	public void setRank(int r) {
+		this.rank = r;
+	}
+	
+	public int getRank() {
+		return this.rank;
 	}
 
 }

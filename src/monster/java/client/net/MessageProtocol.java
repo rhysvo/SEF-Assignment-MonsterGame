@@ -57,6 +57,8 @@ public class MessageProtocol {
 				MonsterGame.instance.game.start();
 			} else if (msg.startsWith("world:")) {
 				processWorld(msg);
+			} else if (msg.startsWith("kill:")) {
+				processDeath(msg);
 			}
 		}
 	}
@@ -66,7 +68,8 @@ public class MessageProtocol {
 	 * @param deathMsg
 	 */
 	public static void processDeath(String deathMsg) {
-		
+		int player = Integer.parseInt(deathMsg.replace("win:", ""));
+		MonsterGame.instance.game.killPlayer(player);
 	}
 	
 	public static void processWorld(String worldMsg) {

@@ -227,4 +227,8 @@ public class Game extends Thread {
 				MonsterGame.instance.game.getTextureLoading().spritesheet);
 	}
 
+	public void killPlayer(int player) {
+		this.players.remove(player);
+	}
+
 }
