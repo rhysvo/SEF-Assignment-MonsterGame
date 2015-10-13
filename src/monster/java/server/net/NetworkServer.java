@@ -134,6 +134,15 @@ public class NetworkServer {
 			// Begin the AI movement
 			monster.moveToPlayer(players);
 			
+			for(NetworkPlayer player : players) {
+				int px, py;
+				px = player.getPlayer().X();
+				py = player.getPlayer().Y();
+				
+				if(px == monster.X() && py == monster.Y())
+					sleep(1);
+			}
+			
 			// Increase the speed by 1%
 			MonsterServer.MON_TICK = (int) Math.ceil(MonsterServer.MON_TICK*0.99);
 			
