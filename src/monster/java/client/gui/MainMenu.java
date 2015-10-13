@@ -202,6 +202,7 @@ public class MainMenu extends Application {
 				
 				
 			        if ((IPAdress.getText() != null && !IPAdress.getText().isEmpty())) {
+						IPAdr = IPAdress.getText();
 			        	
 			        	label.setText("SUCCES");
 			        	this.uiHandler.showLobby();
