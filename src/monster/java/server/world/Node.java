@@ -146,8 +146,9 @@ public class Node {
 			return 999;
 		
 		for(NetworkPlayer player : players) {
+			if (!player.getPlayer().isAlive())
+				continue;
 			if(x == player.getPlayer().X() && y == player.getPlayer().Y()) {
-				System.out.printf("\nFOUND PLAYER in %d steps!\n", dist);
 				return dist;
 			}
 		}

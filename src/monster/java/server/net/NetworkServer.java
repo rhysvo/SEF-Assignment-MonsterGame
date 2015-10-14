@@ -11,7 +11,7 @@ import monster.java.server.MonsterServer;
 import monster.java.server.world.Entity;
 import monster.java.server.world.Monster;
 
-public class NetworkServer {
+public class NetworkServer extends Thread {
 
 	private int port;
 	private ServerSocket serverSocket;
@@ -62,6 +62,14 @@ public class NetworkServer {
 		in.close();
 		return sb.toString();
 	}
+	
+	public void destroy() {
+		try {
+			this.serverSocket.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 
 	/**
 	 * Initialize connections with player clients, and create new threads for
@@ -80,9 +88,9 @@ public class NetworkServer {
 			
 			int i = 0;
 			// loop while less than 4 players and not all players are ready
-			while (this.readyPlayers == 0
+			while (!(this.numPlayers == 1 && this.players.size() == 1) && (this.readyPlayers == 0
 					|| (this.readyPlayers < this.numPlayers 
-					&& i < this.numPlayers)) {
+					&& i < this.numPlayers))) {
 				// add new NetworkPlayer object to list
 				this.players.add(new NetworkPlayer(this.serverSocket.accept(),
 						i));
@@ -94,7 +102,7 @@ public class NetworkServer {
 				
 				// sleep until the num players is set by p1
 				if (i == 0) {
-					System.out.println("Waiting for player count...");
+					//System.out.println("Waiting for player count...");
 					while (this.numPlayers == 5) {
 						Thread.sleep(1000);
 					}
@@ -127,10 +135,12 @@ public class NetworkServer {
 	 * Server-side game loop
 	 */
 	public void run() {
+		this.init();
+		
 		boolean exit = false;
 		
 		// Allow players to move around before monster
-		sleep(3);
+		this.sleepn(3);
 		
 		while(!exit) {
 			// Begin the AI movement
@@ -148,13 +158,18 @@ public class NetworkServer {
 						MessageProtocol.sendKill(player);
 						playerObj.kill();
 						playerObj.setRank(numAlivePlayers());
+						System.out.println("Player " + player.getID() + " died.");
 					}
 				}
 			}
 			
 			// Implement this after finding out all players are dead
-			if(numAlivePlayers() == 0)
+			if (numAlivePlayers() == 0)
 				exit = true;
+			
+			if (numConnectedPlayers() == 0)
+				return;
+			
 		}
 		
 		// create and send win message
@@ -166,6 +181,10 @@ public class NetworkServer {
 		winMsg = winMsg.substring(0, winMsg.length() - 1) + ";";
 		this.broadcast(winMsg);
 		
+		// close connections
+		for (NetworkPlayer player : this.players) {
+			player.close();
+		}
 	}
 	
 	public NetworkPlayer getRankedPlayer(int i) {
@@ -184,6 +203,15 @@ public class NetworkServer {
 		return i;
 	}
 	
+	public int numConnectedPlayers() {
+		int i = 0;
+		for (NetworkPlayer player : this.players)
+			if (player.connected)
+				i++;
+		return i;
+		
+	}
+	
 	/* * * Getters and Setters * * */
 	
 	public String[] getWorld() {
@@ -196,7 +224,7 @@ public class NetworkServer {
 	
 	/* * * DEBUGGING CODE BELOW * * */
 	
-	private void sleep(float n) {
+	private void sleepn(float n) {
 		try {
 			Thread.sleep((int) (n * 1000));
 		} catch (InterruptedException e) {

@@ -4,6 +4,8 @@ import javax.swing.JFrame;
 
 import monster.java.client.MonsterGame;
 import monster.java.client.game.Game;
+import monster.java.client.net.NetworkClient;
+import monster.java.server.MonsterServer;
 
 
 /**
@@ -40,11 +42,13 @@ public class UIHandler {
 	}
 	
 	public void localTest() {
+		MonsterServer.local();
+		System.out.println("Created local server");
 		MonsterGame.instance.game = new Game();
-		Game game = MonsterGame.instance.game;
-		game.setOffline();
-		game.addLocalPlayer(1);
-		game.run();
+		MonsterGame.instance.game.setLocal(true);
+		MonsterGame.instance.client = new NetworkClient("localhost", 3286);
+		MonsterGame.instance.client.run();
+		MonsterServer.killLocal();
 	}
 	
 }

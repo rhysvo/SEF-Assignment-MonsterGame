@@ -40,7 +40,7 @@ public class MessageProtocol {
 			} else if (msg.startsWith("player:")) {
 				int id = Integer.parseInt(msg.split(":")[1]);
 				MonsterGame.instance.game.addLocalPlayer(id + 1);
-				if (id == 0) {
+				if (id == 0 && !MonsterGame.instance.game.local) {
 					System.out.println("How many players?:");
 					int numPlayers = 0;
 					while (numPlayers == 0) {
@@ -68,7 +68,7 @@ public class MessageProtocol {
 	 * @param deathMsg
 	 */
 	public static void processDeath(String deathMsg) {
-		int player = Integer.parseInt(deathMsg.replace("win:", ""));
+		int player = Integer.parseInt(deathMsg.replace("kill:", ""));
 		MonsterGame.instance.game.killPlayer(player);
 	}
 	

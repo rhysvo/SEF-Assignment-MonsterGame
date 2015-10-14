@@ -17,12 +17,14 @@ public class NetworkPlayer extends Thread {
 	private BufferedReader in;
 	private Entity player;
 	private int id;
+	public boolean connected;
 	
 	private boolean isReady = false;
 
 	public NetworkPlayer(Socket socket, int id) {
 		this.socket = socket;
 		this.id = id + 1;
+		this.connected = true;
 
 		System.out.println("New player connected to " + socket.getInetAddress()
 				+ " " + socket.getPort());
@@ -43,6 +45,14 @@ public class NetworkPlayer extends Thread {
 		
 		// Begin the thread
 		this.start();
+	}
+	
+	public void close() {
+		try {
+			this.socket.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	/**
@@ -89,6 +99,7 @@ public class NetworkPlayer extends Thread {
 			e.printStackTrace();
 		
 		}
+		this.connected = false;
 	}
 
 	/**

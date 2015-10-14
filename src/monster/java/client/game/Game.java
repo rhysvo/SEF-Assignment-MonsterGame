@@ -43,7 +43,7 @@ public class Game extends Thread {
 	private List<Entity> players = new ArrayList<Entity>();
 	private World world;
 	private PlayerController pc;
-	private boolean online = true;
+	public boolean local = false;
 	private TextureLoading textureHandler;
 
 	public Game() {
@@ -87,9 +87,7 @@ public class Game extends Thread {
 		}
 		entity.setID(id);
 		this.players.add(entity);
-		if (this.online) {
-			MessageProtocol.sendReady();
-		}
+		MessageProtocol.sendReady();
 		return entity;
 	}
 
@@ -195,15 +193,6 @@ public class Game extends Thread {
 			}
 		}
 	}
-	
-	// boolean variables for server visibility.
-	public void setOffline() {
-		this.online = false;
-	}
-
-	public boolean isOnline() {
-		return this.online;
-	}
 
 	public TextureLoading getTextureLoading() {
 		return this.textureHandler;
@@ -227,8 +216,19 @@ public class Game extends Thread {
 				MonsterGame.instance.game.getTextureLoading().spritesheet);
 	}
 
-	public void killPlayer(int player) {
-		this.players.remove(player);
+	public void killPlayer(int playerID) {
+		int index = -1;
+		for (int i = 0; i < this.players.size(); i++) {
+			if (this.players.get(i).getID() == playerID) {
+				index = i;
+				break;
+			}
+		}
+		this.players.remove(index);
+	}
+
+	public void setLocal(boolean b) {
+		this.local = b;
 	}
 
 }
