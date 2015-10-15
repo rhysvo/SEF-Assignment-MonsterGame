@@ -103,6 +103,9 @@ public class Node {
 			min = Math.min(min, searches[i]);
 		}
 		
+		if (min == 999)
+			return -1;
+		
 		// Returns the index of the min number
 		for(int i = 0; i < searches.length; i++)
 			if(min == searches[i])
