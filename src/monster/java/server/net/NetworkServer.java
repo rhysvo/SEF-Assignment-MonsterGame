@@ -7,6 +7,9 @@ import java.net.ServerSocket;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import org.junit.Test;
+import static org.junit.Assert.*;
+
 import monster.java.server.MonsterServer;
 import monster.java.server.world.Monster;
 
@@ -128,7 +131,11 @@ public class NetworkServer {
 		boolean exit = false;
 		
 		// Allow players to move around before monster
-		sleep(3);
+		try {
+			Thread.sleep((int) (3000));
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 		
 		while(!exit) {
 			// Begin the AI movement
@@ -144,7 +151,6 @@ public class NetworkServer {
 	}
 	
 	/* * * Getters and Setters * * */
-	
 	public String[] getWorld() {
 		return this.world;
 	}
@@ -153,15 +159,32 @@ public class NetworkServer {
 		return this.world.length;
 	}
 	
-	/* * * DEBUGGING CODE BELOW * * */
-	
-	private void sleep(float n) {
-		try {
-			Thread.sleep((int) (n * 1000));
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	/* * * JUnit Testing Below * * */
+	@Test
+	public void monsterInDomain() {
+		// Verify that monster does not move outside the grid
+		
+		// Check left boundary
+		assertTrue(monster.X() > 0);
+		
+		// Check top boundary
+		assertTrue(monster.Y() > 0);
+		
+		// Check right boundary
+		assertTrue(monster.X() < getWorldSize());
+		
+		// Check bottom boundary
+		assertTrue(monster.Y() < getWorldSize());
 	}
-
+	
+	@Test
+	public void gameStartWithMaxPlayers() {
+		// Verify that the game does not start until the specified number of players join
+		
+		// Check that maximum number of players is not exceeded
+		assertTrue(this.numPlayers < 5);
+		
+		// Check that the number of ready players equals number of required players
+		assertEquals(this.numPlayers, this.readyPlayers);
+	}
 }
