@@ -175,7 +175,9 @@ public class NetworkServer extends Thread {
 		// create and send win message
 		String winMsg = "end:";
 		for (int i = 0; i < this.players.size(); i++) {
-			winMsg = winMsg + getRankedPlayer(i).getName() + ",";
+			// try to wait for last player to send their message...
+			while (this.players.get(i).time == 0) sleepn(1);
+			winMsg = winMsg + getRankedPlayer(i).getName() + ":" + this.players.get(i).time + ",";
 		}
 		// replace last comma with semi
 		winMsg = winMsg.substring(0, winMsg.length() - 1) + ";";

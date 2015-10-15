@@ -21,6 +21,11 @@ public class MessageProtocol {
 		MonsterGame.instance.client.send(msg);
 	}
 	
+	public static void sendTime() {
+		String msg = String.format("time:%.02f;", MonsterGame.instance.game.go.time);
+		MonsterGame.instance.client.send(msg);
+	}
+	
 	/**
 	 * 
 	 * @param line
@@ -59,8 +64,15 @@ public class MessageProtocol {
 				processWorld(msg);
 			} else if (msg.startsWith("kill:")) {
 				processDeath(msg);
+				sendTime();
+			} else if (msg.startsWith("end:")) {
+				processEnd(msg);
 			}
 		}
+	}
+	
+	private static void processEnd(String endMsg) {
+		MonsterGame.instance.game.go.setWinData(endMsg.replace("end:", ""));
 	}
 	
 	/**

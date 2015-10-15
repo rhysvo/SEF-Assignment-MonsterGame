@@ -47,6 +47,7 @@ public class Game extends Thread {
 	private PlayerController pc;
 	public boolean local = false;
 	private TextureLoading textureHandler;
+	public GameOverlay go;
 
 	public Game() {
 		this.world = new World();
@@ -135,7 +136,7 @@ public class Game extends Thread {
 		// enabling and correctly setting openGL
 		setOpenGL();
 		
-		GameOverlay go = new GameOverlay();
+		go = new GameOverlay(this.world.size());
 		
 		// start of the rendering loop
 		while (!Display.isCloseRequested()) {
@@ -147,6 +148,9 @@ public class Game extends Thread {
 			if (players.contains(pc.getPlayer()))
 				go.updateTime();
 			go.drawTime();
+			
+			if (players.size() == 1)
+				go.drawWinners();
 			
 			// cycle through player array list and draw
 			// corresponding textures from sprite sheet.

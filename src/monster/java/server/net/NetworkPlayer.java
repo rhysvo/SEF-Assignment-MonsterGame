@@ -18,6 +18,7 @@ public class NetworkPlayer extends Thread {
 	private Entity player;
 	private int id;
 	public boolean connected;
+	public float time;
 	
 	private boolean isReady = false;
 
@@ -118,6 +119,10 @@ public class NetworkPlayer extends Thread {
 	 */
 	public int getID() {
 		return this.id;
+	}
+
+	public void setTime(float time) {
+		this.time = time;
 	}
 	
 }
