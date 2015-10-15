@@ -24,8 +24,10 @@ import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
+import org.lwjgl.opengl.GL11;
 
 import monster.java.client.MonsterGame;
+import monster.java.client.gui.GameOverlay;
 import monster.java.client.net.MessageProtocol;
 import monster.java.client.util.TextureLoading;
 import monster.java.client.world.Entity;
@@ -43,8 +45,9 @@ public class Game extends Thread {
 	private List<Entity> players = new ArrayList<Entity>();
 	private World world;
 	private PlayerController pc;
-	private boolean online = true;
+	public boolean local = false;
 	private TextureLoading textureHandler;
+	public GameOverlay go;
 
 	public Game() {
 		this.world = new World();
@@ -87,9 +90,7 @@ public class Game extends Thread {
 		}
 		entity.setID(id);
 		this.players.add(entity);
-		if (this.online) {
-			MessageProtocol.sendReady();
-		}
+		MessageProtocol.sendReady();
 		return entity;
 	}
 
@@ -135,12 +136,21 @@ public class Game extends Thread {
 		// enabling and correctly setting openGL
 		setOpenGL();
 		
+		go = new GameOverlay(this.world.size());
+		
 		// start of the rendering loop
 		while (!Display.isCloseRequested()) {
 			glClear(GL_COLOR_BUFFER_BIT);
 			
 			// draw the walls and empty tiles
 			this.world.draw();
+			
+			if (players.contains(pc.getPlayer()))
+				go.updateTime();
+			go.drawTime();
+			
+			if (players.size() == 1)
+				go.drawWinners();
 			
 			// cycle through player array list and draw
 			// corresponding textures from sprite sheet.
@@ -151,7 +161,7 @@ public class Game extends Thread {
 			
 			// Exits rendering loop if the escape key
 			// is pressed.
-			if (Keyboard.isKeyDown((Keyboard.KEY_ESCAPE))) {
+			if (Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) {
 				break;
 			}
 			
@@ -195,15 +205,6 @@ public class Game extends Thread {
 			}
 		}
 	}
-	
-	// boolean variables for server visibility.
-	public void setOffline() {
-		this.online = false;
-	}
-
-	public boolean isOnline() {
-		return this.online;
-	}
 
 	public TextureLoading getTextureLoading() {
 		return this.textureHandler;
@@ -217,14 +218,30 @@ public class Game extends Thread {
 		glLoadIdentity();
 		glOrtho(0.0, this.world.size() * MonsterGame.TILE_SIZE,
 				this.world.size() * MonsterGame.TILE_SIZE, 0.0, 1, -1);
-		glMatrixMode(GL_MODELVIEW);
 		glEnable(GL_TEXTURE_RECTANGLE_ARB);
+		glMatrixMode(GL_MODELVIEW);
 		glEnable(GL_BLEND);
+		glEnable(GL11.GL_TEXTURE_2D);     
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		glClearColor(1F, 1F, 1F, 1F);
-		glColor3f(0F, 0F, 0F);
+		glColor3f(0F, 0F, 0F);         
 		glBindTexture(GL_TEXTURE_RECTANGLE_ARB,
 				MonsterGame.instance.game.getTextureLoading().spritesheet);
+	}
+
+	public void killPlayer(int playerID) {
+		int index = -1;
+		for (int i = 0; i < this.players.size(); i++) {
+			if (this.players.get(i).getID() == playerID) {
+				index = i;
+				break;
+			}
+		}
+		this.players.remove(index);
+	}
+
+	public void setLocal(boolean b) {
+		this.local = b;
 	}
 
 }

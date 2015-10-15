@@ -1,5 +1,6 @@
 package monster.java.client.gui;
 
+
 import monster.java.client.MonsterGame;
 import monster.java.client.game.Game;
 import monster.java.client.net.NetworkClient;
@@ -34,8 +35,8 @@ public class Lobby extends Menu {
 		boolean connected = false;
 		
 		while (!connected) {
-			System.out.println("Enter IP/host of server, or 0 to go back.");
-			String in = MonsterGame.instance.sc.nextLine();
+			//System.out.println("Enter IP/host of server, or 0 to go back.");
+			String in = MainMenu.GameMenu.IPAdr;
 			
 			if (in.equals("0"))
 				return true;
@@ -57,5 +58,7 @@ public class Lobby extends Menu {
 		
 		return true;
 	}
+
+
 
 }

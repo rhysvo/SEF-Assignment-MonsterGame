@@ -36,9 +36,7 @@ public class Entity {
 			this.x += newx;
 			this.y += newy;
 
-			if (MonsterGame.instance.game.isOnline()) {
-				MessageProtocol.sendMove(this.x, this.y);
-			}
+			MessageProtocol.sendMove(this.x, this.y);
 		}
 	}
 

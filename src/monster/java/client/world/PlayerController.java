@@ -32,4 +32,8 @@ public class PlayerController {
 		player.update(1, 0);
 		return true;
 	}
+
+	public Object getPlayer() {
+		return player;
+	}
 }

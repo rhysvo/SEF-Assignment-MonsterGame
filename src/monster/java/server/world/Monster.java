@@ -53,10 +53,6 @@ public class Monster extends Entity {
 		// Move left
 		else if(d == 3)
 			monsterMove(-1, 0);
-		
-		// Default if wall/error
-		else 
-			System.out.print("");
 	}
   	
 	/**

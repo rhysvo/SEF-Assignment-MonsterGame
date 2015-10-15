@@ -9,9 +9,21 @@ public class MonsterServer {
 	public static final boolean DEBUG = false;
 	
 	public static void main(String[] args) {
+		while (true) {
+			server = new NetworkServer(PORT);
+			server.run();
+			server.destroy();
+		}
+	}
+	
+	public static void local() {
 		server = new NetworkServer(PORT);
-		server.init();
-		server.run();
+		server.setNumPlayers(1);
+		server.start();
+	}
+	
+	public static void killLocal() {
+		server.destroy();
 	}
 
 }

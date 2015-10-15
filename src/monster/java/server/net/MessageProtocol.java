@@ -92,9 +92,16 @@ public class MessageProtocol {
 				processMove(client, msg);
 			else if (msg.startsWith("num:"))
 				processNumPlayers(client, msg);
+			else if (msg.startsWith("time:"))
+				processPlayerTime(client, msg);
 			
 		}
 
+	}
+	
+	private static void processPlayerTime(NetworkPlayer client, String timeMsg) {
+		float time = Float.parseFloat(timeMsg.replace("time:", ""));
+		client.setTime(time);
 	}
 	
 	private static void processNumPlayers(NetworkPlayer client, String npMsg) {

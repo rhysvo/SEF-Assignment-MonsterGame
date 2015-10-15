@@ -48,7 +48,7 @@ public class NetworkClient extends Thread {
 			this.clientSocket.close();
 			
 		} catch (IOException e) {
-			e.printStackTrace();
+			//e.printStackTrace();
 		}
 		
 	}
