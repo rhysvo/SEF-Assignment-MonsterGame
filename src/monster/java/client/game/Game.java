@@ -248,11 +248,31 @@ public class Game extends Thread {
 	}
 	
 	// JUNIT testing code
-			@Test
-			public void displayCanOpen() {
-				//check the arrayList for a monster
-				assertTrue(!Display.isCloseRequested());
-			}
+	@Test
+	public void displayCanOpen() {
+		//check that the display can open
+		Game game = new Game();
+		game.run();
+		assertTrue(!Display.isCloseRequested());
+	}
+	
+	public void playersExists() {
+		//check that at least two players have joined.
+		Game game = new Game();
+		game.run();
+		assertTrue(players.size() > 2);
+	}
+	
+	public void playersInBounds() {
+		int x = 0, y = 0;
+		//check that for all players that exist, including the monster,
+		//all are within the size of the world
+		for(Entity player: this.players) {
+			player.atPos(x, y);
+			assertTrue(x >= 0 && x < this.world.size());
+			assertTrue(y >= 0 && y < this.world.size());
+		}
+	}
 			
 			
 			

@@ -10,8 +10,6 @@ import static org.lwjgl.opengl.GL11.glTexCoord2f;
 import static org.lwjgl.opengl.GL11.glTranslatef;
 import static org.lwjgl.opengl.GL11.glVertex2f;
 
-import org.junit.Test;
-
 import monster.java.client.MonsterGame;
 import monster.java.client.net.MessageProtocol;
 import monster.java.client.util.Sprite;
@@ -112,8 +110,4 @@ public class Entity {
 		return this.x == x && this.y == y;
 	}
 	
-	@Test
-	public void monsterExists() {
-		
-	}
 }
