@@ -10,10 +10,17 @@ public class MonsterServer {
 	
 	public static void main(String[] args) {
 		while (true) {
+			runServer();
 			server = new NetworkServer(PORT);
 			server.run();
 			server.destroy();
 		}
+	}
+	
+	public static void runServer() {
+		server = new NetworkServer(PORT);
+		server.run();
+		server.destroy();
 	}
 
 }

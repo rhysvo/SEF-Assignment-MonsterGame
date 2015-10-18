@@ -124,6 +124,9 @@ public class MessageProtocol {
 		// Message should look like
 		// mv:10,12
 		// (where 10 is x and 12 is y)
+		
+		if (!client.getPlayer().isAlive())
+			return;
 
 		Matcher matcher = movePattern.matcher(mvMsg);
 

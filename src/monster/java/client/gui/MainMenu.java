@@ -256,7 +256,7 @@ public class MainMenu extends Application {
 			        	@SuppressWarnings("rawtypes")
 						Task task = new Task<Void>() {
 			        	    @Override public Void call() {
-			        	    	MonsterServer.main(null);
+			        	    	MonsterServer.runServer();
 			        	        
 			        	        return null;
 			        	    }

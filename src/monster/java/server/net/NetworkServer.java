@@ -140,9 +140,16 @@ public class NetworkServer extends Thread {
 		boolean exit = false;
 		
 		// Allow players to move around before monster
-		this.sleepn(3);
+		this.sleepn(5);
 		
 		while(!exit) {
+			// Sleep BEFORE moving so players can't easily move away
+			try {
+				Thread.sleep(Math.max(165, MonsterServer.MON_TICK));
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			
 			// Begin the AI movement
 			monster.moveToPlayer(players);
 			
