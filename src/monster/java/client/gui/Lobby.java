@@ -42,9 +42,10 @@ public class Lobby extends Menu {
 				return true;
 			
 			try {
-
+				
 				MonsterGame.instance.game = new Game();
 				MonsterGame.instance.client = new NetworkClient(in, 3286);
+				
 				MonsterGame.instance.client.start();
 				System.out.println("Waiting for at least 2 players...");
 				

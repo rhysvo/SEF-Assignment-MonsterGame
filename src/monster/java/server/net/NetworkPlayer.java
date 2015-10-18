@@ -17,6 +17,7 @@ public class NetworkPlayer extends Thread {
 	private BufferedReader in;
 	private Entity player;
 	private int id;
+	public static String socketID;
 	
 	private boolean isReady = false;
 
@@ -26,6 +27,10 @@ public class NetworkPlayer extends Thread {
 
 		System.out.println("New player connected to " + socket.getInetAddress()
 				+ " " + socket.getPort());
+		
+		
+		socketID = socket.getInetAddress().toString();
+		System.out.println(socketID);
 
 		try {
 

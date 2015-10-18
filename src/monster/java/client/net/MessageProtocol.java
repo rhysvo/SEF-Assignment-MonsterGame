@@ -5,6 +5,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import monster.java.client.MonsterGame;
+import monster.java.client.gui.MainMenu;
 import monster.java.client.world.Entity;
 
 public class MessageProtocol {
@@ -45,7 +46,7 @@ public class MessageProtocol {
 					int numPlayers = 0;
 					while (numPlayers == 0) {
 						try {
-							numPlayers = Integer.parseInt(MonsterGame.instance.sc.nextLine());
+							numPlayers = Integer.parseInt(MainMenu.GameMenu.playerNumbers);
 						} catch (NumberFormatException e) {
 							numPlayers = 0;
 						}
