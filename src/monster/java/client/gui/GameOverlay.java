@@ -14,7 +14,7 @@ import monster.java.client.MonsterGame;
 /**
  * Overlays a UI on the game screen
  * Called after game frame render
- * @author Rhys
+ * @author Alex
  *
  */
 public class GameOverlay {
@@ -30,27 +30,42 @@ public class GameOverlay {
 		this.size = size * MonsterGame.TILE_SIZE;
 	}
 	
+	/**
+	 * Update the time. Assumes 60fps
+	 */
 	public void updateTime() {
 		time += 1F / 60F;
 	}
 	
+	/**
+	 * Draw the current survived time on the screen
+	 */
 	public void drawTime() {		
 		Color.white.bind();
 
+		// arb textures need to be disabled to draw fonts for some
+		// dumb reason >:(
 		GL11.glDisable(GL_TEXTURE_RECTANGLE_ARB);
 		font.drawString(80, 0, String.format("%.02fs", time), Color.white);	
 		glEnable(GL_TEXTURE_RECTANGLE_ARB);	
 	}
 	
+	/**
+	 * Set the win data, will be called after game over
+	 * @param data
+	 */
 	public void setWinData(String data) {
 		this.data = data;
 	}
 	
+	/**
+	 * Draw the scores at the end of the game
+	 */
 	public void drawWinners() {
-		GL11.glDisable(GL_TEXTURE_RECTANGLE_ARB);
-		
 		if (data == null)
 			return;
+		
+		GL11.glDisable(GL_TEXTURE_RECTANGLE_ARB);
 		
 		int x = size / 3, y = 80, i = 1;
 		for (String player : data.split(",")) {

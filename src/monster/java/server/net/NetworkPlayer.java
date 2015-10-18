@@ -10,6 +10,13 @@ import java.net.SocketException;
 import monster.java.server.MonsterServer;
 import monster.java.server.world.Entity;
 
+/**
+ * NetworkPlayer handles a client's connection to
+ * the server and all attributes related to a player
+ * 
+ * @author Alex
+ *
+ */
 public class NetworkPlayer extends Thread {
 
 	private Socket socket;
@@ -31,7 +38,7 @@ public class NetworkPlayer extends Thread {
 		System.out.println("New player connected to " + socket.getInetAddress()
 				+ " " + socket.getPort());
 		
-		
+		// set socketID to display on game waiting screen
 		socketID = socket.getInetAddress().toString();
 		System.out.println(socketID);
 
@@ -53,6 +60,9 @@ public class NetworkPlayer extends Thread {
 		this.start();
 	}
 	
+	/**
+	 * Close the socket
+	 */
 	public void close() {
 		try {
 			this.socket.close();
@@ -126,6 +136,11 @@ public class NetworkPlayer extends Thread {
 		return this.id;
 	}
 
+	/**
+	 * Set player's time
+	 * 
+	 * @param time
+	 */
 	public void setTime(float time) {
 		this.time = time;
 	}

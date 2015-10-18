@@ -1,7 +1,5 @@
 package monster.java.client.gui;
 
-import javax.swing.JFrame;
-
 import monster.java.client.MonsterGame;
 import monster.java.client.game.Game;
 import monster.java.client.net.NetworkClient;
@@ -15,19 +13,18 @@ import monster.java.client.net.NetworkClient;
  *
  */
 public class UIHandler {
-
-	@SuppressWarnings("unused")
-	private JFrame frame;
 	
-	public UIHandler(JFrame frame) {
-		this.frame = frame;
-	}
-	
+	/**
+	 * Display the main menu
+	 */
 	public void showMain() {		
 		new MainMenu().begin();
-		
 	}
 	
+	/**
+	 * Create a new NetworkClient and Game instance
+	 * to begin the game
+	 */
 	public void runClient() {
 		String in = MainMenu.GameMenu.IPAdr;
 		

@@ -45,7 +45,6 @@ public class Game extends Thread {
 	private List<Entity> players = new ArrayList<Entity>();
 	private World world;
 	private PlayerController pc;
-	public boolean local = false;
 	private TextureLoading textureHandler;
 	public GameOverlay go;
 
@@ -61,10 +60,20 @@ public class Game extends Thread {
 		this.world.loadWorld(worldStrings);
 	}
 
+	/**
+	 * Create a player with specified id and assign
+	 * it to the player controller
+	 * @param id
+	 */
 	public void addLocalPlayer(int id) {
 		this.pc = new PlayerController(addPlayer(id));
 	}
 
+	/**
+	 * Create and add a player to the world
+	 * @param id
+	 * @return new player
+	 */
 	public Entity addPlayer(int id) {
 		Entity entity;
 		switch (id) {
@@ -94,6 +103,12 @@ public class Game extends Thread {
 		return entity;
 	}
 
+	/**
+	 * Try to get an entity from the id, else create it
+	 * and return it
+	 * @param id
+	 * @return entity
+	 */
 	public Entity getEntity(int id) {
 		for (Entity p : this.players)
 			if (p.getID() == id)
@@ -101,6 +116,13 @@ public class Game extends Thread {
 		return addPlayer(id);
 	}
 
+	/**
+	 * Check if (x, y) is a wall, player or out of bounds
+	 * 
+	 * @param x
+	 * @param y
+	 * @return true if (x, y) is empty
+	 */
 	public boolean canMove(int x, int y) {
 		if (x < 0 || x >= this.world.size() || y < 0 || y >= this.world.size())
 			return false;
@@ -112,6 +134,9 @@ public class Game extends Thread {
 		return this.world.isAccessible(x, y);
 	}
 
+	/**
+	 * Threaded render loop
+	 */
 	public void run() {
 
 		try {
@@ -182,6 +207,9 @@ public class Game extends Thread {
 		System.exit(0);
 	}
 
+	/**
+	 * Poll input from the keyboard
+	 */
 	private void getKeyInput() {
 
 		while (Keyboard.next()) {
@@ -210,9 +238,11 @@ public class Game extends Thread {
 		return this.textureHandler;
 	}
 	
-	// dynamically sets and creates the openGL context, 
-	// enables transparent texture backgrounds and
-	// variable window size.
+	/**
+	 * Dynamically sets and creates the openGL context,
+	 * enables transparent texture backgrounds and
+	 * variable window size
+	 */
 	private void setOpenGL(){
 		glMatrixMode(GL_PROJECTION);
 		glLoadIdentity();
@@ -229,6 +259,10 @@ public class Game extends Thread {
 				MonsterGame.instance.game.getTextureLoading().spritesheet);
 	}
 
+	/**
+	 * Remove a player from the array, and from the game
+	 * @param playerID
+	 */
 	public void killPlayer(int playerID) {
 		int index = -1;
 		for (int i = 0; i < this.players.size(); i++) {
@@ -238,10 +272,6 @@ public class Game extends Thread {
 			}
 		}
 		this.players.remove(index);
-	}
-
-	public void setLocal(boolean b) {
-		this.local = b;
 	}
 
 }

@@ -4,6 +4,7 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
+import monster.java.client.MonsterGame;
 import monster.java.server.MonsterServer;
 import monster.java.server.net.NetworkPlayer;
 import javafx.animation.TranslateTransition;
@@ -78,7 +79,7 @@ public class MainMenu extends Application {
 		public static String IPAdr = null;
 		public static String playerNumbers = null;
 
-		UIHandler uiHandler = new UIHandler(null);
+		UIHandler uiHandler = MonsterGame.instance.uiHandler;
 
 		public GameMenu() {
 			VBox menu0 = new VBox(10);

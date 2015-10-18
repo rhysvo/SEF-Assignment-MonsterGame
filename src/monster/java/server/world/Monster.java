@@ -5,6 +5,13 @@ import java.util.ArrayList;
 import monster.java.server.net.MessageProtocol;
 import monster.java.server.net.NetworkPlayer;
 
+/**
+ * The monster class which controls the monster entity
+ * and begins a node search on each iteration to find
+ * its next move
+ * @author Kyle
+ *
+ */
 public class Monster extends Entity {
 	private int worldSize;
 

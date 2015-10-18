@@ -49,6 +49,12 @@ public class NetworkServer extends Thread {
 		this.numPlayers = numPlayers;
 	}
 	
+	/**
+	 * Load world from file, set it to the world attr and return it
+	 * to send to clients
+	 * @return
+	 * @throws FileNotFoundException
+	 */
 	private String loadWorld() throws FileNotFoundException {
 		Scanner in = new Scanner(new FileReader("world.txt"));
 		StringBuilder sb = new StringBuilder();
@@ -63,7 +69,10 @@ public class NetworkServer extends Thread {
 		return sb.toString();
 	}
 	
-	public void destroy() {
+	/**
+	 * 
+	 */
+	public void close() {
 		try {
 			this.serverSocket.close();
 		} catch (IOException e) {
@@ -171,12 +180,16 @@ public class NetworkServer extends Thread {
 				}
 			}
 			
-			// Implement this after finding out all players are dead
+			// all players are dead, exit
 			if (numAlivePlayers() == 0)
 				exit = true;
 			
-			if (numConnectedPlayers() == 0)
+			// no players are connected, destroy the socket
+			// and exit
+			if (numConnectedPlayers() == 0) {
+				this.close();
 				return;
+			}
 			
 		}
 		
@@ -197,7 +210,7 @@ public class NetworkServer extends Thread {
 		}
 		
 		// end
-		this.destroy();
+		this.close();
 	}
 	
 	public NetworkPlayer getRankedPlayer(int i) {

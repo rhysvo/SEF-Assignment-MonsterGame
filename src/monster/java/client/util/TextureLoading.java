@@ -25,9 +25,9 @@ import de.matthiasmann.twl.utils.PNGDecoder;
 
 /**
  * Loads textures into a HashMap from
- * a sprite sheet (?), which can be accessed
+ * a sprite sheet, which can be accessed
  * globally. 
- * @author Alex
+ * @author Rhys
  *
  */
 public class TextureLoading {

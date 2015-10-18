@@ -22,12 +22,18 @@ public class MessageProtocol {
 		MonsterGame.instance.client.send(msg);
 	}
 	
+	/**
+	 * Send the server the local time survived.
+	 * Usually not accurate between all players, but it looks cool
+	 * when it ticks up
+	 */
 	public static void sendTime() {
 		String msg = String.format("time:%.02f;", MonsterGame.instance.game.go.time);
 		MonsterGame.instance.client.send(msg);
 	}
 	
 	/**
+	 * Process a line from the server
 	 * 
 	 * @param line
 	 * @throws IOException 
@@ -37,17 +43,17 @@ public class MessageProtocol {
 		System.out.println(line);
 		
 		for (String msg : line.split(";")) {
+			// player or monster move
 			if (msg.startsWith("mv:")) {
 				processMove(msg);
 			
-			} else if (msg.startsWith("dead:")) {
-				processDeath(msg);
-			
+			// player id from server
 			} else if (msg.startsWith("player:")) {
 				int id = Integer.parseInt(msg.split(":")[1]);
 				MonsterGame.instance.game.addLocalPlayer(id + 1);
-				if (id == 0 && !MonsterGame.instance.game.local) {
-					System.out.println("How many players?:");
+				// if no other players, send the requested numPlayers to
+				// the server
+				if (id == 0) {
 					int numPlayers = 0;
 					while (numPlayers == 0) {
 						try {
@@ -58,20 +64,32 @@ public class MessageProtocol {
 					}
 					MonsterGame.instance.client.send("num:" + numPlayers);
 				}
-				
+			
+			// start the game after all clients are connected
 			} else if (msg.equals("begin")) {
 				MonsterGame.instance.game.start();
+				
+			// the world as a string
 			} else if (msg.startsWith("world:")) {
 				processWorld(msg);
+			
+			// player death
 			} else if (msg.startsWith("kill:")) {
 				processDeath(msg);
 				sendTime();
+				
+			// game over
 			} else if (msg.startsWith("end:")) {
 				processEnd(msg);
 			}
 		}
 	}
 	
+	/**
+	 * Set winData in GameOverlay, which will be displayed in the
+	 * main render loop in Game
+	 * @param endMsg
+	 */
 	private static void processEnd(String endMsg) {
 		MonsterGame.instance.game.go.setWinData(endMsg.replace("end:", ""));
 	}
