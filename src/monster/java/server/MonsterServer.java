@@ -15,15 +15,5 @@ public class MonsterServer {
 			server.destroy();
 		}
 	}
-	
-	public static void local() {
-		server = new NetworkServer(PORT);
-		server.setNumPlayers(1);
-		server.start();
-	}
-	
-	public static void killLocal() {
-		server.destroy();
-	}
 
 }

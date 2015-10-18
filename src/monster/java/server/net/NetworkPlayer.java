@@ -19,6 +19,7 @@ public class NetworkPlayer extends Thread {
 	private int id;
 	public boolean connected;
 	public float time;
+	public static String socketID;
 	
 	private boolean isReady = false;
 
@@ -29,6 +30,10 @@ public class NetworkPlayer extends Thread {
 
 		System.out.println("New player connected to " + socket.getInetAddress()
 				+ " " + socket.getPort());
+		
+		
+		socketID = socket.getInetAddress().toString();
+		System.out.println(socketID);
 
 		try {
 

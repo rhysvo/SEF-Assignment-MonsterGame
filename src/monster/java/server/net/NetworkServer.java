@@ -159,6 +159,7 @@ public class NetworkServer extends Thread {
 						playerObj.kill();
 						playerObj.setRank(numAlivePlayers());
 						System.out.println("Player " + player.getID() + " died.");
+						sleepn(1);
 					}
 				}
 			}
@@ -187,6 +188,9 @@ public class NetworkServer extends Thread {
 		for (NetworkPlayer player : this.players) {
 			player.close();
 		}
+		
+		// end
+		this.destroy();
 	}
 	
 	public NetworkPlayer getRankedPlayer(int i) {

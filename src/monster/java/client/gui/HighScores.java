@@ -7,24 +7,10 @@ package monster.java.client.gui;
  * @author Rhys
  *
  */
-public class HighScores extends Menu {
+public class HighScores {
 
-	protected HighScores(UIHandler uiHandler) {
-		super(uiHandler);
+	public HighScores(UIHandler uiHandler) {
+		// TODO
 	}
-
-	@Override
-	protected void processButtonValue(String value) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	protected boolean startCommandLine() {
-		// TODO Auto-generated method stub
-		return true;
-	}
-
-
 
 }
