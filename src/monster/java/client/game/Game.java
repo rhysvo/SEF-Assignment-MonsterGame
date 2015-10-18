@@ -1,5 +1,6 @@
 package monster.java.client.game;
 
+import static org.junit.Assert.*;
 import static org.lwjgl.opengl.ARBTextureRectangle.GL_TEXTURE_RECTANGLE_ARB;
 import static org.lwjgl.opengl.GL11.GL_BLEND;
 import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
@@ -20,6 +21,7 @@ import static org.lwjgl.opengl.GL11.glOrtho;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.junit.Test;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
@@ -33,6 +35,7 @@ import monster.java.client.util.TextureLoading;
 import monster.java.client.world.Entity;
 import monster.java.client.world.PlayerController;
 import monster.java.client.world.World;
+
 
 /**
  * Main game loop and renderer Contains list of entities Draws all entities +
@@ -243,5 +246,16 @@ public class Game extends Thread {
 	public void setLocal(boolean b) {
 		this.local = b;
 	}
-
+	
+	// JUNIT testing code
+			@Test
+			public void displayCanOpen() {
+				//check the arrayList for a monster
+				assertTrue(!Display.isCloseRequested());
+			}
+			
+			
+			
 }
+
+

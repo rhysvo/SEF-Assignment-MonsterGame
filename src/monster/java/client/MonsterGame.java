@@ -1,8 +1,13 @@
 package monster.java.client;
 
+import static org.junit.Assert.*;
+
 import java.util.Scanner;
 
 import javax.swing.JFrame;
+
+import org.junit.Test;
+import org.lwjgl.opengl.Display;
 
 import monster.java.client.game.Game;
 import monster.java.client.gui.UIHandler;
@@ -68,5 +73,8 @@ public class MonsterGame {
 		instance.run();
 
 	}
+	
+	
+		
 
 }
