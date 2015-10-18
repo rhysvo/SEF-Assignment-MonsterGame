@@ -2,6 +2,7 @@ package monster.java.client;
 
 import java.util.Scanner;
 
+
 import monster.java.client.game.Game;
 import monster.java.client.gui.UIHandler;
 import monster.java.client.net.NetworkClient;
@@ -51,5 +52,8 @@ public class MonsterGame {
 		instance.run();
 
 	}
+	
+	
+		
 
 }

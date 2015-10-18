@@ -1,5 +1,6 @@
 package monster.java.client.game;
 
+import static org.junit.Assert.*;
 import static org.lwjgl.opengl.ARBTextureRectangle.GL_TEXTURE_RECTANGLE_ARB;
 import static org.lwjgl.opengl.GL11.GL_BLEND;
 import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
@@ -20,6 +21,7 @@ import static org.lwjgl.opengl.GL11.glOrtho;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.junit.Test;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
@@ -33,6 +35,7 @@ import monster.java.client.util.TextureLoading;
 import monster.java.client.world.Entity;
 import monster.java.client.world.PlayerController;
 import monster.java.client.world.World;
+
 
 /**
  * Main game loop and renderer Contains list of entities Draws all entities +
@@ -273,5 +276,31 @@ public class Game extends Thread {
 		}
 		this.players.remove(index);
 	}
-
+	
+	// JUNIT testing code
+	@Test
+	public void displayCanOpen() {
+		//check that the display can open
+		Game game = new Game();
+		game.run();
+		assertTrue(!Display.isCloseRequested());
+	}
+	
+	public void playersExists() {
+		//check that at least two players have joined.
+		Game game = new Game();
+		game.run();
+		assertTrue(players.size() > 2);
+	}
+	
+	public void playersInBounds() {
+		int x = 0, y = 0;
+		//check that for all players that exist, including the monster,
+		//all are within the size of the world
+		for(Entity player: this.players) {
+			player.atPos(x, y);
+			assertTrue(x >= 0 && x < this.world.size());
+			assertTrue(y >= 0 && y < this.world.size());
+		}
+	}			
 }
