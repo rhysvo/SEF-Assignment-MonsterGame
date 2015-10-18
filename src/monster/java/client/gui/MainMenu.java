@@ -1,12 +1,7 @@
 package monster.java.client.gui;
 
 import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 
-import monster.java.client.MonsterGame;
-import monster.java.server.MonsterServer;
-import monster.java.server.net.NetworkPlayer;
 import javafx.animation.TranslateTransition;
 import javafx.application.Application;
 import javafx.concurrent.Task;
@@ -24,6 +19,9 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import monster.java.client.MonsterGame;
+import monster.java.server.MonsterServer;
+import monster.java.server.net.NetworkPlayer;
 
 
 public class MainMenu extends Application {
@@ -45,7 +43,7 @@ public class MainMenu extends Application {
 		Pane root = new Pane();
 		root.setPrefSize(800, 600);
 
-		InputStream is = Files.newInputStream(Paths.get("src/res/MenuBackground2.jpg"));
+		InputStream is = getClass().getClassLoader().getResource("res/MenuBackground2.jpg").openStream();
 		Image img = new Image(is);
 		is.close();
 

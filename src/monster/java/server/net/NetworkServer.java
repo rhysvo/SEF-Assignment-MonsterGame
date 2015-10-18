@@ -1,7 +1,6 @@
 package monster.java.server.net;
 
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.util.ArrayList;
@@ -55,18 +54,24 @@ public class NetworkServer extends Thread {
 	 * @return
 	 * @throws FileNotFoundException
 	 */
-	private String loadWorld() throws FileNotFoundException {
-		Scanner in = new Scanner(new FileReader("world.txt"));
-		StringBuilder sb = new StringBuilder();
-		
-		while (in.hasNextLine()) {
-			sb.append(in.nextLine() + ",");
+	private String loadWorld() {
+		Scanner in;
+		try {
+			in = new Scanner(getClass().getClassLoader().getResource("world.txt").openStream());
+			StringBuilder sb = new StringBuilder();
+			
+			while (in.hasNextLine()) {
+				sb.append(in.nextLine() + ",");
+			}
+			
+			world = sb.toString().split(",");
+			
+			in.close();
+			return sb.toString();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
-		
-		world = sb.toString().split(",");
-		
-		in.close();
-		return sb.toString();
+		return "";
 	}
 	
 	/**
