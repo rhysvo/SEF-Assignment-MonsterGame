@@ -1,10 +1,16 @@
 package monster.java.client.gui;
 
+import static org.junit.Assert.*;
+
 import java.io.InputStream;
+
+import org.junit.Test;
 
 import javafx.animation.TranslateTransition;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.concurrent.Task;
+import javafx.embed.swing.JFXPanel;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -350,5 +356,64 @@ public class MainMenu extends Application {
 			
 		}
 	}
+	
+/* * * Testing * * */
+	
+	@Test
+	public void testPlayerNumberIntPassing() {
+		String playerNumbers = "1";
+		boolean result = false;	
+		
+		if (Integer.parseInt(playerNumbers) < 1){
+    		result = false;
+    	} else if (Integer.parseInt(playerNumbers) > 4)
+    	{
+    		result = false;
+    	} else if (Integer.parseInt(playerNumbers) >=1 && Integer.parseInt(playerNumbers) <= 4 )
+    	{
+    		result = true;
+    	}
+    	assertEquals(result, true);
+	
+	}
+	
+	
+	
+	@Test
+    public void menuOpens() throws InterruptedException {
+        Thread thread = new Thread(new Runnable() {
+
+            @Override
+            public void run() {
+                new JFXPanel(); // Initializes the JavaFx Platform
+                Platform.runLater(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        try {
+							new MainMenu().start(new Stage()); // Create & initialize app.
+						} catch (Exception e) {
+
+						} 
+
+                    }
+                });
+            }
+        });
+        thread.start();
+    }
+	
+	@Test
+	public void testStringAssignmentShouldPass() {
+		String IPAdr = "test";
+		TextField IPAdress = new TextField();
+		IPAdress.setText("localhost");
+		IPAdr = IPAdress.getText();
+		
+		assertEquals(IPAdr, "localhost");
+	}
 
 }
+
+
+
