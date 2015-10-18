@@ -272,8 +272,5 @@ public class Game extends Thread {
 			assertTrue(x >= 0 && x < this.world.size());
 			assertTrue(y >= 0 && y < this.world.size());
 		}
-	}
-			
-			
-			
+	}			
 }
