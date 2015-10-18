@@ -1,7 +1,6 @@
 package monster.java.server.net;
 
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.util.ArrayList;
@@ -49,21 +48,36 @@ public class NetworkServer extends Thread {
 		this.numPlayers = numPlayers;
 	}
 	
-	private String loadWorld() throws FileNotFoundException {
-		Scanner in = new Scanner(new FileReader("world.txt"));
-		StringBuilder sb = new StringBuilder();
-		
-		while (in.hasNextLine()) {
-			sb.append(in.nextLine() + ",");
+	/**
+	 * Load world from file, set it to the world attr and return it
+	 * to send to clients
+	 * @return
+	 * @throws FileNotFoundException
+	 */
+	private String loadWorld() {
+		Scanner in;
+		try {
+			in = new Scanner(getClass().getClassLoader().getResource("world.txt").openStream());
+			StringBuilder sb = new StringBuilder();
+			
+			while (in.hasNextLine()) {
+				sb.append(in.nextLine() + ",");
+			}
+			
+			world = sb.toString().split(",");
+			
+			in.close();
+			return sb.toString();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
-		
-		world = sb.toString().split(",");
-		
-		in.close();
-		return sb.toString();
+		return "";
 	}
 	
-	public void destroy() {
+	/**
+	 * 
+	 */
+	public void close() {
 		try {
 			this.serverSocket.close();
 		} catch (IOException e) {
@@ -140,9 +154,16 @@ public class NetworkServer extends Thread {
 		boolean exit = false;
 		
 		// Allow players to move around before monster
-		this.sleepn(3);
+		this.sleepn(5);
 		
 		while(!exit) {
+			// Sleep BEFORE moving so players can't easily move away
+			try {
+				Thread.sleep(Math.max(165, MonsterServer.MON_TICK));
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			
 			// Begin the AI movement
 			monster.moveToPlayer(players);
 			
@@ -159,16 +180,21 @@ public class NetworkServer extends Thread {
 						playerObj.kill();
 						playerObj.setRank(numAlivePlayers());
 						System.out.println("Player " + player.getID() + " died.");
+						sleepn(1);
 					}
 				}
 			}
 			
-			// Implement this after finding out all players are dead
+			// all players are dead, exit
 			if (numAlivePlayers() == 0)
 				exit = true;
 			
-			if (numConnectedPlayers() == 0)
+			// no players are connected, destroy the socket
+			// and exit
+			if (numConnectedPlayers() == 0) {
+				this.close();
 				return;
+			}
 			
 		}
 		
@@ -187,6 +213,9 @@ public class NetworkServer extends Thread {
 		for (NetworkPlayer player : this.players) {
 			player.close();
 		}
+		
+		// end
+		this.close();
 	}
 	
 	public NetworkPlayer getRankedPlayer(int i) {

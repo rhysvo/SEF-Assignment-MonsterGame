@@ -2,10 +2,16 @@ package monster.java.server.world;
 
 import java.util.ArrayList;
 
-import monster.java.server.MonsterServer;
 import monster.java.server.net.MessageProtocol;
 import monster.java.server.net.NetworkPlayer;
 
+/**
+ * The monster class which controls the monster entity
+ * and begins a node search on each iteration to find
+ * its next move
+ * @author Kyle
+ *
+ */
 public class Monster extends Entity {
 	private int worldSize;
 
@@ -73,12 +79,5 @@ public class Monster extends Entity {
 		
 		// Transmit Monster location to clients
 		MessageProtocol.sendMonsterMove(this.x, this.y);
-
-		// Make the Monster wait till ending move sequence for debugging
-		try {
-			Thread.sleep(Math.max(165, MonsterServer.MON_TICK));
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
 	}
 }

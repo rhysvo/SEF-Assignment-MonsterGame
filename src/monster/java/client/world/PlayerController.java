@@ -1,7 +1,6 @@
 package monster.java.client.world;
 /**
- * Allows controlling of an Entity, 
- * extends GridEntity class
+ * Allows control of the local player
  * @author Rhys
  *
  */

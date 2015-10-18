@@ -46,11 +46,12 @@ public class Node {
 	}
 	
 	/**
+	 * Get the node at the position (x, y)
 	 * 
 	 * @param nodes
 	 * @param x
 	 * @param y
-	 * @return
+	 * @return node at the position given
 	 */
 	public static Node getNode(Node[][] nodes, int x, int y) {
 		for(Node[] na : nodes)
@@ -61,6 +62,11 @@ public class Node {
 		return null;
 	}
 	
+	/**
+	 * Add all adjacent nodes from the nodes list
+	 * 
+	 * @param nodes
+	 */
 	private void addAllAdjacent(Node[][] nodes) {
 		addAdjacent(0, getNode(nodes, x, y - 1));
 		addAdjacent(1, getNode(nodes, x + 1, y));
@@ -128,11 +134,19 @@ public class Node {
 	}
 	
 	/**
+	 * Recursively search paths.
+	 * If this path hits a wall, 999 will propagate back up the chain
+	 * and another path will be tested. When all paths are tested, the lowest
+	 * distance is passed back and beginSearch decides which direction is the
+	 * shortest to a player.
+	 * 
+	 * 999 is an arbitrary value that is meant to be much too long for a path
+	 * without hitting a player.
 	 * 
 	 * @param from
 	 * @param dist
 	 * @param players
-	 * @return
+	 * @return distance to player or 999
 	 */
 	private int search(ArrayList<int[]> searched, int from, int dist, ArrayList<NetworkPlayer> players) {
 		// If node is a fork (more than 2 adj, i.e. 2 directions)
@@ -145,7 +159,7 @@ public class Node {
 			searched.add(new int[]{x, y});
 		}
 		
-		if (wall || dist > 20)
+		if (wall || dist > 50)
 			return 999;
 		
 		for(NetworkPlayer player : players) {
@@ -162,7 +176,7 @@ public class Node {
 		for(int i = 0; i < 4; i++) {
 			if(i != from && adj[i] != null)
 				// New ArrayList<int[]>(searched) -> copies the arraylist.
-				// otherwise the original list would be huge and slow.
+				// otherwise using the original list would be huge and slow.
 				searches[i] = adj[i].search(new ArrayList<int[]>(searched), (i - 2) % 4, dist + 1, players);
 			
 			min = Math.min(min, searches[i]);

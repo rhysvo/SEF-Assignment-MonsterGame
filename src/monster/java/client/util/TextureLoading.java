@@ -11,7 +11,6 @@ import static org.lwjgl.opengl.GL11.glGenTextures;
 import static org.lwjgl.opengl.GL11.glTexImage2D;
 import static org.lwjgl.opengl.GL11.glTexParameteri;
 
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -25,24 +24,24 @@ import de.matthiasmann.twl.utils.PNGDecoder;
 
 /**
  * Loads textures into a HashMap from
- * a sprite sheet (?), which can be accessed
+ * a sprite sheet, which can be accessed
  * globally. 
- * @author Alex
+ * @author Rhys
  *
  */
 public class TextureLoading {
 
 	public int spritesheet;
 	public final Map<String, Sprite> spriteMap = new HashMap<String, Sprite>();
-	private final String SPRITESHEET_IMAGE_LOCATION = "src/res/textures/spritesheet.png";
+	private final String SPRITESHEET_IMAGE_LOCATION = "res/textures/spritesheet.png";
 
 	// Reads in the sprite sheet from file
-	public static int glLoadTextureLinear(String location) {
+	public int glLoadTextureLinear(String location) {
 		int texture = glGenTextures();
 		glBindTexture(GL_TEXTURE_RECTANGLE_ARB, texture);
 		InputStream in = null;
 		try {
-			in = new FileInputStream(location);
+			in = getClass().getClassLoader().getResource(location).openStream();
 			PNGDecoder decoder = new PNGDecoder(in);
 			ByteBuffer buffer = BufferUtils.createByteBuffer(
 					4 * decoder.getWidth() * decoder.getHeight());
@@ -77,8 +76,7 @@ public class TextureLoading {
 	}
 
 	public TextureLoading() {
-		spritesheet = TextureLoading
-				.glLoadTextureLinear(SPRITESHEET_IMAGE_LOCATION);
+		spritesheet = glLoadTextureLinear(SPRITESHEET_IMAGE_LOCATION);
 
 		Sprite monster = new Sprite("monster", 0, 0);
 		spriteMap.put("monster", monster);

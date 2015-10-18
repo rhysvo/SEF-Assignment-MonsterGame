@@ -1,11 +1,8 @@
 package monster.java.client.gui;
 
-import javax.swing.JFrame;
-
 import monster.java.client.MonsterGame;
 import monster.java.client.game.Game;
 import monster.java.client.net.NetworkClient;
-import monster.java.server.MonsterServer;
 
 
 /**
@@ -16,39 +13,40 @@ import monster.java.server.MonsterServer;
  *
  */
 public class UIHandler {
-
-	@SuppressWarnings("unused")
-	private JFrame frame;
 	
-	public UIHandler(JFrame frame) {
-		this.frame = frame;
+	/**
+	 * Display the main menu
+	 */
+	public void showMain() {		
+		new MainMenu().begin();
 	}
 	
-	public void showMain() {
-		/* Command Line */
-		//boolean quit = false;
-		MainMenu main = new MainMenu();
-		main.startCommandLine();
+	/**
+	 * Create a new NetworkClient and Game instance
+	 * to begin the game
+	 */
+	public void runClient() {
+		String in = MainMenu.GameMenu.IPAdr;
 		
-	}
-	
-	public void showLobby() {
-		Menu lobby = new Lobby(this);
-		lobby.startCommandLine();
+		if (in.equals("0"))
+			return;
+		
+		try {
+			
+			MonsterGame.instance.game = new Game();
+			MonsterGame.instance.client = new NetworkClient(in, 3286);
+			
+			MonsterGame.instance.client.start();
+			System.out.println("Waiting for at least 2 players...");
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("There was an error connecting to the server.");
+		}
 	}
 	
 	public void showHighScores() {
 		// TODO
-	}
-	
-	public void localTest() {
-		MonsterServer.local();
-		System.out.println("Created local server");
-		MonsterGame.instance.game = new Game();
-		MonsterGame.instance.game.setLocal(true);
-		MonsterGame.instance.client = new NetworkClient("localhost", 3286);
-		MonsterGame.instance.client.run();
-		MonsterServer.killLocal();
 	}
 	
 }

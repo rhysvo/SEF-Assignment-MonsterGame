@@ -31,18 +31,22 @@ public class NetworkClient extends Thread {
 					clientSocket.getInputStream()));
 
 		} catch (Exception e) {
+			// failed to connect
 			e.printStackTrace();
 		}
 
 	}
 	
+	/**
+	 * Server input loop.
+	 * Receives messages from the server and passes them to the
+	 * MessageProtocol
+	 */
 	public void run() {
 		String fromServer;
 		try {
 			while ((fromServer = in.readLine()) != null) {
-
 				MessageProtocol.processLine(fromServer);
-
 			}
 			
 			this.clientSocket.close();
@@ -53,6 +57,10 @@ public class NetworkClient extends Thread {
 		
 	}
 	
+	/**
+	 * Send a message to the server
+	 * @param msg
+	 */
 	public void send(String msg) {
 		this.out.println(msg);
 	}
