@@ -6,6 +6,9 @@ import java.net.ServerSocket;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import org.junit.Test;
+import static org.junit.Assert.*;
+
 import monster.java.server.MonsterServer;
 import monster.java.server.world.Entity;
 import monster.java.server.world.Monster;
@@ -244,7 +247,6 @@ public class NetworkServer extends Thread {
 	}
 	
 	/* * * Getters and Setters * * */
-	
 	public String[] getWorld() {
 		return this.world;
 	}
@@ -253,7 +255,23 @@ public class NetworkServer extends Thread {
 		return this.world.length;
 	}
 	
-	/* * * DEBUGGING CODE BELOW * * */
+	/* * * JUnit Testing Below * * */
+	@Test
+	public void monsterInDomain() {
+		// Verify that monster does not move outside the grid
+		
+		// Check left boundary
+		assertTrue(monster.X() > 0);
+		
+		// Check top boundary
+		assertTrue(monster.Y() > 0);
+		
+		// Check right boundary
+		assertTrue(monster.X() < getWorldSize());
+		
+		// Check bottom boundary
+		assertTrue(monster.Y() < getWorldSize());
+	}
 	
 	private void sleepn(float n) {
 		try {
@@ -263,5 +281,15 @@ public class NetworkServer extends Thread {
 			e.printStackTrace();
 		}
 	}
-
+		
+	@Test
+	public void gameStartWithMaxPlayers() {
+		// Verify that the game does not start until the specified number of players join
+		
+		// Check that maximum number of players is not exceeded
+		assertTrue(this.numPlayers < 5);
+		
+		// Check that the number of ready players equals number of required players
+		assertEquals(this.numPlayers, this.readyPlayers);
+	}
 }
